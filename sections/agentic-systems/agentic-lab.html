@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Agentic lab lesson in the Agentic Systems track.">
+  <meta name="theme-color" content="#0f172a">
+  <title>Agentic lab | AIEngineerBlueprint</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/assets/svg/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  
+</head>
+<body data-page-title="Agentic lab" data-total-chapters="544">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="/index.html" aria-label="AIEngineerBlueprint home">
+      <span class="brand-mark">AI</span><span>AIEngineerBlueprint</span>
+    </a>
+    <div class="top-actions">
+      <button id="paletteButton" class="ghost" type="button" aria-label="Open command palette">⌘K</button>
+      <button id="themeToggle" class="ghost" type="button" aria-label="Toggle theme">Theme</button>
+    </div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar" aria-label="Course navigation">
+      <div class="sidebar-head">
+        <strong>Learning Path</strong>
+        <span id="globalProgress">0%</span>
+      </div>
+      <nav><a class="" href="/sections/ai-foundations/index.html"><span>AI Foundations</span></a><a class="" href="/sections/machine-learning/index.html"><span>Machine Learning</span></a><a class="" href="/sections/deep-learning/index.html"><span>Deep Learning</span></a><a class="" href="/sections/neural-networks/index.html"><span>Neural Networks</span></a><a class="" href="/sections/transformers/index.html"><span>Transformers</span></a><a class="" href="/sections/llm-fundamentals/index.html"><span>LLM Fundamentals</span></a><a class="" href="/sections/generative-ai/index.html"><span>Generative AI</span></a><a class="" href="/sections/prompt-engineering/index.html"><span>Prompt Engineering</span></a><a class="" href="/sections/embeddings/index.html"><span>Embeddings</span></a><a class="" href="/sections/vector-databases/index.html"><span>Vector Databases</span></a><a class="" href="/sections/rag/index.html"><span>RAG</span></a><a class="" href="/sections/mcp/index.html"><span>MCP</span></a><a class="" href="/sections/ai-agents/index.html"><span>AI Agents</span></a><a class="active" href="/sections/agentic-systems/index.html"><span>Agentic Systems</span></a><a class="" href="/sections/memory/index.html"><span>Memory</span></a><a class="" href="/sections/tool-calling/index.html"><span>Tool Calling</span></a><a class="" href="/sections/structured-output/index.html"><span>Structured Output</span></a><a class="" href="/sections/evaluation/index.html"><span>Evaluation</span></a><a class="" href="/sections/guardrails/index.html"><span>Guardrails</span></a><a class="" href="/sections/grounding/index.html"><span>Grounding</span></a><a class="" href="/sections/ai-security/index.html"><span>AI Security</span></a><a class="" href="/sections/responsible-ai/index.html"><span>Responsible AI</span></a><a class="" href="/sections/ai-in-sdlc/index.html"><span>AI in SDLC</span></a><a class="" href="/sections/production-ai-systems/index.html"><span>Production AI Systems</span></a><a class="" href="/sections/aws-ai-stack/index.html"><span>AWS AI Stack</span></a><a class="" href="/sections/azure-ai-stack/index.html"><span>Azure AI Stack</span></a><a class="" href="/sections/building-products/index.html"><span>Building Products</span></a><a class="" href="/sections/local-ai/index.html"><span>Local AI</span></a><a class="" href="/sections/claude-code/index.html"><span>Claude Code</span></a><a class="" href="/sections/github-copilot/index.html"><span>GitHub Copilot</span></a><a class="" href="/sections/openai-codex/index.html"><span>OpenAI Codex</span></a><a class="" href="/sections/interview-preparation/index.html"><span>Interview Preparation</span></a></nav>
+      <div class="sidebar-links">
+        <a href="/glossary.html">Glossary</a>
+        <a href="/bookmarks.html">Bookmarks</a>
+      </div>
+    </aside>
+    <main id="main" class="content">
+      <nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="/index.html">Home</a><span>/</span><a href="/sections/agentic-systems/index.html">Agentic Systems</a><span>/</span><span>Agentic lab</span></nav>
+      <article class="lesson" data-lesson-id="agentic-systems-agentic-lab">
+    <div class="lesson-hero">
+      <div>
+        <p class="eyebrow">Agentic Systems · Chapter 14</p>
+        <h1>Agentic lab</h1>
+        <p class="lede">Build a production-grade understanding of Agentic lab by connecting the theory, architecture, implementation choices, and operational risks behind real AI products.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+      </div>
+      <button class="bookmark" type="button" data-bookmark="agentic-systems-agentic-lab">Bookmark</button>
+    </div>
+
+    <section class="panel">
+      <h2>Learning objectives</h2>
+      <ul class="checklist">
+        <li>Explain why agentic lab matters when building AI systems for users, not demos.</li>
+        <li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li>
+        <li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li>
+        <li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li>
+      </ul>
+    </section>
+
+    <section class="panel objective-map">
+    <h2>Learning the objectives</h2>
+    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
+    <div class="objective-grid">
+      <article><span>Objective 1</span><p>Agentic lab matters because it changes whether the AI product is useful, reliable, measurable, or safe for real users.</p></article><article><span>Objective 2</span><p>The internal flow usually follows Work intake → Planner → Specialists → Shared state → Approvals → Outcome. Learn what each handoff means and what can break there.</p></article><article><span>Objective 3</span><p>Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</p></article><article><span>Objective 4</span><p>A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</p></article>
+    </div>
+  </section>
+    <section class="panel">
+      <h2>Theory from first principles</h2>
+      <p>Agentic lab should be treated as an engineering capability: a bounded mechanism that transforms inputs into useful decisions under constraints. Start with the user outcome, identify the uncertainty, then choose the smallest model, retrieval, agent, or workflow component that reduces that uncertainty reliably.</p>
+      <p>The core mental model is <strong>signal → representation → decision → verification</strong>. Weak AI products skip verification; production systems make verification explicit through tests, evals, guardrails, and runtime telemetry.</p>
+    </section>
+
+    <section class="panel beginner-card">
+    <h2>Beginner explanation</h2>
+    <p>If you have no AI background, start here: Agentic lab is a practical building block inside agentic workflow map. It has a specific job, clear inputs, expected outputs, and failure modes engineers must understand.</p>
+    <p><strong>Analogy:</strong> Agentic systems are like an operations room: different specialists coordinate, hand off tasks, escalate blockers, and keep a shared view of state.</p>
+    <p><strong>In plain words:</strong> the system receives something messy, such as a question, document, image, code diff, or business request. It converts that input into a form the computer can work with, uses a model, search system, tool, or rule to produce a result, and then checks whether the result is good enough to show or act on.</p>
+  </section>
+    <section class="panel">
+    <h2>Core concept you must understand</h2>
+    <p>Agentic lab is a practical building block inside agentic workflow map. It has a specific job, clear inputs, expected outputs, and failure modes engineers must understand.</p>
+    <h3>What to learn</h3>
+    <ul><li>Start with the user problem Agentic lab is supposed to help solve.</li><li>Identify the input, output, and handoff to the next system component.</li><li>Learn the normal path first, then study the failure path.</li><li>Connect the concept to measurable product signals such as quality, latency, cost, safety, or user trust.</li></ul>
+    <h3>Common misunderstandings</h3>
+    <ul><li>Do not memorize the term without understanding what problem it solves.</li><li>Do not assume a model output is correct just because it sounds confident.</li><li>Do not skip measurement; without evaluation, improvement is guesswork.</li></ul>
+  </section>
+    <section class="panel explain-card">
+    <h2>How to think about it</h2>
+    <p><strong>Analogy:</strong> Agentic systems are like an operations room: different specialists coordinate, hand off tasks, escalate blockers, and keep a shared view of state.</p>
+    <p><strong>Why it matters:</strong> Coordination becomes the product risk. Reliability depends on state, ownership, retries, and human checkpoints.</p>
+    <p>For <strong>Agentic lab</strong>, keep asking three practical questions: what input is trusted, what output must be verified, and what should happen when the system is unsure?</p>
+  </section>
+    <section class="panel">
+    <h2>Worked example</h2>
+    <p>A data-cleanup workflow may use one agent to inspect files, another to propose transformations, another to run validation, and a human approval step before writing changes.</p>
+    <ol><li><strong>Work intake:</strong> prepare a clean handoff for the next part of the workflow.</li><li><strong>Planner:</strong> prepare a clean handoff for the next part of the workflow.</li><li><strong>Specialists:</strong> prepare a clean handoff for the next part of the workflow.</li><li><strong>Shared state:</strong> prepare a clean handoff for the next part of the workflow.</li><li><strong>Approvals:</strong> decide whether the result is safe, correct, allowed, and useful before trusting it.</li><li><strong>Outcome:</strong> turn the intermediate work into something a user or downstream system can safely use.</li></ol>
+    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
+  </section>
+    <section class="panel">
+    <h2>Concept flow, not architecture</h2>
+    <div class="concept-flow" role="img" aria-label="Agentic workflow map for Agentic lab">
+    <article>
+      <span>Step 1</span>
+      <strong>Work intake</strong>
+      <p>prepare a clean handoff for the next part of the workflow.</p>
+    </article><article>
+      <span>Step 2</span>
+      <strong>Planner</strong>
+      <p>prepare a clean handoff for the next part of the workflow.</p>
+    </article><article>
+      <span>Step 3</span>
+      <strong>Specialists</strong>
+      <p>prepare a clean handoff for the next part of the workflow.</p>
+    </article><article>
+      <span>Step 4</span>
+      <strong>Shared state</strong>
+      <p>prepare a clean handoff for the next part of the workflow.</p>
+    </article><article>
+      <span>Step 5</span>
+      <strong>Approvals</strong>
+      <p>decide whether the result is safe, correct, allowed, and useful before trusting it.</p>
+    </article><article>
+      <span>Step 6</span>
+      <strong>Outcome</strong>
+      <p>turn the intermediate work into something a user or downstream system can safely use.</p>
+    </article>
+  </div>
+    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+  </section>
+    
+    <section class="panel deep-dive">
+    <h2>Production build path</h2>
+    <p>Use this chapter as a building block in one of the platform projects below. The learning target is not memorizing the term; it is proving you can design, implement, evaluate, and operate it inside a product.</p>
+    <div class="lab-grid"><article>
+    <h3>Enterprise RAG</h3>
+    <p>Build a private documentation assistant with ingestion, chunking, hybrid search, citations, evals, access control, and freshness monitoring.</p>
+  </article><article>
+    <h3>AI code reviewer</h3>
+    <p>Build a reviewer that reads diffs, classifies risk, checks security rules, and produces actionable comments with confidence levels.</p>
+  </article><article>
+    <h3>Document intelligence</h3>
+    <p>Extract structured data from PDFs or forms, validate against schemas, route exceptions to humans, and track extraction quality.</p>
+  </article><article>
+    <h3>AI support bot</h3>
+    <p>Answer customer questions with grounded knowledge, escalation rules, conversation memory, and deflection/CSAT metrics.</p>
+  </article><article>
+    <h3>Engineering assistant</h3>
+    <p>Connect repo search, issue context, runbooks, and deployment checks into a tool-using assistant for engineers.</p>
+  </article></div>
+  </section>
+
+    <section class="panel grid-2">
+      <div>
+        <h2>What happens under the hood</h2>
+        <p>Imagine a request moving through a workshop. First, the system cleans up the request so the next step can understand it. Then it turns the request into a useful form, such as tokens, vectors, a tool call, or a policy decision. After that, it produces a result and checks whether the result is safe, grounded, and useful.</p>
+        <p>For Agentic lab, the related mechanism to watch is <strong>Context compression</strong>. If that handoff is weak, the user sees confusing answers, slow responses, missing citations, bad tool calls, or inconsistent behavior.</p>
+      </div>
+      <div>
+        <h2>Trade-offs</h2>
+        <ul>
+          <li><strong>Accuracy vs latency:</strong> richer context and larger models improve quality but increase response time.</li>
+          <li><strong>Autonomy vs control:</strong> agentic behavior unlocks workflows but requires approvals, budgets, and audit logs.</li>
+          <li><strong>Generality vs reliability:</strong> broad prompts are flexible; constrained schemas are easier to test and operate.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Interactive example</h2>
+      <div class="simulator">
+        <label>Change the production constraint
+          <select data-sim-select>
+            <option value="latency">Low latency</option>
+            <option value="quality">High answer quality</option>
+            <option value="safety">Strict safety and compliance</option>
+          </select>
+        </label>
+        <output data-sim-output>Prefer a smaller model, cached context, streaming responses, and aggressive timeout budgets.</output>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Small implementation pattern</h2>
+      <p>This is not a complete app. It is the minimum shape every production AI feature should have: clear input, trusted context, policy checks, a model or tool step, and evaluation signals.</p>
+      <pre><code>const productionStep = {
+  input: "user request",
+  context: "retrieved or supplied evidence",
+  policy: "validate inputs and outputs",
+  modelCall: "execute with timeout, tracing, and retries",
+  evaluation: "score quality, safety, latency, and cost"
+};</code></pre>
+      <ul>
+        <li><strong>input</strong> is what the user or system asks for.</li>
+        <li><strong>context</strong> is the trusted information the AI should use.</li>
+        <li><strong>policy</strong> is the safety and business rule layer.</li>
+        <li><strong>modelCall</strong> is where the AI or tool does the work.</li>
+        <li><strong>evaluation</strong> tells you whether the result is good enough to ship.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>Hands-on lab</h2>
+      <ol>
+        <li>Write a one-page requirement for a feature that uses Agentic lab.</li>
+        <li>Draw the architecture with explicit boundaries for model, data, policy, and telemetry.</li>
+        <li>Define five golden test cases, including two failures and one adversarial input.</li>
+        <li>Implement a prototype with a deterministic fallback and a structured output contract.</li>
+        <li>Record latency, cost, quality, and safety observations in a release note.</li>
+      </ol>
+    </section>
+
+    <section class="panel practice-card">
+    <h2>Practice to make it stick</h2>
+    <p>Write a one-paragraph explanation of Agentic lab, draw the input-output flow, and create one success case plus one failure case.</p>
+    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+  </section>
+
+    <section class="panel">
+      <h2>Mini project</h2>
+      <p>Build a Agentic Systems workbench that demonstrates Agentic lab with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Common mistakes</h2>
+      <ul>
+        <li>Optimizing prompts before defining success metrics.</li>
+        <li>Mixing user input, system policy, and retrieved context without clear boundaries.</li>
+        <li>Shipping without regression evals, trace IDs, rate limits, and incident playbooks.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>Production considerations</h2>
+      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
+    </section>
+
+    <section class="panel quiz" data-quiz="quiz-agentic-systems-agentic-lab">
+      <h2>Quiz</h2>
+      <p><strong>Question:</strong> What is the most production-oriented way to evaluate Agentic lab?</p>
+      <button data-answer="wrong">Ask a larger model whether the output looks good.</button>
+      <button data-answer="right">Use representative golden cases, failure cases, metrics, traces, and human review where risk is high.</button>
+      <button data-answer="wrong">Rely on user feedback after launch.</button>
+      <p class="quiz-result" aria-live="polite"></p>
+    </section>
+
+    <section class="panel">
+      <h2>Interview questions</h2>
+      <ol>
+        <li>Explain Agentic lab to a senior backend engineer who has not shipped AI systems.</li>
+        <li>What can go wrong in production, and how would you detect it?</li>
+        <li>How would your design change for AWS, Azure, and local/offline development?</li>
+        <li>Which metric would you optimize first, and which metric would you refuse to hide?</li>
+      </ol>
+    </section>
+
+    <section class="panel">
+      <h2>References</h2>
+      <p>Use primary vendor documentation, academic papers where relevant, OWASP guidance for security topics, cloud architecture references, and internal postmortems. Prefer sources that explain mechanisms and operational trade-offs over marketing summaries.</p>
+    </section>
+
+    <div class="complete-box">
+      <button type="button" data-complete="agentic-systems-agentic-lab">Mark chapter complete</button>
+      <span data-complete-status="agentic-systems-agentic-lab">Not completed</span>
+    </div>
+  </article>
+      <nav class="page-nav" aria-label="Previous and next chapters">
+        <a href="/sections/agentic-systems/operations.html">← Operations</a>
+        <a href="/sections/agentic-systems/mini-project.html">Mini project →</a>
+      </nav>
+    </main>
+  </div>
+  <div id="commandPalette" class="palette" hidden>
+    <div class="palette-panel" role="dialog" aria-modal="true" aria-label="Command palette">
+      <input id="paletteInput" type="search" placeholder="Search lessons, glossary, labs..." autocomplete="off">
+      <div id="paletteResults" class="palette-results"></div>
+    </div>
+  </div>
+  <script src="/assets/js/app.js" defer></script>
+</body>
+</html>

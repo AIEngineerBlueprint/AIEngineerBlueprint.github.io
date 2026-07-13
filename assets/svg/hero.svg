@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" role="img" aria-labelledby="title desc">
+  <title id="title">AI engineering blueprint</title>
+  <desc id="desc">A layered architecture diagram showing product, orchestration, model, retrieval, safety, and observability layers.</desc>
+  <defs>
+    <linearGradient id="a" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="760" height="560" rx="40" fill="#0f172a"/>
+  <circle cx="150" cy="120" r="110" fill="#38bdf8" opacity=".15"/>
+  <circle cx="625" cy="425" r="150" fill="#a78bfa" opacity=".18"/>
+  <g fill="none" stroke="url(#a)" stroke-width="4" opacity=".7">
+    <path d="M380 90v380M190 170h380M155 280h450M190 390h380"/>
+    <path d="M250 170l130-80 130 80M250 390l130 80 130-80"/>
+  </g>
+  <g filter="url(#glow)">
+    <rect x="275" y="45" width="210" height="90" rx="24" fill="#111827" stroke="#38bdf8"/>
+    <text x="380" y="83" text-anchor="middle" fill="#e5edf8" font-family="Inter,Arial" font-size="20" font-weight="800">Product UX</text>
+    <text x="380" y="108" text-anchor="middle" fill="#9fb0ca" font-family="Inter,Arial" font-size="14">users, workflows, approvals</text>
+    <rect x="75" y="145" width="230" height="80" rx="24" fill="#111827" stroke="#38bdf8"/>
+    <text x="190" y="178" text-anchor="middle" fill="#e5edf8" font-family="Inter,Arial" font-size="18" font-weight="800">Orchestration</text>
+    <text x="190" y="202" text-anchor="middle" fill="#9fb0ca" font-family="Inter,Arial" font-size="13">agents, tools, policies</text>
+    <rect x="455" y="145" width="230" height="80" rx="24" fill="#111827" stroke="#a78bfa"/>
+    <text x="570" y="178" text-anchor="middle" fill="#e5edf8" font-family="Inter,Arial" font-size="18" font-weight="800">Models</text>
+    <text x="570" y="202" text-anchor="middle" fill="#9fb0ca" font-family="Inter,Arial" font-size="13">LLMs, embeddings, local AI</text>
+    <rect x="75" y="255" width="230" height="80" rx="24" fill="#111827" stroke="#38bdf8"/>
+    <text x="190" y="288" text-anchor="middle" fill="#e5edf8" font-family="Inter,Arial" font-size="18" font-weight="800">Retrieval</text>
+    <text x="190" y="312" text-anchor="middle" fill="#9fb0ca" font-family="Inter,Arial" font-size="13">RAG, vector DB, grounding</text>
+    <rect x="455" y="255" width="230" height="80" rx="24" fill="#111827" stroke="#a78bfa"/>
+    <text x="570" y="288" text-anchor="middle" fill="#e5edf8" font-family="Inter,Arial" font-size="18" font-weight="800">Safety</text>
+    <text x="570" y="312" text-anchor="middle" fill="#9fb0ca" font-family="Inter,Arial" font-size="13">guardrails, identity, audit</text>
+    <rect x="250" y="365" width="260" height="92" rx="24" fill="#111827" stroke="url(#a)"/>
+    <text x="380" y="402" text-anchor="middle" fill="#e5edf8" font-family="Inter,Arial" font-size="19" font-weight="800">Evaluation + Ops</text>
+    <text x="380" y="428" text-anchor="middle" fill="#9fb0ca" font-family="Inter,Arial" font-size="13">traces, metrics, CI, releases</text>
+  </g>
+</svg>

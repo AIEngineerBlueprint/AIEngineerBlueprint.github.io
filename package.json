@@ -1,0 +1,11 @@
+{
+  "name": "aiengineerblueprint.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static HTML learning platform for production-grade AI engineering.",
+  "scripts": {
+    "generate": "node scripts/generate-site.js",
+    "serve": "node scripts/serve.js",
+    "start": "node scripts/serve.js"
+  }
+}
