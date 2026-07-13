@@ -89,7 +89,11 @@ button, input, select { font: inherit; }
   color: #04111f;
 }
 
-.top-actions { display: flex; gap: .6rem; }
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
 .ghost, .button, .complete-box button, .quiz button, .bookmark, .expand-diagram {
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -102,6 +106,18 @@ button, input, select { font: inherit; }
 .ghost:hover, .button:hover, .complete-box button:hover, .quiz button:hover, .bookmark:hover, .expand-diagram:hover {
   border-color: color-mix(in srgb, var(--brand) 60%, var(--line));
   transform: translateY(-1px);
+}
+.repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  text-decoration: none;
+  font-weight: 700;
+}
+.repo-link svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: none;
 }
 .button {
   display: inline-flex;
@@ -373,10 +389,10 @@ h3 { margin: 0 0 .5rem; font-size: 1.25rem; }
     linear-gradient(135deg, color-mix(in srgb, var(--brand) 10%, transparent), transparent),
     var(--card-strong);
 }
-.concept-flow article:not(:last-child)::after {
+.concept-flow article + article::before {
   content: "→";
   position: absolute;
-  right: -.7rem;
+  left: -.7rem;
   top: 50%;
   transform: translateY(-50%);
   color: var(--brand);

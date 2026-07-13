@@ -666,6 +666,13 @@
     "text": "Fine tuning LLM Fundamentals learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
+    "title": "Fine-tuning vs training",
+    "section": "LLM Fundamentals",
+    "url": "/sections/llm-fundamentals/fine-tuning-vs-training.html",
+    "type": "chapter",
+    "text": "Fine-tuning vs training LLM Fundamentals learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
     "title": "LoRA",
     "section": "LLM Fundamentals",
     "url": "/sections/llm-fundamentals/lora.html",
@@ -692,6 +699,41 @@
     "url": "/sections/llm-fundamentals/inference-pipeline.html",
     "type": "chapter",
     "text": "Inference pipeline LLM Fundamentals learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "GPU memory",
+    "section": "LLM Fundamentals",
+    "url": "/sections/llm-fundamentals/gpu-memory.html",
+    "type": "chapter",
+    "text": "GPU memory LLM Fundamentals learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Model loading",
+    "section": "LLM Fundamentals",
+    "url": "/sections/llm-fundamentals/model-loading.html",
+    "type": "chapter",
+    "text": "Model loading LLM Fundamentals learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Distributed inference",
+    "section": "LLM Fundamentals",
+    "url": "/sections/llm-fundamentals/distributed-inference.html",
+    "type": "chapter",
+    "text": "Distributed inference LLM Fundamentals learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Context compression",
+    "section": "LLM Fundamentals",
+    "url": "/sections/llm-fundamentals/context-compression.html",
+    "type": "chapter",
+    "text": "Context compression LLM Fundamentals learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Prompt caching",
+    "section": "LLM Fundamentals",
+    "url": "/sections/llm-fundamentals/prompt-caching.html",
+    "type": "chapter",
+    "text": "Prompt caching LLM Fundamentals learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Sampling",
@@ -789,6 +831,13 @@
     "url": "/sections/generative-ai/multimodal-systems.html",
     "type": "chapter",
     "text": "Multimodal systems Generative AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Multimodal GenAI and deployment",
+    "section": "Generative AI",
+    "url": "/sections/generative-ai/multimodal-genai-and-deployment.html",
+    "type": "chapter",
+    "text": "Multimodal GenAI and deployment Generative AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Latent spaces",
@@ -1625,129 +1674,136 @@
     "text": "Interview pack AI Agents learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
-    "title": "Agentic Systems",
+    "title": "Agentic AI",
     "url": "/sections/agentic-systems/index.html",
     "type": "section",
-    "text": "Agentic Systems overview objectives architecture internals hands-on capstone interview references"
+    "text": "Agentic AI overview objectives architecture internals hands-on capstone interview references"
+  },
+  {
+    "title": "Agentic AI and orchestration",
+    "section": "Agentic AI",
+    "url": "/sections/agentic-systems/agentic-ai-and-orchestration.html",
+    "type": "chapter",
+    "text": "Agentic AI and orchestration Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Agentic workflows",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/agentic-workflows.html",
     "type": "chapter",
-    "text": "Agentic workflows Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Agentic workflows Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Single vs multi-agent",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/single-vs-multi-agent.html",
     "type": "chapter",
-    "text": "Single vs multi-agent Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Single vs multi-agent Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Agent-to-agent communication",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/agent-to-agent-communication.html",
     "type": "chapter",
-    "text": "Agent-to-agent communication Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Agent-to-agent communication Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Task decomposition",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/task-decomposition.html",
     "type": "chapter",
-    "text": "Task decomposition Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Task decomposition Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Coordination",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/coordination.html",
     "type": "chapter",
-    "text": "Coordination Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Coordination Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "State machines",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/state-machines.html",
     "type": "chapter",
-    "text": "State machines Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "State machines Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Retries",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/retries.html",
     "type": "chapter",
-    "text": "Retries Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Retries Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Human checkpoints",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/human-checkpoints.html",
     "type": "chapter",
-    "text": "Human checkpoints Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Human checkpoints Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Failure scenarios",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/failure-scenarios.html",
     "type": "chapter",
-    "text": "Failure scenarios Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Failure scenarios Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Careful deployment",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/careful-deployment.html",
     "type": "chapter",
-    "text": "Careful deployment Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Careful deployment Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Governance",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/governance.html",
     "type": "chapter",
-    "text": "Governance Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Governance Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Evaluation",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/evaluation.html",
     "type": "chapter",
-    "text": "Evaluation Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Evaluation Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Operations",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/operations.html",
     "type": "chapter",
-    "text": "Operations Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Operations Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Agentic lab",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/agentic-lab.html",
     "type": "chapter",
-    "text": "Agentic lab Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Agentic lab Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Mini project",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/mini-project.html",
     "type": "chapter",
-    "text": "Mini project Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Mini project Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Capstone",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/capstone.html",
     "type": "chapter",
-    "text": "Capstone Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Capstone Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Interview pack",
-    "section": "Agentic Systems",
+    "section": "Agentic AI",
     "url": "/sections/agentic-systems/interview-pack.html",
     "type": "chapter",
-    "text": "Interview pack Agentic Systems learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+    "text": "Interview pack Agentic AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "Memory",

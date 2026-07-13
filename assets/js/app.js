@@ -101,14 +101,11 @@
   }
 
   function initSimulator() {
-    const copy = {
-      latency: "Prefer a smaller model, cached context, streaming responses, and aggressive timeout budgets.",
-      quality: "Use stronger retrieval, re-ranking, richer evals, and human review for ambiguous or high-impact cases.",
-      safety: "Add strict input/output validation, policy checks, audit logs, approvals, and deterministic fallback behavior."
-    };
     document.querySelectorAll("[data-sim-select]").forEach((select) => {
       const output = select.closest(".simulator").querySelector("[data-sim-output]");
-      select.addEventListener("change", () => { output.textContent = copy[select.value]; });
+      select.addEventListener("change", () => {
+        output.textContent = output.dataset[select.value] || output.textContent;
+      });
     });
   }
 

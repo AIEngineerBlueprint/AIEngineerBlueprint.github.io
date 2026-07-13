@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Multimodal GenAI and deployment lesson in the Generative AI track.">
+  <meta name="theme-color" content="#0f172a">
+  <title>Multimodal GenAI and deployment | AIEngineerBlueprint</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/assets/svg/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  
+</head>
+<body data-page-title="Multimodal GenAI and deployment" data-total-chapters="552">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="/index.html" aria-label="AIEngineerBlueprint home">
+      <span class="brand-mark">AI</span><span>AIEngineerBlueprint</span>
+    </a>
+    <div class="top-actions">
+      <button id="paletteButton" class="ghost" type="button" aria-label="Open command palette">⌘K</button>
+      <button id="themeToggle" class="ghost" type="button" aria-label="Toggle theme">Theme</button>
+      <a class="ghost repo-link" href="https://github.com/AIEngineerBlueprint/AIEngineerBlueprint.github.io" target="_blank" rel="noopener noreferrer" aria-label="Open AIEngineerBlueprint GitHub repository">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2.02c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18A10.9 10.9 0 0 1 12 6.19c.98 0 1.95.13 2.87.38 2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+        </svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar" aria-label="Course navigation">
+      <div class="sidebar-head">
+        <strong>Learning Path</strong>
+        <span id="globalProgress">0%</span>
+      </div>
+      <nav><a class="" href="/sections/ai-foundations/index.html"><span>AI Foundations</span></a><a class="" href="/sections/machine-learning/index.html"><span>Machine Learning</span></a><a class="" href="/sections/deep-learning/index.html"><span>Deep Learning</span></a><a class="" href="/sections/neural-networks/index.html"><span>Neural Networks</span></a><a class="" href="/sections/transformers/index.html"><span>Transformers</span></a><a class="" href="/sections/llm-fundamentals/index.html"><span>LLM Fundamentals</span></a><a class="active" href="/sections/generative-ai/index.html"><span>Generative AI</span></a><a class="" href="/sections/prompt-engineering/index.html"><span>Prompt Engineering</span></a><a class="" href="/sections/embeddings/index.html"><span>Embeddings</span></a><a class="" href="/sections/vector-databases/index.html"><span>Vector Databases</span></a><a class="" href="/sections/rag/index.html"><span>RAG</span></a><a class="" href="/sections/mcp/index.html"><span>MCP</span></a><a class="" href="/sections/ai-agents/index.html"><span>AI Agents</span></a><a class="" href="/sections/agentic-systems/index.html"><span>Agentic AI</span></a><a class="" href="/sections/memory/index.html"><span>Memory</span></a><a class="" href="/sections/tool-calling/index.html"><span>Tool Calling</span></a><a class="" href="/sections/structured-output/index.html"><span>Structured Output</span></a><a class="" href="/sections/evaluation/index.html"><span>Evaluation</span></a><a class="" href="/sections/guardrails/index.html"><span>Guardrails</span></a><a class="" href="/sections/grounding/index.html"><span>Grounding</span></a><a class="" href="/sections/ai-security/index.html"><span>AI Security</span></a><a class="" href="/sections/responsible-ai/index.html"><span>Responsible AI</span></a><a class="" href="/sections/ai-in-sdlc/index.html"><span>AI in SDLC</span></a><a class="" href="/sections/production-ai-systems/index.html"><span>Production AI Systems</span></a><a class="" href="/sections/aws-ai-stack/index.html"><span>AWS AI Stack</span></a><a class="" href="/sections/azure-ai-stack/index.html"><span>Azure AI Stack</span></a><a class="" href="/sections/building-products/index.html"><span>Building Products</span></a><a class="" href="/sections/local-ai/index.html"><span>Local AI</span></a><a class="" href="/sections/claude-code/index.html"><span>Claude Code</span></a><a class="" href="/sections/github-copilot/index.html"><span>GitHub Copilot</span></a><a class="" href="/sections/openai-codex/index.html"><span>OpenAI Codex</span></a><a class="" href="/sections/interview-preparation/index.html"><span>Interview Preparation</span></a></nav>
+      <div class="sidebar-links">
+        <a href="/glossary.html">Glossary</a>
+        <a href="/bookmarks.html">Bookmarks</a>
+      </div>
+    </aside>
+    <main id="main" class="content">
+      <nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="/index.html">Home</a><span>/</span><a href="/sections/generative-ai/index.html">Generative AI</a><span>/</span><span>Multimodal GenAI and deployment</span></nav>
+      <article class="lesson" data-lesson-id="generative-ai-multimodal-genai-and-deployment">
+    <div class="lesson-hero">
+      <div>
+        <p class="eyebrow">Generative AI · Chapter 6</p>
+        <h1>Multimodal GenAI and deployment</h1>
+        <p class="lede">Multimodal GenAI combines text, images, audio, video, or documents in one workflow, then deploys the workflow with modality-specific validation, storage, latency, and safety controls. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+      </div>
+      <button class="bookmark" type="button" data-bookmark="generative-ai-multimodal-genai-and-deployment">Bookmark</button>
+    </div>
+
+    <section class="panel">
+      <h2>Learning objectives</h2>
+      <ul class="checklist"><li>Explain why Multimodal GenAI and deployment is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
+    </section>
+
+    <section class="panel objective-map">
+    <h2>Learning the objectives</h2>
+    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
+    <div class="objective-grid">
+      <article><span>Objective 1</span><p>Multimodal GenAI matters because many real workflows are not text-only: claims, medical intake, retail support, education, design, and field operations all combine media types.</p></article><article><span>Objective 2</span><p>The internal flow is upload, validate, preprocess, encode modality inputs, call a multimodal model, post-process output, run safety checks, and route low-confidence cases.</p></article><article><span>Objective 3</span><p>The main trade-off is richer context vs operational risk: images/audio can improve answers but add privacy, storage, latency, cost, and safety obligations.</p></article><article><span>Objective 4</span><p>A production-shaped slice should accept one text input and one image, validate file type and size, call a multimodal model, score confidence, and send uncertain cases to human review.</p></article>
+    </div>
+  </section>
+    <section class="panel">
+      <h2>Theory from first principles</h2>
+      <p>Multimodal GenAI combines text, images, audio, video, or documents in one workflow, then deploys the workflow with modality-specific validation, storage, latency, and safety controls.</p>
+      <p>The internal flow is upload, validate, preprocess, encode modality inputs, call a multimodal model, post-process output, run safety checks, and route low-confidence cases.</p>
+    </section>
+
+    <section class="panel beginner-card">
+    <h2>Beginner explanation</h2>
+    <p>If you have no AI background, start here: Multimodal GenAI combines text, images, audio, video, or documents in one workflow, then deploys the workflow with modality-specific validation, storage, latency, and safety controls.</p>
+    <p><strong>Analogy:</strong> It is like giving an assistant eyes, ears, and reading ability, then deciding which senses are allowed in production and how each one is checked.</p>
+  </section>
+    <section class="panel">
+    <h2>Core concept you must understand</h2>
+    <p>Multimodal GenAI combines text, images, audio, video, or documents in one workflow, then deploys the workflow with modality-specific validation, storage, latency, and safety controls.</p>
+    <h3>What to learn</h3>
+    <ul><li>Multimodal inputs need preprocessing: resizing images, extracting frames, transcribing audio, parsing documents, and preserving metadata.</li><li>Each modality has different failure modes: OCR errors, blurry images, accents, missing frames, unsafe visual content, or private data in files.</li><li>Deployment requires asset storage, signed URLs, content-type checks, size limits, virus scanning, and retention policies.</li><li>Evaluation must include modality-specific cases, such as unreadable images, contradictory text and image evidence, or low-confidence transcriptions.</li><li>Human review is often required when multimodal outputs affect money, health, identity, safety, or compliance.</li></ul>
+    <h3>Common misunderstandings</h3>
+    <ul><li>Multimodal does not mean the model sees everything reliably; poor image quality or missing frames can break the answer.</li><li>A text safety filter is not enough for image, audio, or document uploads.</li><li>Deployment is not only model choice; storage, permissions, preprocessing, and review queues are core parts of the system.</li></ul>
+  </section>
+    <section class="panel explain-card">
+    <h2>How to think about it</h2>
+    <p><strong>When to use it:</strong> Multimodal GenAI matters because many real workflows are not text-only: claims, medical intake, retail support, education, design, and field operations all combine media types.</p>
+    <p><strong>When it breaks:</strong> Multimodal does not mean the model sees everything reliably; poor image quality or missing frames can break the answer.</p>
+    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+  </section>
+    <section class="panel">
+    <h2>Worked example</h2>
+    <p>An insurance assistant receives accident photos and a text claim. It checks image readability, extracts visible damage, compares it with the user&#39;s description, flags low confidence for human review, and stores only approved evidence.</p>
+    <ol><li><strong>Upload:</strong> Accept media through controlled upload paths with content type, size, malware, and permission checks.</li><li><strong>Preprocess:</strong> Resize images, extract frames, transcribe audio, or parse documents while preserving provenance.</li><li><strong>Model call:</strong> Send text plus media references to the multimodal model with a task-specific instruction.</li><li><strong>Validate:</strong> Check confidence, policy, PII, evidence alignment, and whether the media was readable.</li><li><strong>Route:</strong> Return low-risk answers automatically and send uncertain or high-impact cases to human review.</li><li><strong>Operate:</strong> Track latency, cost, media quality, review rate, and deletion/retention compliance.</li></ol>
+    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
+  </section>
+    <section class="panel">
+    <h2>Concept flow, not architecture</h2>
+    <div class="concept-flow" role="img" aria-label="Generative AI creation loop for Multimodal GenAI and deployment">
+    <article>
+      <span>Step 1</span>
+      <strong>Upload</strong>
+      <p>Accept media through controlled upload paths with content type, size, malware, and permission checks.</p>
+    </article><article>
+      <span>Step 2</span>
+      <strong>Preprocess</strong>
+      <p>Resize images, extract frames, transcribe audio, or parse documents while preserving provenance.</p>
+    </article><article>
+      <span>Step 3</span>
+      <strong>Model call</strong>
+      <p>Send text plus media references to the multimodal model with a task-specific instruction.</p>
+    </article><article>
+      <span>Step 4</span>
+      <strong>Validate</strong>
+      <p>Check confidence, policy, PII, evidence alignment, and whether the media was readable.</p>
+    </article><article>
+      <span>Step 5</span>
+      <strong>Route</strong>
+      <p>Return low-risk answers automatically and send uncertain or high-impact cases to human review.</p>
+    </article><article>
+      <span>Step 6</span>
+      <strong>Operate</strong>
+      <p>Track latency, cost, media quality, review rate, and deletion/retention compliance.</p>
+    </article>
+  </div>
+    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+  </section>
+    <section class="panel">
+    <h2>Topic diagram</h2>
+    <button class="expand-diagram" type="button">Expand diagram</button>
+    <svg class="diagram topic-diagram" viewBox="0 0 880 340" role="img" aria-label="Multimodal deployment path for Multimodal GenAI and deployment">
+    <defs>
+      <linearGradient id="topic-multimodal-genai-and-deployment" x1="0" x2="1"><stop stop-color="#38bdf8"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+      <marker id="topic-arrow-multimodal-genai-and-deployment" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0l8 4-8 4z" fill="currentColor"/></marker>
+    </defs>
+    <rect width="880" height="340" rx="28" fill="url(#topic-multimodal-genai-and-deployment)" opacity=".10"/>
+    <text x="36" y="48" font-family="Inter, system-ui" font-size="24" font-weight="800" fill="currentColor">Multimodal deployment path</text>
+    <text x="36" y="76" font-family="Inter, system-ui" font-size="14" fill="currentColor" opacity=".72">Media workflows need validation before and after the model call.</text>
+    <g fill="none" stroke="currentColor" stroke-width="2" opacity=".75" marker-end="url(#topic-arrow-multimodal-genai-and-deployment)"><path d="M150 182h24" /><path d="M290 182h24" /><path d="M430 182h24" /><path d="M570 182h24" /><path d="M710 182h24" /></g>
+    <g font-family="Inter, system-ui" fill="currentColor">
+      <g>
+          <rect x="40" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="96" y="176" font-size="14" font-weight="800" text-anchor="middle">Upload</text>
+          <text x="96" y="200" font-size="11" opacity=".70" text-anchor="middle">type + size</text>
+        </g><g>
+          <rect x="180" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="236" y="176" font-size="14" font-weight="800" text-anchor="middle">Preprocess</text>
+          <text x="236" y="200" font-size="11" opacity=".70" text-anchor="middle">OCR / frames</text>
+        </g><g>
+          <rect x="320" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="376" y="176" font-size="14" font-weight="800" text-anchor="middle">Model</text>
+          <text x="376" y="200" font-size="11" opacity=".70" text-anchor="middle">text + media</text>
+        </g><g>
+          <rect x="460" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="516" y="176" font-size="14" font-weight="800" text-anchor="middle">Validate</text>
+          <text x="516" y="200" font-size="11" opacity=".70" text-anchor="middle">PII + confidence</text>
+        </g><g>
+          <rect x="600" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="656" y="176" font-size="14" font-weight="800" text-anchor="middle">Review</text>
+          <text x="656" y="200" font-size="11" opacity=".70" text-anchor="middle">human gate</text>
+        </g><g>
+          <rect x="740" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="796" y="176" font-size="14" font-weight="800" text-anchor="middle">Retain</text>
+          <text x="796" y="200" font-size="11" opacity=".70" text-anchor="middle">storage policy</text>
+        </g>
+    </g>
+  </svg>
+    <p>Use this diagram as the mental model for the chapter. The arrows show the order of responsibility; the labels show what must be validated or measured at each handoff.</p>
+  </section>
+    
+    
+    
+
+    <section class="panel">
+      <h2>What happens under the hood</h2>
+      <p>The internal flow is upload, validate, preprocess, encode modality inputs, call a multimodal model, post-process output, run safety checks, and route low-confidence cases.</p>
+    </section>
+
+    <section class="panel">
+    <h2>Trade-offs</h2>
+    <ul><li><strong>Quality vs latency:</strong> The main trade-off is richer context vs operational risk: images/audio can improve answers but add privacy, storage, latency, cost, and safety obligations.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+  </section>
+
+    <section class="panel">
+      <h2>Interactive example</h2>
+      <div class="simulator">
+        <label>Change the production constraint
+          <select data-sim-select>
+            <option value="latency">Low latency</option>
+            <option value="quality">High answer quality</option>
+            <option value="safety">Strict safety and compliance</option>
+          </select>
+        </label>
+        <output data-sim-output data-latency="For Multimodal GenAI and deployment, shorten the Upload to Operate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Multimodal GenAI and deployment, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Multimodal GenAI and deployment, guard against multimodal does not mean the model sees everything reliably; poor image quality or missing frames can break the answer.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Multimodal GenAI and deployment, shorten the Upload to Operate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+      </div>
+    </section>
+
+    <section class="panel">
+    <h2>Small runnable example</h2>
+    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
+    <pre><code>const multimodalRequest = {
+  inputs: [
+    { type: &quot;text&quot;, value: &quot;Describe damage and estimate severity.&quot; },
+    { type: &quot;image&quot;, uri: &quot;s3://claims/car-door.jpg&quot; }
+  ],
+  checks: {
+    imageReadable: true,
+    noPiiInOutput: true,
+    confidenceThreshold: 0.75,
+    humanReviewIf: [&quot;low_confidence&quot;, &quot;medical_or_legal_claim&quot;, &quot;high_value_claim&quot;]
+  }
+};</code></pre>
+    <p><strong>Why this matters:</strong> A production-shaped slice should accept one text input and one image, validate file type and size, call a multimodal model, score confidence, and send uncertain cases to human review.</p>
+  </section>
+    
+    <section class="panel">
+    <h2>Hands-on lab</h2>
+    <ol>
+      <li>Run or sketch the small example above with one normal input and one edge-case input.</li>
+      <li>Record the expected output, the actual output, and the first place the result could become wrong.</li>
+      <li>Add one check that would catch that failure before a user sees it.</li>
+      <li>Turn the check into an eval case with a clear pass/fail rule.</li>
+      <li>Write the operational note: what to log, what metric to watch, and what fallback to use.</li>
+    </ol>
+    <p><strong>Practice extension:</strong> Design a multimodal deployment for product-return photo review. Include upload checks, model prompt, confidence threshold, human-review trigger, storage policy, and three eval cases.</p>
+  </section>
+
+    <section class="panel practice-card">
+    <h2>Practice to make it stick</h2>
+    <p>Design a multimodal deployment for product-return photo review. Include upload checks, model prompt, confidence threshold, human-review trigger, storage policy, and three eval cases.</p>
+    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+  </section>
+
+    <section class="panel">
+      <h2>Mini project</h2>
+      <p>Build a Generative AI workbench that demonstrates Multimodal GenAI and deployment with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
+    </section>
+
+    <section class="panel">
+    <h2>Common mistakes</h2>
+    <ul><li>Multimodal does not mean the model sees everything reliably; poor image quality or missing frames can break the answer.</li><li>A text safety filter is not enough for image, audio, or document uploads.</li><li>Deployment is not only model choice; storage, permissions, preprocessing, and review queues are core parts of the system.</li></ul>
+  </section>
+
+    <section class="panel">
+      <h2>Production considerations</h2>
+      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
+    </section>
+
+    <section class="panel quiz" data-quiz="quiz-generative-ai-multimodal-genai-and-deployment">
+    <h2>Quiz</h2>
+    <p><strong>Question:</strong> Which answer best shows production understanding of Multimodal GenAI and deployment?</p>
+    <button data-answer="wrong">Multimodal does not mean the model sees everything reliably; poor image quality or missing frames can break the answer.</button>
+    <button data-answer="right">A production-shaped slice should accept one text input and one image, validate file type and size, call a multimodal model, score confidence, and send uncertain cases to human review.</button>
+    <button data-answer="wrong">A text safety filter is not enough for image, audio, or document uploads.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel">
+      <h2>Interview questions</h2>
+      <ol><li>Explain Multimodal GenAI and deployment to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
+    </section>
+
+    <section class="panel">
+    <h2>References</h2>
+    <ul><li><a href="https://openai.com/research/gpt-4v-system-card" rel="noopener noreferrer">GPT-4V system card</a></li><li><a href="https://arxiv.org/abs/2312.11805" rel="noopener noreferrer">Gemini technical report</a></li><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
+  </section>
+
+    <div class="complete-box">
+      <button type="button" data-complete="generative-ai-multimodal-genai-and-deployment">Mark chapter complete</button>
+      <span data-complete-status="generative-ai-multimodal-genai-and-deployment">Not completed</span>
+    </div>
+  </article>
+      <nav class="page-nav" aria-label="Previous and next chapters">
+        <a href="/sections/generative-ai/multimodal-systems.html">← Multimodal systems</a>
+        <a href="/sections/generative-ai/latent-spaces.html">Latent spaces →</a>
+      </nav>
+    </main>
+  </div>
+  <div id="commandPalette" class="palette" hidden>
+    <div class="palette-panel" role="dialog" aria-modal="true" aria-label="Command palette">
+      <input id="paletteInput" type="search" placeholder="Search lessons, glossary, labs..." autocomplete="off">
+      <div id="paletteResults" class="palette-results"></div>
+    </div>
+  </div>
+  <script src="/assets/js/app.js" defer></script>
+</body>
+</html>

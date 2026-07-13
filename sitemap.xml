@@ -96,10 +96,16 @@
   <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/instruction-tuning.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/rlhf.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/fine-tuning.html</loc></url>
+  <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/fine-tuning-vs-training.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/lora.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/moe.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/context-windows.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/inference-pipeline.html</loc></url>
+  <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/gpu-memory.html</loc></url>
+  <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/model-loading.html</loc></url>
+  <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/distributed-inference.html</loc></url>
+  <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/context-compression.html</loc></url>
+  <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/prompt-caching.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/sampling.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/temperature.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/llm-fundamentals/top-k-and-top-p.html</loc></url>
@@ -114,6 +120,7 @@
   <url><loc>https://AIEngineerBlueprint.github.io/sections/generative-ai/image-generation.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/generative-ai/audio-generation.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/generative-ai/multimodal-systems.html</loc></url>
+  <url><loc>https://AIEngineerBlueprint.github.io/sections/generative-ai/multimodal-genai-and-deployment.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/generative-ai/latent-spaces.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/generative-ai/prompt-to-output-flow.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/generative-ai/controllability.html</loc></url>
@@ -235,6 +242,7 @@
   <url><loc>https://AIEngineerBlueprint.github.io/sections/ai-agents/capstone.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/ai-agents/interview-pack.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/agentic-systems/index.html</loc></url>
+  <url><loc>https://AIEngineerBlueprint.github.io/sections/agentic-systems/agentic-ai-and-orchestration.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/agentic-systems/agentic-workflows.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/agentic-systems/single-vs-multi-agent.html</loc></url>
   <url><loc>https://AIEngineerBlueprint.github.io/sections/agentic-systems/agent-to-agent-communication.html</loc></url>
