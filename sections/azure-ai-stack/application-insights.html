@@ -149,12 +149,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Application Insights, shorten the Blob/data to App Insights path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Application Insights, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Application Insights, guard against having application insights enabled by default instrumentation is not the same as having real observability into an ai feature; custom telemetry for token usage, retrieval hit rate, or answer quality signals has to be added deliberately.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Application Insights, shorten the Blob/data to App Insights path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Application Insights, shorten the Blob/data to App Insights path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Application Insights, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Application Insights, guard against having application insights enabled by default instrumentation is not the same as having real observability into an ai feature; custom telemetry for token usage, retrieval hit rate, or answer quality signals has to be added deliberately.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Application Insights, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

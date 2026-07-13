@@ -149,27 +149,23 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Evaluation, shorten the User problem to Iteration path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Evaluation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Evaluation, guard against evaluation is not solely an engineering concern to be handled after a feature is built; product decisions about what quality actually means for users need to shape the evaluation criteria from the start, or engineering ends up measuring something that doesn&#39;t reflect real product success.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Evaluation, shorten the User problem to Iteration path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Evaluation, shorten the User problem to Iteration path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Evaluation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Evaluation, guard against evaluation is not solely an engineering concern to be handled after a feature is built; product decisions about what quality actually means for users need to shape the evaluation criteria from the start, or engineering ends up measuring something that doesn&#39;t reflect real product success.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Evaluation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
+    <pre><code>const launchGate = {
+  requirement: &quot;summaries preserve all numeric facts, stay under 100 words&quot;,
+  evalCheck: (output) =&gt; preservesNumbers(output) &amp;&amp; wordCount(output) &lt; 100,
+  gate: &quot;no launch until 95% of golden set passes&quot;
+};</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Evaluation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     
@@ -222,7 +218,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
+    <ul><li><a href="https://arxiv.org/abs/2306.05685" rel="noopener noreferrer">Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena</a></li></ul>
   </section>
 
     <div class="complete-box">

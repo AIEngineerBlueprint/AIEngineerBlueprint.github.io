@@ -149,26 +149,25 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Capstone, shorten the Chunks to Filter path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Capstone, guard against a vector database architecture is not complete once search returns good results in testing; without a tested backup strategy and multi-tenant isolation guarantees, it is not ready for production use with real customer data.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Capstone, shorten the Chunks to Filter path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Capstone, shorten the Chunks to Filter path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Capstone, guard against a vector database architecture is not complete once search returns good results in testing; without a tested backup strategy and multi-tenant isolation guarantees, it is not ready for production use with real customer data.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>async function evaluateRetrieval(query, expectedSourceId) {
-  const results = await retrieve(query, { topK: 5 });
-  return {
-    foundExpectedSource: results.some((r) =&gt; r.sourceId === expectedSourceId),
-    topScore: results[0]?.score ?? 0,
-    returnedSources: results.map((r) =&gt; r.sourceId)
-  };
-}</code></pre>
+    <pre><code>const architecture = {
+  schema: &quot;vector + sourceId + department + updatedAt&quot;,
+  index: &quot;HNSW, efSearch=100 (tuned for 50ms p95 budget)&quot;,
+  multiTenancy: &quot;shared index, enforced tenantId filter&quot;,
+  backup: &quot;nightly snapshot, monthly restore drill&quot;,
+  monitoring: &quot;recall@5 weekly sample, p95 latency alarm&quot;
+};</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Capstone on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     
@@ -221,7 +220,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
+    <ul><li><a href="https://arxiv.org/abs/1603.09320" rel="noopener noreferrer">Efficient and robust approximate nearest neighbor search using HNSW</a></li><li><a href="https://faiss.ai/" rel="noopener noreferrer">FAISS documentation</a></li></ul>
   </section>
 
     <div class="complete-box">

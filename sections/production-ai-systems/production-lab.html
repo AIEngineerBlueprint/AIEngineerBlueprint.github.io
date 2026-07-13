@@ -168,27 +168,21 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Production lab, shorten the API to Release loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Production lab, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Production lab, guard against a service that works correctly under light, manual testing is not proof that it will behave safely under real concurrent load; rate limits, timeouts, and error handling need to be tested under actual stress, not just assumed to work because they&#39;re configured.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Production lab, shorten the API to Release loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Production lab, shorten the API to Release loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Production lab, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Production lab, guard against a service that works correctly under light, manual testing is not proof that it will behave safely under real concurrent load; rate limits, timeouts, and error handling need to be tested under actual stress, not just assumed to work because they&#39;re configured.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Production lab, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
+    <pre><code>// Load test against a rate-limited endpoint
+autocannon -c 50 -d 10 http://localhost:3000/summarize
+// Expect: excess requests get 429s, not crashes or silent drops</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Production lab on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     
@@ -241,7 +235,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
+    <ul><li><a href="https://sre.google/sre-book/table-of-contents/" rel="noopener noreferrer">Google SRE book</a></li></ul>
   </section>
 
     <div class="complete-box">

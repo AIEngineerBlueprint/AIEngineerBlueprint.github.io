@@ -149,25 +149,22 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Escalation, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Escalation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Escalation, guard against escalation is not a failure state to be minimized at all costs; a well-designed escalation trigger that fires exactly when it should is a sign the system&#39;s guardrails are working correctly, not a sign the ai is inadequate.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Escalation, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Escalation, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Escalation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Escalation, guard against escalation is not a failure state to be minimized at all costs; a well-designed escalation trigger that fires exactly when it should is a sign the system&#39;s guardrails are working correctly, not a sign the ai is inadequate.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Escalation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function enforcePolicy({ input, output, toolCall }) {
-  return {
-    inputAllowed: !containsPromptInjection(input),
-    outputAllowed: hasNoPII(output) &amp;&amp; hasCitations(output),
-    toolAllowed: toolCall ? isLeastPrivilege(toolCall) : true
-  };
-}</code></pre>
+    <pre><code>function shouldEscalate(request) {
+  return request.refundAmount &gt; 500 || request.confidence &lt; 0.6;
+}
+// escalate with full conversation context attached</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Escalation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     

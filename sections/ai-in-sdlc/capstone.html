@@ -149,26 +149,24 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Capstone, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Capstone, guard against do not produce policy without workflow examples and adoption support.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Capstone, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Capstone, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Capstone, guard against do not produce policy without workflow examples and adoption support.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>const sdlcGate = {
-  stage: &quot;Capstone&quot;,
-  aiAllowed: true,
-  owner: &quot;named human reviewer&quot;,
-  requiredEvidence: [&quot;acceptance criteria&quot;, &quot;tests&quot;, &quot;diff summary&quot;, &quot;risk notes&quot;],
-  pass({ testsPass, reviewerApproved, costWithinBudget }) {
-    return testsPass &amp;&amp; reviewerApproved &amp;&amp; costWithinBudget;
-  }
+    <pre><code>const orgOperatingModel = {
+  requirements: &quot;AI drafts, product owner approves&quot;,
+  coding: &quot;scoped tasks only, engineer owns merge&quot;,
+  testing: &quot;AI suggests, CI is source of truth&quot;,
+  deployment: &quot;human-approved gate, defined rollback&quot;,
+  metrics: [&quot;cycle time&quot;, &quot;defect escape rate&quot;, &quot;cost&quot;, &quot;adoption&quot;]
 };</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Capstone on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>

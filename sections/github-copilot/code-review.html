@@ -149,12 +149,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Code review, shorten the IDE context to PR path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Code review, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Code review, guard against an approving or quiet automated review pass is not equivalent to human sign-off; the human reviewer remains accountable for what merges, regardless of what an ai review pass flagged or missed.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Code review, shorten the IDE context to PR path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Code review, shorten the IDE context to PR path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Code review, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Code review, guard against an approving or quiet automated review pass is not equivalent to human sign-off; the human reviewer remains accountable for what merges, regardless of what an ai review pass flagged or missed.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Code review, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

@@ -168,26 +168,23 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Mini project, shorten the Question to Cite + evaluate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Mini project, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Mini project, guard against a rag feature that returns plausible-looking cited answers in a demo is not the same as a complete mini project; without a labeled evaluation set proving both retrieval and faithfulness, there&#39;s no evidence it actually works beyond the examples you happened to try.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Mini project, shorten the Question to Cite + evaluate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Mini project, shorten the Question to Cite + evaluate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Mini project, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Mini project, guard against a rag feature that returns plausible-looking cited answers in a demo is not the same as a complete mini project; without a labeled evaluation set proving both retrieval and faithfulness, there&#39;s no evidence it actually works beyond the examples you happened to try.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Mini project, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>async function evaluateRetrieval(query, expectedSourceId) {
-  const results = await retrieve(query, { topK: 5 });
-  return {
-    foundExpectedSource: results.some((r) =&gt; r.sourceId === expectedSourceId),
-    topScore: results[0]?.score ?? 0,
-    returnedSources: results.map((r) =&gt; r.sourceId)
-  };
-}</code></pre>
+    <pre><code>export const wikiRagFeature = {
+  chunking: &quot;by section&quot;,
+  citations: true,
+  evalSet: require(&quot;./eval-10.json&quot;) // retrieval + faithfulness scored
+};</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Mini project on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     

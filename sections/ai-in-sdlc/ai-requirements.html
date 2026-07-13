@@ -149,26 +149,25 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For AI requirements, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For AI requirements, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For AI requirements, guard against do not write ai requirements as vague capability wishes; make ownership, checks, and failure behavior explicit.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For AI requirements, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For AI requirements, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For AI requirements, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For AI requirements, guard against do not write ai requirements as vague capability wishes; make ownership, checks, and failure behavior explicit.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For AI requirements, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>const sdlcGate = {
-  stage: &quot;AI requirements&quot;,
-  aiAllowed: true,
-  owner: &quot;named human reviewer&quot;,
-  requiredEvidence: [&quot;acceptance criteria&quot;, &quot;tests&quot;, &quot;diff summary&quot;, &quot;risk notes&quot;],
-  pass({ testsPass, reviewerApproved, costWithinBudget }) {
-    return testsPass &amp;&amp; reviewerApproved &amp;&amp; costWithinBudget;
-  }
+    <pre><code>const aiRequirements = {
+  useCase: &quot;AI drafts support-ticket replies&quot;,
+  allowedSources: [&quot;approved knowledge base&quot;],
+  ownerApproval: &quot;product owner signs off before launch&quot;,
+  qualityGate: &quot;recall@5 &gt;= 0.85 on golden eval set&quot;,
+  costGuardrail: &quot;$0.02 per reply, alert above&quot;,
+  stopCondition: &quot;no source found -&gt; escalate, never guess&quot;
 };</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement AI requirements on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>

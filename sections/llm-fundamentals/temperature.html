@@ -149,12 +149,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Temperature, shorten the User intent to Validated answer path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether creativity vs repeatability hurts user-visible quality." data-quality="For Temperature, improve evidence before tuning prompts: use better inputs, add targeted checks around diversity vs evaluation stability, and compare outputs against the chapter exercise or eval set." data-safety="For Temperature, guard against temperature 0 does not mean the model is &#39;thinking harder&#39; — it means it always picks the most probable next token, which is faster and more consistent but not necessarily more accurate.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Temperature, shorten the User intent to Validated answer path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether creativity vs repeatability hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Temperature, shorten the User intent to Validated answer path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether creativity vs repeatability hurts user-visible quality." data-quality="For Temperature, improve evidence before tuning prompts: use better inputs, add targeted checks around diversity vs evaluation stability, and compare outputs against the chapter exercise or eval set." data-safety="For Temperature, guard against temperature 0 does not mean the model is &#39;thinking harder&#39; — it means it always picks the most probable next token, which is faster and more consistent but not necessarily more accurate.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Temperature, improve evidence before tuning prompts: use better inputs, add targeted checks around diversity vs evaluation stability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

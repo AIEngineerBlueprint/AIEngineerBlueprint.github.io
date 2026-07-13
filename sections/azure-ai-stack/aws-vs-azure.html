@@ -149,12 +149,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For AWS vs Azure, shorten the Blob/data to App Insights path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For AWS vs Azure, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For AWS vs Azure, guard against assuming aws and azure ai services are interchangeable with a simple service-name swap is not accurate; identity models, networking defaults, and specific model availability differ enough to require real re-architecture, not just a find-and-replace.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For AWS vs Azure, shorten the Blob/data to App Insights path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For AWS vs Azure, shorten the Blob/data to App Insights path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For AWS vs Azure, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For AWS vs Azure, guard against assuming aws and azure ai services are interchangeable with a simple service-name swap is not accurate; identity models, networking defaults, and specific model availability differ enough to require real re-architecture, not just a find-and-replace.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For AWS vs Azure, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

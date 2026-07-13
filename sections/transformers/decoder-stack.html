@@ -149,27 +149,23 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Decoder stack, shorten the Text to Next token path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Decoder stack, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Decoder stack, guard against each layer in a decoder stack is not solving an independent, separate problem; the layers build on each other through the residual stream, so a deeper stack&#39;s benefit comes from progressive refinement across layers, not from parallel independent contributions.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Decoder stack, shorten the Text to Next token path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Decoder stack, shorten the Text to Next token path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Decoder stack, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Decoder stack, guard against each layer in a decoder stack is not solving an independent, separate problem; the layers build on each other through the residual stream, so a deeper stack&#39;s benefit comes from progressive refinement across layers, not from parallel independent contributions.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Decoder stack, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
+    <pre><code>let stream = embed(tokens) + positionalEncoding(tokens);
+for (const layer of decoderLayers) { // e.g. 32 layers
+  stream = decoderLayer(stream);
+}
+const logits = outputProjection(stream);</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Decoder stack on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     

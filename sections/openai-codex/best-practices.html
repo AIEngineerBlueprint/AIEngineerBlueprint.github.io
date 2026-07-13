@@ -47,7 +47,7 @@
       <div>
         <p class="eyebrow">OpenAI Codex · Chapter 12</p>
         <h1>Best practices</h1>
-        <p class="lede">Best practices is a practical building block inside codex task loop. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
+        <p class="lede">Best practices for Codex combine scoped prompting, an up-to-date AGENTS.md, sandbox and approval settings matched to task risk, and mandatory test verification into a consistent habit, so output quality doesn&#39;t depend on any one developer&#39;s individual discipline. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="openai-codex-best-practices">Bookmark</button>
@@ -64,38 +64,38 @@
     <h2>Learning the objectives</h2>
     <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
     <div class="objective-grid">
-      <article><span>Objective 1</span><p>Best practices matters because it changes whether the AI product is useful, reliable, measurable, or safe for real users.</p></article><article><span>Objective 2</span><p>The internal flow usually follows Task → Repo scan → Patch → Validate → Explain → Iterate. Learn what each handoff means and what can break there.</p></article><article><span>Objective 3</span><p>Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</p></article><article><span>Objective 4</span><p>A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</p></article>
+      <article><span>Objective 1</span><p>Best practices matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on combining specific, scoped task prompts, a maintained AGENTS.md, sandbox and approval settings appropriate to the task&#39;s risk, and a requirement that tests pass before any Codex-assisted change is considered done, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is codifying and enforcing best practices takes real effort to write down and socialize, but without them, usage quality varies wildly between developers, which is harder to fix after problematic code has already merged</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Best practices on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
     </div>
   </section>
     <section class="panel">
       <h2>Theory from first principles</h2>
-      <p>Best practices is a practical building block inside codex task loop. It has a specific job, clear inputs, expected outputs, and failure modes engineers must understand.</p>
-      <p>The internal flow usually follows Task → Repo scan → Patch → Validate → Explain → Iterate. Learn what each handoff means and what can break there.</p>
+      <p>Best practices for Codex combine scoped prompting, an up-to-date AGENTS.md, sandbox and approval settings matched to task risk, and mandatory test verification into a consistent habit, so output quality doesn&#39;t depend on any one developer&#39;s individual discipline.</p>
+      <p>The internal flow centers on combining specific, scoped task prompts, a maintained AGENTS.md, sandbox and approval settings appropriate to the task&#39;s risk, and a requirement that tests pass before any Codex-assisted change is considered done, then hands a validated result to the next step in the product workflow.</p>
     </section>
 
     <section class="panel beginner-card">
     <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Best practices is a practical building block inside codex task loop. It has a specific job, clear inputs, expected outputs, and failure modes engineers must understand.</p>
-    <p><strong>Analogy:</strong> Codex-style agents are like task-focused coding workers: give them a repository, a goal, constraints, and a validation path.</p>
+    <p>If you have no AI background, start here: Best practices for Codex combine scoped prompting, an up-to-date AGENTS.md, sandbox and approval settings matched to task risk, and mandatory test verification into a consistent habit, so output quality doesn&#39;t depend on any one developer&#39;s individual discipline.</p>
+    <p><strong>Analogy:</strong> It is like a shared safety checklist for operating powerful equipment, followed the same way by everyone regardless of experience level.</p>
   </section>
     <section class="panel">
     <h2>Core concept you must understand</h2>
-    <p>Best practices is a practical building block inside codex task loop. It has a specific job, clear inputs, expected outputs, and failure modes engineers must understand.</p>
+    <p>Best practices for Codex combine scoped prompting, an up-to-date AGENTS.md, sandbox and approval settings matched to task risk, and mandatory test verification into a consistent habit, so output quality doesn&#39;t depend on any one developer&#39;s individual discipline.</p>
     <h3>What to learn</h3>
-    <ul><li>Start with the user problem Best practices is supposed to help solve.</li><li>Identify the input, output, and handoff to the next system component.</li><li>Learn the normal path first, then study the failure path.</li><li>Connect the concept to measurable product signals such as quality, latency, cost, safety, or user trust.</li></ul>
+    <ul><li>Core mechanism: combining specific, scoped task prompts, a maintained AGENTS.md, sandbox and approval settings appropriate to the task&#39;s risk, and a requirement that tests pass before any Codex-assisted change is considered done.</li><li>Inputs and outputs: identify what enters Best practices, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Best practices with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Best practices worked for the right reason.</li></ul>
     <h3>Common misunderstandings</h3>
-    <ul><li>Do not memorize the term without understanding what problem it solves.</li><li>Do not assume a model output is correct just because it sounds confident.</li><li>Do not skip measurement; without evaluation, improvement is guesswork.</li></ul>
+    <ul><li>Best practices for Codex are not fundamentally different from best practices for any code contribution; the review bar should not lower just because a change came from an agent instead of a person typing it directly.</li><li>Best practices is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Best practices inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
   </section>
     <section class="panel explain-card">
     <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Best practices matters because it changes whether the AI product is useful, reliable, measurable, or safe for real users.</p>
-    <p><strong>When it breaks:</strong> Do not memorize the term without understanding what problem it solves.</p>
+    <p><strong>When to use it:</strong> Best practices matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
+    <p><strong>When it breaks:</strong> Best practices for Codex are not fundamentally different from best practices for any code contribution; the review bar should not lower just because a change came from an agent instead of a person typing it directly.</p>
     <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
   </section>
     <section class="panel">
     <h2>Worked example</h2>
-    <p>Give a Codex-style agent a ticket: add pagination to an API endpoint, update tests, avoid changing auth, and run the API test file.</p>
-    <ol><li><strong>Task:</strong> Best practices is a practical building block inside codex task loop.</li><li><strong>Repo scan:</strong> The internal flow usually follows Task → Repo scan → Patch → Validate → Explain → Iterate. Learn what each handoff means and what can break there.</li><li><strong>Patch:</strong> Give a Codex-style agent a ticket: add pagination to an API endpoint, update tests, avoid changing auth, and run the API test file.</li><li><strong>Validate:</strong> Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</li><li><strong>Explain:</strong> A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</li><li><strong>Iterate:</strong> Write a one-paragraph explanation of Best practices, draw the input-output flow, and create one success case plus one failure case.</li></ol>
+    <p>A team&#39;s Codex best-practices checklist requires running the full test suite on any workspace-write session before requesting review, and treating an accepted Codex diff with the same scrutiny as hand-written code.</p>
+    <ol><li><strong>Task:</strong> Best practices for Codex combine scoped prompting, an up-to-date AGENTS.md, sandbox and approval settings matched to task risk, and mandatory test verification into a consistent habit, so output quality doesn&#39;t depend on any one developer&#39;s individual discipline.</li><li><strong>Repo scan:</strong> The internal flow centers on combining specific, scoped task prompts, a maintained AGENTS.md, sandbox and approval settings appropriate to the task&#39;s risk, and a requirement that tests pass before any Codex-assisted change is considered done, then hands a validated result to the next step in the product workflow.</li><li><strong>Patch:</strong> A team&#39;s Codex best-practices checklist requires running the full test suite on any workspace-write session before requesting review, and treating an accepted Codex diff with the same scrutiny as hand-written code.</li><li><strong>Validate:</strong> The main trade-off is codifying and enforcing best practices takes real effort to write down and socialize, but without them, usage quality varies wildly between developers, which is harder to fix after problematic code has already merged</li><li><strong>Explain:</strong> A production-shaped slice should implement Best practices on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Iterate:</strong> Write a five-item Codex best-practices checklist for a real team, focused specifically on what changes about review and verification, not what changes about writing code.</li></ol>
     <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
   </section>
     <section class="panel">
@@ -109,12 +109,12 @@
 
     <section class="panel">
       <h2>What happens under the hood</h2>
-      <p>The internal flow usually follows Task → Repo scan → Patch → Validate → Explain → Iterate. Learn what each handoff means and what can break there.</p>
+      <p>The internal flow centers on combining specific, scoped task prompts, a maintained AGENTS.md, sandbox and approval settings appropriate to the task&#39;s risk, and a requirement that tests pass before any Codex-assisted change is considered done, then hands a validated result to the next step in the product workflow.</p>
     </section>
 
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>Quality vs latency:</strong> The main trade-off is codifying and enforcing best practices takes real effort to write down and socialize, but without them, usage quality varies wildly between developers, which is harder to fix after problematic code has already merged</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
   </section>
 
     <section class="panel">
@@ -122,37 +122,34 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Best practices, shorten the Task to Iterate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Best practices, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Best practices, guard against do not memorize the term without understanding what problem it solves.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Best practices, shorten the Task to Iterate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Best practices, shorten the Task to Iterate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Best practices, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Best practices, guard against best practices for codex are not fundamentally different from best practices for any code contribution; the review bar should not lower just because a change came from an agent instead of a person typing it directly.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Best practices, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</p>
+    <pre><code>const checklist = [
+  &quot;scope every prompt to specific files when the task allows it&quot;,
+  &quot;run the full test suite before requesting review&quot;,
+  &quot;review an accepted Codex diff like hand-written code&quot;,
+  &quot;keep AGENTS.md in sync with real repo conventions&quot;
+];</code></pre>
+    <p><strong>Why this matters:</strong> A production-shaped slice should implement Best practices on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     
     <section class="panel">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Write a one-paragraph explanation of Best practices, draw the input-output flow, and create one success case plus one failure case.</p>
+    <p><strong>Task:</strong> Write a five-item Codex best-practices checklist for a real team, focused specifically on what changes about review and verification, not what changes about writing code.</p>
     <ol>
       <li>Build or configure it, using the runnable example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not memorize the term without understanding what problem it solves.</li>
+      <li>Add one check that would specifically catch this mistake: Best practices for Codex are not fundamentally different from best practices for any code contribution; the review bar should not lower just because a change came from an agent instead of a person typing it directly.</li>
       <li>Note what you would log and which single metric would reveal this breaking in production.</li>
     </ol>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
@@ -160,7 +157,7 @@
 
     <section class="panel practice-card">
     <h2>Practice to make it stick</h2>
-    <p>Write a one-paragraph explanation of Best practices, draw the input-output flow, and create one success case plus one failure case.</p>
+    <p>Write a five-item Codex best-practices checklist for a real team, focused specifically on what changes about review and verification, not what changes about writing code.</p>
     <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
   </section>
 
@@ -171,7 +168,7 @@
 
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not memorize the term without understanding what problem it solves.</li><li>Do not assume a model output is correct just because it sounds confident.</li><li>Do not skip measurement; without evaluation, improvement is guesswork.</li></ul>
+    <ul><li>Best practices for Codex are not fundamentally different from best practices for any code contribution; the review bar should not lower just because a change came from an agent instead of a person typing it directly.</li><li>Best practices is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Best practices inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
   </section>
 
     <section class="panel">
@@ -182,9 +179,9 @@
     <section class="panel quiz" data-quiz="quiz-openai-codex-best-practices">
     <h2>Quiz</h2>
     <p><strong>Question:</strong> Which answer best shows production understanding of Best practices?</p>
-    <button data-answer="wrong">Do not memorize the term without understanding what problem it solves.</button>
-    <button data-answer="right">A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</button>
-    <button data-answer="wrong">Do not assume a model output is correct just because it sounds confident.</button>
+    <button data-answer="wrong">Best practices for Codex are not fundamentally different from best practices for any code contribution; the review bar should not lower just because a change came from an agent instead of a person typing it directly.</button>
+    <button data-answer="right">A production-shaped slice should implement Best practices on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
+    <button data-answer="wrong">Best practices is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
@@ -195,7 +192,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
+    <ul><li><a href="https://learn.chatgpt.com/codex/sandboxing" rel="noopener noreferrer">Codex sandboxing</a></li></ul>
   </section>
 
     <div class="complete-box">

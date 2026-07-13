@@ -149,12 +149,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For IAM, shorten the S3/data to CloudWatch path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For IAM, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For IAM, guard against attaching a broad managed administrator policy to get something working quickly is not a free shortcut; overly broad permissions in ai pipelines are a common root cause of real data exposure incidents once forgotten.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For IAM, shorten the S3/data to CloudWatch path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For IAM, shorten the S3/data to CloudWatch path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For IAM, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For IAM, guard against attaching a broad managed administrator policy to get something working quickly is not a free shortcut; overly broad permissions in ai pipelines are a common root cause of real data exposure incidents once forgotten.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For IAM, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

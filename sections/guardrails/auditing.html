@@ -149,25 +149,21 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Auditing, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Auditing, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Auditing, guard against a guardrail system that blocks a lot of requests is not automatically working well; without auditing what specifically gets blocked and why, over-blocking of legitimate requests can go unnoticed just as easily as under-blocking of genuinely harmful ones.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Auditing, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Auditing, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Auditing, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Auditing, guard against a guardrail system that blocks a lot of requests is not automatically working well; without auditing what specifically gets blocked and why, over-blocking of legitimate requests can go unnoticed just as easily as under-blocking of genuinely harmful ones.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Auditing, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function enforcePolicy({ input, output, toolCall }) {
-  return {
-    inputAllowed: !containsPromptInjection(input),
-    outputAllowed: hasNoPII(output) &amp;&amp; hasCitations(output),
-    toolAllowed: toolCall ? isLeastPrivilege(toolCall) : true
-  };
-}</code></pre>
+    <pre><code>const monthlySample = blockedRequests.sample(0.05);
+const falsePositives = monthlySample.filter(r =&gt; r.wasActuallyLegitimate);
+console.log(&quot;false positive rate:&quot;, falsePositives.length / monthlySample.length);</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Auditing on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     

@@ -122,23 +122,23 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Interview pack, shorten the Threat model to Response path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether breadth vs depth hurts user-visible quality." data-quality="For Interview pack, improve evidence before tuning prompts: use better inputs, add targeted checks around humility vs ownership, and compare outputs against the chapter exercise or eval set." data-safety="For Interview pack, guard against knowing that prompt injection and data leakage are risks in the owasp llm top 10 is not the same as knowing how to test for and defend against them in a specific real system; interviewers probe for that applied, tested judgment specifically.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Interview pack, shorten the Threat model to Response path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether breadth vs depth hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Interview pack, shorten the Threat model to Response path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether breadth vs depth hurts user-visible quality." data-quality="For Interview pack, improve evidence before tuning prompts: use better inputs, add targeted checks around humility vs ownership, and compare outputs against the chapter exercise or eval set." data-safety="For Interview pack, guard against knowing that prompt injection and data leakage are risks in the owasp llm top 10 is not the same as knowing how to test for and defend against them in a specific real system; interviewers probe for that applied, tested judgment specifically.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Interview pack, improve evidence before tuning prompts: use better inputs, add targeted checks around humility vs ownership, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>const starAnswer = {
-  situation: &quot;Set the context in one sentence.&quot;,
-  task: &quot;State your responsibility and success criteria.&quot;,
-  action: &quot;Explain the decisions you personally made.&quot;,
-  result: &quot;Quantify the outcome and what you learned.&quot;
+    <pre><code>const answer = {
+  situation: &quot;Coding agent had unrestricted shell access&quot;,
+  cause: &quot;no least-privilege scoping was applied at setup&quot;,
+  fix: &quot;restricted to an allowlist of safe commands + sandboxed execution&quot;,
+  result: &quot;verified via a repeat red-team attempt that no longer succeeded&quot;
 };</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Interview pack on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>

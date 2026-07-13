@@ -149,27 +149,25 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Design reviews, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Design reviews, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Design reviews, guard against do not approve designs that say &#39;ai will handle it&#39; without contracts, logs, and failure modes.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Design reviews, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Design reviews, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Design reviews, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Design reviews, guard against do not approve designs that say &#39;ai will handle it&#39; without contracts, logs, and failure modes.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Design reviews, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>const sdlcGate = {
-  stage: &quot;Design reviews&quot;,
-  aiAllowed: true,
-  owner: &quot;named human reviewer&quot;,
-  requiredEvidence: [&quot;acceptance criteria&quot;, &quot;tests&quot;, &quot;diff summary&quot;, &quot;risk notes&quot;],
-  pass({ testsPass, reviewerApproved, costWithinBudget }) {
-    return testsPass &amp;&amp; reviewerApproved &amp;&amp; costWithinBudget;
-  }
-};</code></pre>
+    <pre><code>const designReviewChecklist = [
+  &quot;Where does AI enter this workflow, and what can it change?&quot;,
+  &quot;Who owns the accepted output if it&#39;s wrong?&quot;,
+  &quot;What evidence (tests, evals, logs) proves a change is safe?&quot;,
+  &quot;Which CI gates block merge for AI-generated changes?&quot;,
+  &quot;What is the rollback path if this goes wrong in production?&quot;
+];</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Design reviews on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     

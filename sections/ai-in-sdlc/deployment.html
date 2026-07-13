@@ -149,26 +149,23 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Deployment, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Deployment, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Deployment, guard against do not let ai perform irreversible deployment actions without explicit approval and trace logs.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Deployment, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Deployment, shorten the Operating rules to Adoption loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Deployment, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Deployment, guard against do not let ai perform irreversible deployment actions without explicit approval and trace logs.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Deployment, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>const sdlcGate = {
-  stage: &quot;Deployment&quot;,
-  aiAllowed: true,
-  owner: &quot;named human reviewer&quot;,
-  requiredEvidence: [&quot;acceptance criteria&quot;, &quot;tests&quot;, &quot;diff summary&quot;, &quot;risk notes&quot;],
-  pass({ testsPass, reviewerApproved, costWithinBudget }) {
-    return testsPass &amp;&amp; reviewerApproved &amp;&amp; costWithinBudget;
-  }
+    <pre><code>const deploymentGate = {
+  requiredChecks: [&quot;tests pass&quot;, &quot;security scan&quot;, &quot;reviewer approval&quot;],
+  approver: &quot;named on-call engineer&quot;,
+  smokeTest: &quot;known-good request returns expected response&quot;,
+  rollbackTrigger: &quot;error rate &gt; 2x baseline within 10 minutes&quot;
 };</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Deployment on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
@@ -222,7 +219,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://www.nist.gov/itl/ai-risk-management-framework" rel="noopener noreferrer">NIST AI Risk Management Framework</a></li><li><a href="https://resources.github.com/copilot-trust-center/" rel="noopener noreferrer">GitHub Copilot Trust Center</a></li></ul>
+    <ul><li><a href="https://sre.google/sre-book/table-of-contents/" rel="noopener noreferrer">Google SRE book</a></li><li><a href="https://www.nist.gov/itl/ai-risk-management-framework" rel="noopener noreferrer">NIST AI Risk Management Framework</a></li><li><a href="https://resources.github.com/copilot-trust-center/" rel="noopener noreferrer">GitHub Copilot Trust Center</a></li></ul>
   </section>
 
     <div class="complete-box">

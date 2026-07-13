@@ -152,12 +152,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Cost control, shorten the Instruction to Release path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Cost control, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Cost control, guard against generative ai feature cost is not primarily driven by the same factors as typical software cost, like request volume alone; the cost per single generation, driven by model size, output length, and processing steps, can vary enormously and dominate the total bill in ways a typical api endpoint never would.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Cost control, shorten the Instruction to Release path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Cost control, shorten the Instruction to Release path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Cost control, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Cost control, guard against generative ai feature cost is not primarily driven by the same factors as typical software cost, like request volume alone; the cost per single generation, driven by model size, output length, and processing steps, can vary enormously and dominate the total bill in ways a typical api endpoint never would.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Cost control, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

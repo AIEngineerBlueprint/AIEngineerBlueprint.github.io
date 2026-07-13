@@ -149,12 +149,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For OpenSearch, shorten the S3/data to CloudWatch path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For OpenSearch, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For OpenSearch, guard against enabling the k-nn plugin does not automatically give production-grade vector search; index settings like graph construction parameters and shard count need real tuning, or both recall and latency suffer under load.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For OpenSearch, shorten the S3/data to CloudWatch path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For OpenSearch, shorten the S3/data to CloudWatch path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For OpenSearch, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For OpenSearch, guard against enabling the k-nn plugin does not automatically give production-grade vector search; index settings like graph construction parameters and shard count need real tuning, or both recall and latency suffer under load.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For OpenSearch, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

@@ -168,26 +168,25 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Capstone, shorten the Question to Cite + evaluate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Capstone, guard against a rag architecture is not complete once retrieval and generation are wired together and producing plausible answers; without an evaluation plan and production monitoring for faithfulness, quality regressions can persist undetected.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Capstone, shorten the Question to Cite + evaluate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Capstone, shorten the Question to Cite + evaluate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Capstone, guard against a rag architecture is not complete once retrieval and generation are wired together and producing plausible answers; without an evaluation plan and production monitoring for faithfulness, quality regressions can persist undetected.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>async function evaluateRetrieval(query, expectedSourceId) {
-  const results = await retrieve(query, { topK: 5 });
-  return {
-    foundExpectedSource: results.some((r) =&gt; r.sourceId === expectedSourceId),
-    topScore: results[0]?.score ?? 0,
-    returnedSources: results.map((r) =&gt; r.sourceId)
-  };
-}</code></pre>
+    <pre><code>const ragArchitecture = {
+  chunking: &quot;section-based&quot;,
+  retrieval: &quot;hybrid keyword + semantic, re-ranked&quot;,
+  citations: &quot;mandatory, with grounding check&quot;,
+  evalPlan: &quot;retrieval recall + faithfulness, weekly&quot;,
+  monitoring: &quot;citation-accuracy audit&quot;
+};</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Capstone on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     
@@ -240,7 +239,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://arxiv.org/abs/2005.11401" rel="noopener noreferrer">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a></li></ul>
+    <ul><li><a href="https://arxiv.org/abs/2005.11401" rel="noopener noreferrer">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a></li><li><a href="https://arxiv.org/abs/2104.08663" rel="noopener noreferrer">BEIR benchmark</a></li></ul>
   </section>
 
     <div class="complete-box">

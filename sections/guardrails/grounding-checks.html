@@ -149,24 +149,22 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Grounding checks, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Grounding checks, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Grounding checks, guard against retrieving evidence and showing a citation does not guarantee the generated answer is actually grounded in that evidence; without an explicit grounding check verifying the claim against the source, the model can still generate unsupported content alongside a technically present but irrelevant citation.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Grounding checks, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Grounding checks, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Grounding checks, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Grounding checks, guard against retrieving evidence and showing a citation does not guarantee the generated answer is actually grounded in that evidence; without an explicit grounding check verifying the claim against the source, the model can still generate unsupported content alongside a technically present but irrelevant citation.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Grounding checks, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function enforcePolicy({ input, output, toolCall }) {
-  return {
-    inputAllowed: !containsPromptInjection(input),
-    outputAllowed: hasNoPII(output) &amp;&amp; hasCitations(output),
-    toolAllowed: toolCall ? isLeastPrivilege(toolCall) : true
-  };
+    <pre><code>async function checkGrounded(claim, evidence) {
+  const supported = await faithfulnessClassifier(claim, evidence);
+  if (!supported) return { action: &quot;strip_claim_or_regenerate&quot; };
+  return { action: &quot;allow&quot; };
 }</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Grounding checks on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
@@ -220,7 +218,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" rel="noopener noreferrer">OWASP Top 10 for Large Language Model Applications</a></li></ul>
+    <ul><li><a href="https://arxiv.org/abs/2005.11401" rel="noopener noreferrer">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a></li><li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" rel="noopener noreferrer">OWASP Top 10 for Large Language Model Applications</a></li></ul>
   </section>
 
     <div class="complete-box">

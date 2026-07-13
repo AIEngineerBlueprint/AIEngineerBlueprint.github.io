@@ -149,12 +149,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Automation, shorten the Repo context to Ship path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Automation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Automation, guard against running claude code headlessly does not make its output automatically trustworthy just because a human isn&#39;t watching in real time; automated agent output still needs the same evals and spot-checks as any other automated system.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Automation, shorten the Repo context to Ship path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Automation, shorten the Repo context to Ship path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Automation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Automation, guard against running claude code headlessly does not make its output automatically trustworthy just because a human isn&#39;t watching in real time; automated agent output still needs the same evals and spot-checks as any other automated system.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Automation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

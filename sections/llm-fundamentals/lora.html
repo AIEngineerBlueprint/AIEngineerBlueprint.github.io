@@ -149,12 +149,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For LoRA, shorten the User intent to Validated answer path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether rank size vs adapter quality hurts user-visible quality." data-quality="For LoRA, improve evidence before tuning prompts: use better inputs, add targeted checks around merged vs swappable adapters, and compare outputs against the chapter exercise or eval set." data-safety="For LoRA, guard against lora is not the same as prompt tuning. prompt tuning adds trainable tokens to the input; lora modifies the attention weights directly.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For LoRA, shorten the User intent to Validated answer path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether rank size vs adapter quality hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For LoRA, shorten the User intent to Validated answer path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether rank size vs adapter quality hurts user-visible quality." data-quality="For LoRA, improve evidence before tuning prompts: use better inputs, add targeted checks around merged vs swappable adapters, and compare outputs against the chapter exercise or eval set." data-safety="For LoRA, guard against lora is not the same as prompt tuning. prompt tuning adds trainable tokens to the input; lora modifies the attention weights directly.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For LoRA, improve evidence before tuning prompts: use better inputs, add targeted checks around merged vs swappable adapters, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

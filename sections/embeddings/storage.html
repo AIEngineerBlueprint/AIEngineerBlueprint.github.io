@@ -149,12 +149,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Storage, shorten the Text to Return path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Storage, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Storage, guard against vector storage is not set-and-forget once vectors are inserted; when source content is updated or deleted, the corresponding vectors must be updated or removed too, or retrieval will return stale or orphaned results that no longer match reality.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Storage, shorten the Text to Return path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Storage, shorten the Text to Return path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Storage, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Storage, guard against vector storage is not set-and-forget once vectors are inserted; when source content is updated or deleted, the corresponding vectors must be updated or removed too, or retrieval will return stale or orphaned results that no longer match reality.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Storage, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

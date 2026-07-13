@@ -149,27 +149,23 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Capstone, shorten the Text to Next token path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Capstone, guard against being able to list a transformer&#39;s components in order is not the same as being able to explain what specific information flows through the residual stream at each stage and why it matters for the final output; the capstone requires that deeper tracing.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Capstone, shorten the Text to Next token path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Capstone, shorten the Text to Next token path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Capstone, guard against being able to list a transformer&#39;s components in order is not the same as being able to explain what specific information flows through the residual stream at each stage and why it matters for the final output; the capstone requires that deeper tracing.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Capstone, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
+    <pre><code>// Traced forward pass (annotated)
+tokens -&gt; embeddings -&gt; + positional encoding
+  -&gt; [layer 1: attention + FFN via residual stream]
+  -&gt; ... -&gt; [layer N]
+  -&gt; output projection -&gt; next-token distribution</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Capstone on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     
@@ -222,7 +218,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://arxiv.org/abs/1706.03762" rel="noopener noreferrer">Attention Is All You Need</a></li></ul>
+    <ul><li><a href="https://arxiv.org/abs/1706.03762" rel="noopener noreferrer">Attention Is All You Need</a></li><li><a href="https://jalammar.github.io/illustrated-transformer/" rel="noopener noreferrer">The Illustrated Transformer</a></li></ul>
   </section>
 
     <div class="complete-box">

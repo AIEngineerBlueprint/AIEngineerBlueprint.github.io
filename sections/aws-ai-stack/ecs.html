@@ -149,12 +149,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For ECS, shorten the S3/data to CloudWatch path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For ECS, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For ECS, guard against ecs is not the same as kubernetes; it has its own simpler scheduling model, and teams that need kubernetes-specific tooling or portability should use eks instead, not force ecs to behave like it.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For ECS, shorten the S3/data to CloudWatch path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For ECS, shorten the S3/data to CloudWatch path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For ECS, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For ECS, guard against ecs is not the same as kubernetes; it has its own simpler scheduling model, and teams that need kubernetes-specific tooling or portability should use eks instead, not force ecs to behave like it.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For ECS, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

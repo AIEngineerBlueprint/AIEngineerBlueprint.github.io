@@ -149,27 +149,21 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Transformer lab, shorten the Text to Next token path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Transformer lab, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Transformer lab, guard against understanding attention conceptually as tokens attending to relevant other tokens is not the same as being able to trace an actual attention score computation; the lab&#39;s value is specifically in connecting the concept to real numbers.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Transformer lab, shorten the Text to Next token path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Transformer lab, shorten the Text to Next token path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Transformer lab, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Transformer lab, guard against understanding attention conceptually as tokens attending to relevant other tokens is not the same as being able to trace an actual attention score computation; the lab&#39;s value is specifically in connecting the concept to real numbers.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Transformer lab, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
+    <pre><code>const tokens = tokenize(&quot;the cat sat because it was tired&quot;);
+const scores = attentionScores(tokens, query = &quot;it&quot;);
+console.log(scores); // &quot;cat&quot; should score higher than &quot;tired&quot; here</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Transformer lab on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     
@@ -222,7 +216,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://arxiv.org/abs/1706.03762" rel="noopener noreferrer">Attention Is All You Need</a></li></ul>
+    <ul><li><a href="https://jalammar.github.io/illustrated-transformer/" rel="noopener noreferrer">The Illustrated Transformer</a></li><li><a href="https://arxiv.org/abs/1706.03762" rel="noopener noreferrer">Attention Is All You Need</a></li></ul>
   </section>
 
     <div class="complete-box">

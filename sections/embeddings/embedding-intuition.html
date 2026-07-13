@@ -152,12 +152,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Embedding intuition, shorten the Text to Return path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Embedding intuition, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Embedding intuition, guard against embeddings are not magic — they reflect what the embedding model was trained on. a general model embeds medical text poorly compared to a domain-specific model.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Embedding intuition, shorten the Text to Return path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Embedding intuition, shorten the Text to Return path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Embedding intuition, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Embedding intuition, guard against embeddings are not magic — they reflect what the embedding model was trained on. a general model embeds medical text poorly compared to a domain-specific model.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Embedding intuition, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

@@ -168,25 +168,22 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Guardrail lab, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Guardrail lab, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Guardrail lab, guard against the lab is not complete once a guardrail blocks an obviously malicious test case; without also testing a legitimate case that looks superficially similar, you have no evidence the guardrail isn&#39;t just blocking too broadly.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Guardrail lab, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Guardrail lab, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Guardrail lab, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Guardrail lab, guard against the lab is not complete once a guardrail blocks an obviously malicious test case; without also testing a legitimate case that looks superficially similar, you have no evidence the guardrail isn&#39;t just blocking too broadly.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Guardrail lab, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function enforcePolicy({ input, output, toolCall }) {
-  return {
-    inputAllowed: !containsPromptInjection(input),
-    outputAllowed: hasNoPII(output) &amp;&amp; hasCitations(output),
-    toolAllowed: toolCall ? isLeastPrivilege(toolCall) : true
-  };
-}</code></pre>
+    <pre><code>const malicious = &quot;my phone number is 555-0142&quot;;
+const benign = &quot;what&#39;s your phone number policy?&quot;;
+console.log(piiFilter(malicious)); // blocked
+console.log(piiFilter(benign));    // passes through</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Guardrail lab on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     
@@ -239,7 +236,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" rel="noopener noreferrer">OWASP Top 10 for Large Language Model Applications</a></li></ul>
+    <ul><li><a href="https://arxiv.org/abs/2302.12173" rel="noopener noreferrer">Not what you&#39;ve signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection</a></li><li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" rel="noopener noreferrer">OWASP Top 10 for Large Language Model Applications</a></li></ul>
   </section>
 
     <div class="complete-box">

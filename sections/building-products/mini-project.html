@@ -242,27 +242,23 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Mini project, shorten the User problem to Iteration path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Mini project, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Mini project, guard against a working demo of an ai capability is not the same as a complete mini project; without documented architecture, real tests, and an evaluation set, it&#39;s a proof of concept, not a shippable feature.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Mini project, shorten the User problem to Iteration path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Mini project, shorten the User problem to Iteration path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Mini project, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Mini project, guard against a working demo of an ai capability is not the same as a complete mini project; without documented architecture, real tests, and an evaluation set, it&#39;s a proof of concept, not a shippable feature.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Mini project, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
+    <pre><code>export const meetingSummarizer = {
+  architecture: &quot;auth -&gt; transcript fetch -&gt; model call -&gt; log&quot;,
+  tests: [&quot;unit: transcript fetch&quot;, &quot;eval: 10-case golden set&quot;],
+  deployed: true
+};</code></pre>
     <p><strong>Why this matters:</strong> A production-shaped slice should implement Mini project on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     
@@ -315,7 +311,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
+    <ul><li><a href="https://arxiv.org/abs/2306.05685" rel="noopener noreferrer">Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena</a></li></ul>
   </section>
 
     <div class="complete-box">

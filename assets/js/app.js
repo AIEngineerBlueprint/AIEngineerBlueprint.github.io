@@ -45,7 +45,13 @@
     if (globalProgress) globalProgress.textContent = `${Math.round((completeCount / total) * 100)}%`;
     document.querySelectorAll("[data-complete-status]").forEach((node) => {
       const id = node.getAttribute("data-complete-status");
-      node.textContent = state.completed[id] ? "Completed" : "Not completed";
+      const done = Boolean(state.completed[id]);
+      node.textContent = done ? "Completed" : "Not completed";
+      node.classList.toggle("is-complete", done);
+    });
+    document.querySelectorAll("[data-complete]").forEach((button) => {
+      const id = button.getAttribute("data-complete");
+      button.classList.toggle("is-complete", Boolean(state.completed[id]));
     });
     document.querySelectorAll("[data-section-progress]").forEach((node) => {
       const slug = node.getAttribute("data-section-progress");
@@ -110,11 +116,21 @@
   }
 
   function initDiagrams() {
+    function setExpanded(button, diagram, expanded) {
+      diagram.classList.toggle("expanded", expanded);
+      button.classList.toggle("is-expanded", expanded);
+      button.textContent = expanded ? "Collapse diagram" : "Expand diagram";
+    }
     document.querySelectorAll(".expand-diagram").forEach((button) => {
+      const diagram = button.parentElement.querySelector(".diagram");
+      if (!diagram) return;
       button.addEventListener("click", () => {
-        const diagram = button.parentElement.querySelector(".diagram");
-        diagram.classList.toggle("expanded");
-        button.textContent = diagram.classList.contains("expanded") ? "Collapse diagram" : "Expand diagram";
+        setExpanded(button, diagram, !diagram.classList.contains("expanded"));
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && diagram.classList.contains("expanded")) {
+          setExpanded(button, diagram, false);
+        }
       });
     });
   }

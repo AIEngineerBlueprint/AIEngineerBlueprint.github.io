@@ -152,12 +152,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Evaluation, shorten the Text to Return path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Evaluation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Evaluation, guard against a model&#39;s general benchmark ranking on a public leaderboard does not guarantee it performs best on your specific domain and query patterns; only evaluation on your own realistic queries and documents tells you that.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Evaluation, shorten the Text to Return path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Evaluation, shorten the Text to Return path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Evaluation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Evaluation, guard against a model&#39;s general benchmark ranking on a public leaderboard does not guarantee it performs best on your specific domain and query patterns; only evaluation on your own realistic queries and documents tells you that.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Evaluation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 

@@ -149,12 +149,12 @@
       <div class="simulator">
         <label>Change the production constraint
           <select data-sim-select>
+            <option value="quality" selected>High answer quality</option>
             <option value="latency">Low latency</option>
-            <option value="quality">High answer quality</option>
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Operations, shorten the Claim to Abstain path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Operations, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Operations, guard against grounding quality that looked good at launch is not guaranteed to stay good; source corpus changes, ranking tweaks, and model updates can all silently degrade citation accuracy over time without triggering any error.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Operations, shorten the Claim to Abstain path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Operations, shorten the Claim to Abstain path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Operations, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Operations, guard against grounding quality that looked good at launch is not guaranteed to stay good; source corpus changes, ranking tweaks, and model updates can all silently degrade citation accuracy over time without triggering any error.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Operations, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
       </div>
     </section>
 
