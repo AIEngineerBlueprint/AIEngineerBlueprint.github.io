@@ -41,7 +41,18 @@ const sections = [
   ["interview-preparation", "Interview Preparation", ["Interview strategy", "Behavioral", "System design", "Coding", "LLM internals", "Agents", "RAG", "Security", "Architecture", "Leadership", "Cloud", "Prompt engineering", "Mock interviews", "Interview lab", "Question bank A", "Question bank B", "Evaluation rubric"]]
 ];
 
-const deepTopics = ["Tokenization pipeline", "Embedding layer", "Positional encoding", "Attention", "Multi-head attention", "Feed forward", "Residual stream", "Layer norm", "Decoder stack", "Sampling", "GPU memory", "Latency", "Distributed inference", "Context compression", "Prompt caching", "KV cache"];
+const sectionGroups = [
+  ["Foundations", ["ai-foundations", "machine-learning", "deep-learning", "neural-networks", "transformers"]],
+  ["LLM Core", ["llm-fundamentals", "generative-ai", "prompt-engineering", "embeddings", "vector-databases", "rag"]],
+  ["Agents & Protocols", ["mcp", "ai-agents", "agentic-systems", "memory", "tool-calling", "structured-output"]],
+  ["Quality & Safety", ["evaluation", "guardrails", "grounding", "ai-security", "responsible-ai", "ai-governance-strategy"]],
+  ["Engineering & Ops", ["ai-in-sdlc", "production-ai-systems", "aws-ai-stack", "azure-ai-stack", "building-products", "local-ai"]],
+  ["AI Coding Tools", ["claude-code", "github-copilot", "openai-codex"]],
+  ["Career", ["interview-preparation"]]
+];
+const sectionNameBySlug = new Map(sections.map(([slug, name]) => [slug, name]));
+
+const deepTopics =["Tokenization pipeline", "Embedding layer", "Positional encoding", "Attention", "Multi-head attention", "Feed forward", "Residual stream", "Layer norm", "Decoder stack", "Sampling", "GPU memory", "Latency", "Distributed inference", "Context compression", "Prompt caching", "KV cache"];
 const totalChapters = sections.reduce((sum, section) => sum + section[2].length, 0);
 
 const sectionProfiles = {
@@ -388,7 +399,11 @@ function esc(value) {
 
 function pageShell({ title, description, body, current = "", breadcrumbs = [], previous = null, next = null, extraHead = "" }) {
   const crumb = breadcrumbs.map((b, i) => b.href ? `<a href="${b.href}">${esc(b.label)}</a>` : `<span>${esc(b.label)}</span>`).join("<span>/</span>");
-  const navSections = sections.map(([slug, name]) => `<a class="${current === slug ? "active" : ""}" href="/sections/${slug}/index.html"><span>${esc(name)}</span></a>`).join("");
+  const navSections = sectionGroups.map(([groupName, slugs]) => {
+    const links = slugs.map((slug) => `<a class="${current === slug ? "active" : ""}" href="/sections/${slug}/index.html"><span>${esc(sectionNameBySlug.get(slug))}</span></a>`).join("");
+    const isOpen = slugs.includes(current) ? " open" : "";
+    return `<details class="nav-group"${isOpen}><summary>${esc(groupName)}</summary><div class="nav-group-links">${links}</div></details>`;
+  }).join("");
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -1868,9 +1883,11 @@ function sectionIndexBody(slug, name, chapters) {
       </section>`
     : "";
   return `<section class="section-cover">
-    <p class="eyebrow">Learning track</p>
-    <h1>${esc(name)}</h1>
-    <p class="lede">A production-focused path for mastering ${esc(name)} through concepts, diagrams, hands-on labs, interview practice, and capstone work.</p>
+    <div>
+      <p class="eyebrow">Learning track</p>
+      <h1>${esc(name)}</h1>
+      <p class="lede">A production-focused path for mastering ${esc(name)} through concepts, diagrams, hands-on labs, interview practice, and capstone work.</p>
+    </div>
   </section>
   <section class="panel">
     <h2>Track outcomes</h2>
