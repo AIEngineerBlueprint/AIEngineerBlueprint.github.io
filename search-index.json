@@ -2806,10 +2806,191 @@
     "text": "Interview pack Responsible AI learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
+    "title": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/index.html",
+    "type": "section",
+    "text": "AI Governance Strategy overview objectives architecture internals hands-on capstone interview references"
+  },
+  {
+    "title": "AI governance strategy",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/ai-governance-strategy.html",
+    "type": "chapter",
+    "text": "AI governance strategy AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Governance and policy layer",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/governance-and-policy-layer.html",
+    "type": "chapter",
+    "text": "Governance and policy layer AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "AI security shield layer",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/ai-security-shield-layer.html",
+    "type": "chapter",
+    "text": "AI security shield layer AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Prompt shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/prompt-shield.html",
+    "type": "chapter",
+    "text": "Prompt shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "RAG shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/rag-shield.html",
+    "type": "chapter",
+    "text": "RAG shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "MCP shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/mcp-shield.html",
+    "type": "chapter",
+    "text": "MCP shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Authentication and identity shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/authentication-and-identity-shield.html",
+    "type": "chapter",
+    "text": "Authentication and identity shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Data protection shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/data-protection-shield.html",
+    "type": "chapter",
+    "text": "Data protection shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Model shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/model-shield.html",
+    "type": "chapter",
+    "text": "Model shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Agent shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/agent-shield.html",
+    "type": "chapter",
+    "text": "Agent shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "API shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/api-shield.html",
+    "type": "chapter",
+    "text": "API shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Content safety shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/content-safety-shield.html",
+    "type": "chapter",
+    "text": "Content safety shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Compliance shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/compliance-shield.html",
+    "type": "chapter",
+    "text": "Compliance shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Supply chain shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/supply-chain-shield.html",
+    "type": "chapter",
+    "text": "Supply chain shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Runtime protection shield",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/runtime-protection-shield.html",
+    "type": "chapter",
+    "text": "Runtime protection shield AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Cost and resource governance",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/cost-and-resource-governance.html",
+    "type": "chapter",
+    "text": "Cost and resource governance AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Observability and audit",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/observability-and-audit.html",
+    "type": "chapter",
+    "text": "Observability and audit AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Administration and control plane",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/administration-and-control-plane.html",
+    "type": "chapter",
+    "text": "Administration and control plane AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "AI operations AIOps",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/ai-operations-aiops.html",
+    "type": "chapter",
+    "text": "AI operations AIOps AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Analytics and executive dashboard",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/analytics-and-executive-dashboard.html",
+    "type": "chapter",
+    "text": "Analytics and executive dashboard AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Cross-cutting principles",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/cross-cutting-principles.html",
+    "type": "chapter",
+    "text": "Cross-cutting principles AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Governance lab",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/governance-lab.html",
+    "type": "chapter",
+    "text": "Governance lab AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Capstone",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/capstone.html",
+    "type": "chapter",
+    "text": "Capstone AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
+    "title": "Interview pack",
+    "section": "AI Governance Strategy",
+    "url": "/sections/ai-governance-strategy/interview-pack.html",
+    "type": "chapter",
+    "text": "Interview pack AI Governance Strategy learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
+  },
+  {
     "title": "AI in SDLC",
     "url": "/sections/ai-in-sdlc/index.html",
     "type": "section",
     "text": "AI in SDLC overview objectives architecture internals hands-on capstone interview references"
+  },
+  {
+    "title": "AI operating model",
+    "section": "AI in SDLC",
+    "url": "/sections/ai-in-sdlc/ai-operating-model.html",
+    "type": "chapter",
+    "text": "AI operating model AI in SDLC learning objectives theory architecture internals lab production mistakes quiz interview references Tokenization pipeline Embedding layer Positional encoding Attention Multi-head attention Feed forward Residual stream Layer norm Decoder stack Sampling GPU memory Latency Distributed inference Context compression Prompt caching KV cache"
   },
   {
     "title": "AI requirements",

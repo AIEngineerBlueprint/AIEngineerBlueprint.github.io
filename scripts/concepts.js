@@ -1557,6 +1557,302 @@ module.exports["product-lab"] = {
   exercise: "Choose one product lab and write its AWS variant, Azure variant, three smoke tests, three metrics, and one rollback trigger."
 };
 
+module.exports["ai-operating-model"] = {
+  definition: "An AI operating model defines how AI changes day-to-day software delivery: where AI is used in the SDLC, who owns AI-assisted output, which quality gates must pass, how cost is controlled, and how adoption is measured.",
+  analogy: "It is like changing factory operations after adding robots. The robots may improve speed, but the real gain comes from redesigning stations, safety rules, inspection, ownership, and training.",
+  fundamentals: [
+    "AI adoption is not a tool rollout. It changes requirements, design, coding, testing, reviews, security, deployment, monitoring, and incident response.",
+    "Every AI-assisted handoff needs an owner. The human or team that accepts the output owns correctness, security, compliance, and maintainability.",
+    "Quality gates must move earlier: acceptance criteria, test plans, threat models, evals, and review checklists should exist before AI generates large changes.",
+    "Cost must be managed as an operating constraint with approved tools, model routing, token budgets, usage dashboards, and escalation rules.",
+    "Responsible AI and efficient usage follow from workflow design: clear rules, evidence, review, traceability, and adoption metrics."
+  ],
+  example: "Instead of letting every developer use AI however they want, a team defines: AI can draft requirements but product owners approve them; AI can generate code but engineers own tests and review; AI can summarize incidents but SREs own actions; expensive model use needs a budget and observable business value.",
+  objectiveTeaching: [
+    "The AI operating model matters because bolting AI onto old habits creates messy ownership, unreviewed output, rising cost, uneven adoption, and quality risk.",
+    "The internal flow is policy and use-case selection, SDLC stage mapping, ownership assignment, AI-assisted work, quality gates, cost monitoring, adoption measurement, and continuous improvement.",
+    "The main trade-off is speed vs control: teams want faster delivery, but durable acceleration requires explicit rules for responsibility, review, observability, and escalation.",
+    "A production-shaped slice should define one SDLC workflow, where AI is allowed, who owns each output, what checks must pass, which metrics prove value, and what stops unsafe or expensive usage."
+  ],
+  misconceptions: [
+    "AI in SDLC is not just buying Copilot, Claude Code, or Codex seats.",
+    "Efficiency, responsible AI, and adoption do not sustain themselves if the underlying workflow still has unclear ownership and weak quality gates.",
+    "AI-generated work is not ownerless; the accepting team owns the result."
+  ],
+  flowSteps: [
+    { label: "Rules", text: "Define where AI is allowed, where it is prohibited, and which use cases need approval." },
+    { label: "Ownership", text: "Name who owns AI-assisted requirements, code, tests, reviews, security findings, and deployment decisions." },
+    { label: "Workflow", text: "Change the SDLC steps so AI output enters through explicit handoffs, not informal side channels." },
+    { label: "Quality gates", text: "Require acceptance criteria, tests, evals, review, security checks, and traceability before merge or release." },
+    { label: "Cost controls", text: "Track tool usage, model spend, token volume, rework, and whether AI is improving business outcomes." },
+    { label: "Adoption loop", text: "Measure usage, quality, developer experience, defects, and cycle time, then update rules and training." }
+  ],
+  exercise: "Choose one team workflow, such as PR review or test generation. Write the AI operating model for it: allowed AI use, owner, required checks, cost guardrail, adoption metric, and stop condition."
+};
+
+const aiSdlcSeeds = {
+  "ai-in-sdlc-ai-requirements": ["AI requirements", "AI requirements define what AI may do inside a product or delivery workflow, what evidence proves success, what risks are unacceptable, and who owns the final decision.", "It is like writing a job description and operating policy before hiring an AI assistant into the team.", "problem framing, allowed AI use, acceptance criteria, risk classification, data boundaries, owner assignment, and measurable success", "A story that says 'use AI to answer support tickets' becomes requirements for allowed sources, citation behavior, escalation rules, latency, cost, and human ownership.", "Detailed AI requirements slow initial drafting but prevent expensive rework and unsafe ambiguity later.", "Do not write AI requirements as vague capability wishes; make ownership, checks, and failure behavior explicit.", "Rewrite one vague AI feature idea into requirements with allowed use, owner, quality gate, cost guardrail, and stop condition."],
+  "ai-in-sdlc-design-reviews": ["Design reviews", "AI-era design reviews check not only architecture, but also where AI enters the workflow, what it is allowed to change, how evidence is verified, and how humans retain accountability.", "It is like reviewing a bridge design after adding autonomous construction equipment: the equipment plan is part of the safety review.", "AI touchpoints, data flow, prompt/tool boundaries, ownership, eval strategy, cost controls, security risks, and rollback", "A design review for AI-generated tests asks who approves tests, how flaky cases are handled, whether generated code can touch auth, and which CI gates block merge.", "More AI assistance can reduce cycle time but increases review scope and traceability needs.", "Do not approve designs that say 'AI will handle it' without contracts, logs, and failure modes.", "Create a design-review checklist for an AI-assisted coding workflow."],
+  "ai-in-sdlc-ai-coding": ["AI coding", "AI coding uses coding assistants or agents to generate, modify, explain, or refactor code under explicit scope, ownership, review, and validation rules.", "It is like pair-programming with a fast junior engineer who needs clear tasks and careful review.", "task scope, context selection, generated diff, tests, review ownership, security checks, and rollback", "A developer asks an agent to add one API field, reviews the diff, runs targeted tests, checks security impact, and owns the merged code.", "AI speeds implementation but can produce plausible code that violates architecture or hidden constraints.", "Do not merge AI-generated code because it looks correct; require tests and human ownership.", "Define an AI coding policy for one repository: allowed tasks, forbidden files, required tests, and reviewer responsibilities."],
+  "ai-in-sdlc-testing": ["Testing", "AI-assisted testing uses AI to propose, generate, prioritize, or explain tests while the team keeps deterministic CI and coverage gates as the source of truth.", "It is like having an assistant suggest edge cases, but the test suite still has to run in the real lab.", "acceptance criteria, generated test cases, edge-case discovery, deterministic CI, flaky-test handling, coverage gaps, and ownership", "AI suggests tests for refund edge cases, but CI, code review, and product acceptance decide whether the test is valid.", "AI can broaden test ideas quickly but may generate brittle or irrelevant tests.", "Do not count generated tests as quality unless they fail for the right reason and pass in CI.", "Use AI to generate five edge tests for a feature, then classify each as useful, duplicate, brittle, or invalid."],
+  "ai-in-sdlc-security-reviews": ["Security reviews", "AI-era security reviews inspect AI-generated changes, prompts, tools, dependencies, data flows, and model interactions for exploitable risk before release.", "It is like checking both the building and the robot that helped build it.", "threat modeling, secrets, dependency risk, prompt injection, tool permissions, generated code review, and audit evidence", "A security review blocks an AI-generated helper that logs full prompts containing customer secrets.", "AI can surface security issues but can also introduce hidden ones at high speed.", "Do not let AI tools access secrets or production data without explicit controls.", "Write a security-review checklist for an AI coding agent with repo read, file edit, and test-run permissions."],
+  "ai-in-sdlc-evaluation": ["Evaluation", "Evaluation in AI-assisted SDLC measures whether AI is improving delivery outcomes without increasing defects, risk, cost, or review burden.", "It is like measuring factory throughput and defect rate after adding automation, not just counting how often the robot moved.", "cycle time, defect escape rate, review quality, test pass rate, rework, cost, adoption, and developer experience", "A team tracks whether AI-generated PRs reduce cycle time while maintaining escaped-defect and review-comment quality thresholds.", "Efficiency metrics can hide quality regressions if measured alone.", "Do not measure AI adoption only by seats purchased or prompts sent.", "Create a scorecard with speed, quality, cost, risk, and adoption metrics for an AI-assisted workflow."],
+  "ai-in-sdlc-deployment": ["Deployment", "AI-assisted deployment defines how AI-generated or AI-operated changes reach environments through release gates, approvals, observability, and rollback rules.", "It is like letting an assistant prepare a launch checklist, while humans and automation still control the launch button.", "release gates, generated-change provenance, deployment approvals, smoke tests, rollout strategy, monitoring, and rollback", "An AI agent can draft deployment notes and run preflight checks, but production rollout requires CI, owner approval, and a rollback plan.", "Automation speeds release but raises blast radius if approval boundaries are weak.", "Do not let AI perform irreversible deployment actions without explicit approval and trace logs.", "Write a deployment gate for AI-assisted changes: required checks, approver, smoke test, and rollback trigger."],
+  "ai-in-sdlc-monitoring": ["Monitoring", "Monitoring for AI in SDLC tracks how AI-assisted work affects delivery health, quality, security, cost, and adoption after teams start using it.", "It is like adding a dashboard after changing the factory workflow, not just after installing the tool.", "usage telemetry, cost, cycle time, review load, incident rate, defect escape, policy violations, and satisfaction", "A dashboard shows AI-assisted PR volume, test failures, review comments, model/tool spend, and escaped defects by team.", "More usage is not automatically better; adoption must correlate with better outcomes.", "Do not monitor AI tool usage without monitoring quality and cost impact.", "Choose five metrics that prove AI is helping your SDLC rather than just being used."],
+  "ai-in-sdlc-continuous-eval": ["Continuous eval", "Continuous eval keeps AI-assisted SDLC workflows honest by repeatedly testing prompts, agents, tools, and policies against known delivery scenarios.", "It is like regression testing the way the team uses AI, not just the product code.", "golden workflow cases, policy tests, tool-call checks, generated-code checks, cost thresholds, and drift alerts", "A weekly eval verifies that an agent still refuses to edit auth code without approval and still generates valid test plans.", "Continuous eval improves trust but requires maintaining realistic scenarios.", "Do not assume an AI workflow remains safe after tool, prompt, model, or repo changes.", "Create three eval cases for an AI coding assistant: allowed change, forbidden change, and ambiguous change requiring clarification."],
+  "ai-in-sdlc-copilot-workflows": ["Copilot workflows", "Copilot workflows define how developers use GitHub Copilot in IDE, chat, agent, and review modes while preserving ownership, tests, and review standards.", "It is like giving every developer a faster pair programmer with team rules for when to ask, accept, test, and reject suggestions.", "IDE suggestions, chat prompts, agent tasks, code review, context boundaries, tests, and team standards", "A team allows Copilot to draft unit tests and refactors but requires developers to run tests and explain nontrivial accepted changes in PRs.", "Copilot improves flow but can normalize unreviewed code acceptance if teams lack standards.", "Do not treat accepted suggestions as exempt from normal engineering review.", "Write a Copilot workflow guide for one team including allowed use, review rule, and validation command."],
+  "ai-in-sdlc-claude-code-workflows": ["Claude Code workflows", "Claude Code workflows define how teams assign scoped repository tasks to an agent, review its plan and diff, run validation, and preserve human accountability.", "It is like delegating a ticket to an assistant who can edit files, but only within a clear contract.", "task prompt, repository context, file scope, plan review, diff review, validation commands, and rollback", "A team asks Claude Code to refactor one module, then reviews changed files, runs tests, and rejects unrelated edits.", "Agentic coding handles larger tasks but increases risk of broad, hard-to-review changes.", "Do not give vague multi-system tasks without file scope and acceptance criteria.", "Create a Claude Code task prompt with scope, constraints, validation command, and stop condition."],
+  "ai-in-sdlc-codex-workflows": ["Codex workflows", "Codex workflows define how autonomous coding tasks are specified, constrained, reviewed, validated, and merged safely.", "It is like creating a work order for an automated contractor that must return evidence, not just a patch.", "task description, repo setup, constraints, generated diff, test output, review notes, and iteration loop", "A Codex-style task implements a small bug fix, reports changed files, includes test output, and asks for clarification when requirements conflict.", "Autonomous implementation can save time but needs tight acceptance criteria and review.", "Do not ask an agent to 'improve the codebase' without measurable success criteria.", "Write a Codex task for a bug fix with exact files, expected behavior, and validation."],
+  "ai-in-sdlc-team-enablement": ["Team enablement", "Team enablement turns AI adoption into a managed capability through training, standards, champions, support channels, metrics, and governance.", "It is like rolling out a new engineering practice, not just installing a new app.", "training paths, usage standards, champions, office hours, policy, metrics, onboarding, and feedback loops", "A team creates AI coding playbooks, runs prompt clinics, reviews usage dashboards, and updates policy based on incidents and developer feedback.", "Central enablement improves consistency but must adapt to different team workflows.", "Do not measure enablement by license activation alone.", "Design a 30-day enablement plan with training, standards, metrics, and feedback loop."],
+  "ai-in-sdlc-sdlc-lab": ["SDLC lab", "SDLC lab is a practical exercise where a team redesigns one delivery workflow to include AI with rules, owners, gates, metrics, and adoption support.", "It is like rehearsing a new operating procedure before rolling it out across the organization.", "workflow selection, allowed AI use, owner mapping, quality gates, cost guardrails, metrics, and rollout plan", "A lab redesigns PR review so AI summarizes diffs, flags risky files, suggests tests, and humans own merge decisions.", "A focused workflow lab creates useful change faster than a broad AI transformation plan.", "Do not run an AI SDLC lab without measuring before-and-after outcomes.", "Run a lab for one workflow and produce a one-page operating model plus scorecard."],
+  "ai-in-sdlc-mini-project": ["Mini project", "The AI in SDLC mini project proves one AI-assisted workflow end to end with policy, implementation, quality gates, metrics, and team adoption notes.", "It is like shipping a small internal platform change before scaling to every team.", "workflow scope, tool choice, operating rules, validation, dashboard, training, and rollout", "A mini project adds AI-assisted test generation to one service and measures test usefulness, review time, and defect impact.", "Small scope improves learning but may miss cross-team governance issues.", "Do not call a tool demo a mini project unless it changes the workflow and measures outcomes.", "Build a mini project for AI-assisted test generation or PR review with metrics and rollback."],
+  "ai-in-sdlc-capstone": ["Capstone", "The AI in SDLC capstone designs a complete AI operating model for a software organization, including policies, workflows, quality gates, metrics, governance, and rollout plan.", "It is like writing the operating manual for an AI-augmented engineering organization.", "operating model, workflow maps, policy, tool standards, evals, security, cost controls, adoption plan, and governance cadence", "A capstone defines how AI is used from requirements to incident response, with owners and dashboards for every stage.", "Comprehensive governance improves safety but must stay practical enough for teams to follow.", "Do not produce policy without workflow examples and adoption support.", "Create a full AI operating model for a 50-engineer organization."],
+  "ai-in-sdlc-interview-pack": ["Interview pack", "The AI in SDLC interview pack prepares engineers to explain AI operating models, tool adoption, responsible usage, quality gates, and delivery metrics in interviews.", "It is like preparing case studies that show you can lead AI adoption without losing engineering discipline.", "STAR stories, operating-model examples, tool trade-offs, risk controls, metrics, and follow-up questions", "A strong answer explains how a team improved cycle time while preserving review quality, security, and ownership.", "Breadth helps, but interviewers look for concrete operating decisions and measurable outcomes.", "Do not answer AI adoption questions as tool enthusiasm; explain workflow change and governance.", "Prepare three interview stories: AI coding rollout, quality gate improvement, and cost-control correction."]
+};
+
+Object.assign(
+  module.exports,
+  Object.fromEntries(
+    Object.entries(aiSdlcSeeds)
+      .filter(([key]) => !module.exports[key])
+      .map(([key, seed]) => [key, conceptFromSeed(key, seed)])
+  )
+);
+
+const governanceLayerSeeds = {
+  "ai-governance-strategy-ai-governance-strategy": {
+    title: "AI governance strategy",
+    definition: "AI governance strategy is the enterprise operating system for safe AI: policies define what is allowed, shields enforce controls, audit evidence proves what happened, and dashboards show risk, cost, adoption, and compliance.",
+    controls: ["AI governance framework", "governance as code", "enterprise AI policies", "risk and compliance management", "AI usage policies", "human oversight", "audit evidence", "executive dashboards"],
+    example: "A bank routes employee AI use, RAG retrieval, MCP tools, model selection, API traffic, agent actions, and logs through one governance control plane instead of scattered team-by-team rules.",
+    tradeoff: "centralized consistency vs team autonomy; strong governance must be reusable and automated enough that teams can still ship.",
+    exercise: "Draw a one-page AI governance control plane for an enterprise with policy, identity, shields, runtime enforcement, evidence, and dashboard layers."
+  },
+  "ai-governance-strategy-governance-and-policy-layer": {
+    title: "Governance and policy layer",
+    definition: "The governance and policy layer defines enterprise rules for AI usage, model approval, data handling, human oversight, audit evidence, and lifecycle governance.",
+    controls: ["AI governance framework", "governance as code", "enterprise AI policies", "risk and compliance management", "AI usage policies", "regulatory compliance including GDPR, EU AI Act, and HIPAA", "data classification and handling policies", "model approval workflow", "AI asset inventory", "model lifecycle governance", "human oversight and approval", "audit and evidence collection"],
+    example: "Before a team launches a customer-facing assistant, the policy layer checks risk tier, approved model, allowed data classes, required human approval, evaluation evidence, and audit record completeness.",
+    tradeoff: "policy depth vs delivery speed; governance must be automated as code or it becomes a slow manual review queue.",
+    exercise: "Write a policy-as-code checklist for approving a new AI use case, including data class, model, owner, eval evidence, and approval gate."
+  },
+  "ai-governance-strategy-ai-security-shield-layer": {
+    title: "AI security shield layer",
+    definition: "The AI security shield layer combines controls that protect prompts, retrieval, MCP tools, identity, and AI execution boundaries from abuse or misuse.",
+    controls: ["prompt shield", "RAG shield", "MCP shield", "authentication and identity shield", "prompt injection protection", "tool permission enforcement", "secure vector database access", "agent authentication"],
+    example: "A malicious document tries to instruct an assistant to reveal secrets; the shield treats retrieved content as data, isolates context, blocks unsafe tool calls, and records an audit event.",
+    tradeoff: "capability vs containment; more connected tools make AI useful but increase blast radius if shield controls are weak.",
+    exercise: "Design a security shield for a RAG assistant with prompt, retrieval, MCP, and identity checks."
+  },
+  "ai-governance-strategy-prompt-shield": {
+    title: "Prompt shield",
+    definition: "Prompt shield protects the instruction layer by detecting injection, jailbreaks, sensitive prompts, unsafe prompt transformations, and attempts to expose system instructions.",
+    controls: ["prompt injection protection", "jailbreak detection", "system prompt protection", "prompt sanitization", "context isolation", "sensitive prompt detection"],
+    example: "If a user asks the assistant to print hidden system instructions or a retrieved document says 'ignore all prior rules', the prompt shield blocks or downgrades that content before model execution.",
+    tradeoff: "strict filtering vs user flexibility; false positives harm usability but weak filters expose policy and tool boundaries.",
+    exercise: "Create five prompt-shield test cases: direct jailbreak, indirect prompt injection, system prompt extraction, sensitive prompt, and benign false positive."
+  },
+  "ai-governance-strategy-rag-shield": {
+    title: "RAG shield",
+    definition: "RAG shield enforces safe retrieval by checking document classification, user access, sensitive data, citation support, poisoning signals, embedding security, and vector database access.",
+    controls: ["retrieval access control", "document classification enforcement", "sensitive data filtering", "citation validation", "retrieval poisoning detection", "embedding security", "secure vector database access"],
+    example: "A support assistant retrieves only documents the user may access, filters secret-bearing chunks, validates that citations support claims, and flags suspicious newly added documents.",
+    tradeoff: "recall vs trust; retrieving more context may improve answers but can import unauthorized or poisoned content.",
+    exercise: "Design a RAG shield with ACL filtering, data classification, citation validation, and poisoning detection for an internal docs assistant."
+  },
+  "ai-governance-strategy-mcp-shield": {
+    title: "MCP shield",
+    definition: "MCP shield governs Model Context Protocol servers and tools by verifying server trust, classifying tool risk, enforcing permissions, isolating execution, and logging activity.",
+    controls: ["MCP server trust verification", "tool permission enforcement", "tool invocation policies", "tool risk classification", "secure tool discovery", "tool isolation", "MCP audit logging"],
+    example: "An enterprise allows a read-only docs MCP server but blocks an unverified server that requests filesystem write and network execution permissions.",
+    tradeoff: "integration speed vs third-party trust; easy server discovery must not bypass approval and least privilege.",
+    exercise: "Create an MCP server approval record with trust level, allowed tools, risk class, isolation boundary, and audit fields."
+  },
+  "ai-governance-strategy-authentication-and-identity-shield": {
+    title: "Authentication and identity shield",
+    definition: "Authentication and identity shield verifies users, agents, tools, services, and workloads before they can access AI capabilities or enterprise data.",
+    controls: ["SSO integration", "MFA enforcement", "API authentication", "agent authentication", "service identity", "fine-grained authorization", "just-in-time access"],
+    example: "A coding agent can read a repository only through a service identity scoped to that repo and must request just-in-time approval before deployment actions.",
+    tradeoff: "friction vs assurance; strong identity controls reduce misuse but must be designed for real workflows.",
+    exercise: "Map identities for user, agent, MCP server, API, and model gateway in one enterprise AI workflow."
+  },
+  "ai-governance-strategy-data-protection-shield": {
+    title: "Data protection shield",
+    definition: "Data protection shield prevents sensitive data from being exposed, retained, moved, logged, or used in ways that violate policy or regulation.",
+    controls: ["PII detection", "PHI detection", "data loss prevention", "secret detection", "data masking", "encryption enforcement", "data residency controls", "tenant isolation"],
+    example: "Before sending context to a model, the shield masks customer identifiers, blocks secrets, enforces tenant boundary, and routes PHI only through approved environments.",
+    tradeoff: "context richness vs privacy; removing sensitive data protects users but can reduce answer quality if not designed carefully.",
+    exercise: "Design a data protection policy for prompts, retrieved chunks, logs, and model responses in a healthcare assistant."
+  },
+  "ai-governance-strategy-model-shield": {
+    title: "Model shield",
+    definition: "Model shield governs which models may be used, how they are scored, routed, evaluated, versioned, rolled back, and detected when unauthorized models appear.",
+    controls: ["approved model registry", "model trust score", "model version governance", "safe model selection", "model routing policies", "shadow model detection", "model evaluation pipeline", "model rollback controls"],
+    example: "A gateway routes low-risk summarization to a cheaper approved model, high-risk legal drafting to a stronger approved model, and blocks unregistered model endpoints.",
+    tradeoff: "model flexibility vs governance; teams need choice, but untracked models break auditability and risk controls.",
+    exercise: "Create a model registry entry with trust score, allowed use cases, eval status, owner, rollback version, and routing rule."
+  },
+  "ai-governance-strategy-agent-shield": {
+    title: "Agent shield",
+    definition: "Agent shield controls autonomous systems by governing agent identity, authorization, memory, agent-to-agent communication, capability boundaries, action limits, approvals, and behavior monitoring.",
+    controls: ["agent identity", "agent authorization", "agent memory controls", "agent-to-agent communication policies", "agent capability restrictions", "autonomous action limits", "human approval gates", "agent behavior monitoring"],
+    example: "An engineering agent may read runbooks and draft a remediation plan, but requires human approval before restarting services or changing infrastructure.",
+    tradeoff: "autonomy vs safety; more autonomous agents create leverage but require stronger approvals, budgets, and monitoring.",
+    exercise: "Define an agent shield for a deployment agent with allowed actions, forbidden actions, memory retention, approval gate, and monitoring signals."
+  },
+  "ai-governance-strategy-api-shield": {
+    title: "API shield",
+    definition: "API shield protects AI APIs with gateway controls, authentication, authorization, rate limits, payload inspection, threat detection, schema validation, and abuse prevention.",
+    controls: ["API gateway security", "API rate limiting", "API authentication", "API authorization", "payload inspection", "threat detection", "schema validation", "API abuse prevention"],
+    example: "The model gateway rejects malformed tool-call payloads, blocks excessive token usage, validates tenant authorization, and alerts on abuse patterns.",
+    tradeoff: "open developer access vs platform protection; weak API controls turn AI endpoints into expensive and risky public surfaces.",
+    exercise: "Design an AI API gateway policy with auth, schema validation, rate limits, payload inspection, and abuse detection."
+  },
+  "ai-governance-strategy-content-safety-shield": {
+    title: "Content safety shield",
+    definition: "Content safety shield classifies and controls harmful, illegal, brand-risk, or policy-violating content in prompts, outputs, uploaded media, and generated artifacts.",
+    controls: ["toxicity detection", "hate speech detection", "violence detection", "self-harm detection", "adult content filtering", "misinformation detection", "copyright protection", "brand safety"],
+    example: "A public chatbot blocks self-harm instructions, routes borderline safety cases to review, and prevents generated content from violating brand policy.",
+    tradeoff: "safety vs helpfulness; overblocking harms users, but underblocking creates real-world and brand risk.",
+    exercise: "Create a content safety matrix with categories, severity levels, allowed responses, escalation paths, and false-positive review."
+  },
+  "ai-governance-strategy-compliance-shield": {
+    title: "Compliance shield",
+    definition: "Compliance shield maps AI behavior and evidence to regulations, policies, data residency rules, reporting obligations, and continuous compliance controls.",
+    controls: ["policy enforcement", "regulatory mapping", "data residency validation", "audit readiness", "continuous compliance monitoring", "evidence collection", "compliance reporting"],
+    example: "A regulated workflow stores model version, prompt, retrieved evidence, reviewer approval, data region, and output decision for audit reporting.",
+    tradeoff: "evidence completeness vs operational overhead; automation is required for continuous compliance to scale.",
+    exercise: "Map one AI use case to GDPR, EU AI Act, and internal policy controls with required evidence fields."
+  },
+  "ai-governance-strategy-supply-chain-shield": {
+    title: "Supply chain shield",
+    definition: "Supply chain shield governs AI components such as libraries, models, prompts, packages, datasets, dependencies, and SBOM records.",
+    controls: ["approved AI libraries", "model provenance", "prompt template governance", "package risk analysis", "dataset verification", "dependency governance", "SBOM for AI components"],
+    example: "A fine-tuning workflow accepts only approved datasets, signed model artifacts, reviewed prompt templates, and dependency scans before deployment.",
+    tradeoff: "experimentation speed vs provenance; open AI ecosystems move fast but require strong verification before enterprise use.",
+    exercise: "Create an AI SBOM for one RAG application including model, dataset, vector DB, prompt templates, packages, and owners."
+  },
+  "ai-governance-strategy-runtime-protection-shield": {
+    title: "Runtime protection shield",
+    definition: "Runtime protection shield detects and enforces policy during live AI execution using anomaly detection, abuse prevention, session monitoring, and real-time policy checks.",
+    controls: ["real-time threat detection", "behavioral anomaly detection", "prompt anomaly detection", "token abuse detection", "abuse prevention", "session monitoring", "runtime policy enforcement"],
+    example: "If a user suddenly sends high-volume encoded prompts attempting prompt extraction, runtime protection throttles, blocks, and opens an incident timeline.",
+    tradeoff: "real-time enforcement vs latency; protection must be fast enough to run inline without making the product unusable.",
+    exercise: "Define runtime detection rules for prompt anomaly, token abuse, unsafe tool call, and session takeover."
+  },
+  "ai-governance-strategy-cost-and-resource-governance": {
+    title: "Cost and resource governance",
+    definition: "Cost and resource governance controls AI spend, token usage, quotas, model routing, department budgets, allocation, optimization, and forecasting.",
+    controls: ["AI budget controls", "token consumption policies", "cost allocation", "model cost optimization", "quota management", "department budgets", "spend forecasting"],
+    example: "A platform routes simple classification to a small model, caps expensive reasoning calls by team budget, and alerts when token usage spikes after a release.",
+    tradeoff: "cost savings vs quality; cost controls should route intelligently rather than simply blocking useful work.",
+    exercise: "Create a cost governance policy with budget owner, model tiers, token limits, quota exceptions, and forecast dashboard."
+  },
+  "ai-governance-strategy-observability-and-audit": {
+    title: "Observability and audit",
+    definition: "Observability and audit records prompts, responses, retrievals, tools, MCP activity, users, sessions, incidents, and immutable evidence for debugging and governance.",
+    controls: ["centralized AI logs", "prompt and response logging", "tool invocation logs", "MCP activity logs", "RAG retrieval logs", "user activity logs", "immutable audit trail", "incident timeline"],
+    example: "After a bad answer, investigators can trace user, prompt, model, retrieved chunks, tool calls, policy decisions, reviewer approval, and final response.",
+    tradeoff: "debuggability vs privacy; logs must be useful while protecting sensitive content and retention boundaries.",
+    exercise: "Design an audit event schema for prompts, retrieval, model call, tool invocation, policy decision, and user action."
+  },
+  "ai-governance-strategy-administration-and-control-plane": {
+    title: "Administration and control plane",
+    definition: "Administration and control plane is the enterprise UI/API for managing policies, organizations, projects, users, roles, shields, connectors, secrets, models, knowledge sources, MCP servers, integrations, and global settings.",
+    controls: ["central policy management", "organization management", "projects and workspaces", "user and team administration", "RBAC", "ABAC", "shield configuration", "connector management", "secrets management", "model catalog", "knowledge source management", "MCP server registry", "integration management", "global settings"],
+    example: "An admin approves one MCP server for the finance workspace, restricts it to read-only tools, binds access to an Entra group, and enables audit logging.",
+    tradeoff: "central control vs delegated administration; enterprises need both platform guardrails and team-level ownership.",
+    exercise: "Sketch an admin control plane with policies, models, connectors, knowledge sources, MCP servers, teams, roles, and audit settings."
+  },
+  "ai-governance-strategy-ai-operations-aiops": {
+    title: "AI operations AIOps",
+    definition: "AI operations applies production operations to AI systems: health monitoring, latency, accuracy, drift, hallucination detection, eval pipelines, canaries, and incidents.",
+    controls: ["model health monitoring", "latency monitoring", "accuracy monitoring", "drift detection", "hallucination detection", "evaluation pipelines", "canary deployments", "incident management"],
+    example: "A canary release of a new model is rolled back when hallucination reports increase and citation precision drops below the launch threshold.",
+    tradeoff: "release velocity vs reliability; AI changes need production telemetry and rollback just like infrastructure changes.",
+    exercise: "Create an AIOps runbook for model degradation with detection, triage, mitigation, rollback, and postmortem evidence."
+  },
+  "ai-governance-strategy-analytics-and-executive-dashboard": {
+    title: "Analytics and executive dashboard",
+    definition: "Analytics and executive dashboard turns AI usage, risk, cost, security, compliance, adoption, model behavior, and agent activity into leadership visibility and operating decisions.",
+    controls: ["AI adoption metrics", "security posture", "compliance score", "shield effectiveness", "policy violations", "cost dashboard", "model usage analytics", "agent activity", "risk heatmap", "executive KPIs"],
+    example: "Executives see which departments use AI, where policy violations cluster, which models drive spend, whether shields are effective, and which risks need funding.",
+    tradeoff: "executive clarity vs oversimplification; dashboards need drill-down evidence behind every aggregate KPI.",
+    exercise: "Design an executive dashboard with adoption, cost, compliance, security posture, shield effectiveness, and risk heatmap widgets."
+  },
+  "ai-governance-strategy-cross-cutting-principles": {
+    title: "Cross-cutting principles",
+    definition: "Cross-cutting principles are the non-negotiable design rules that apply across every AI governance layer and shield.",
+    controls: ["zero trust for AI", "secure by default", "governance by default", "least privilege access", "policy as code", "defense in depth", "explainability", "traceability", "human-in-the-loop", "continuous compliance", "privacy by design", "enterprise-scale multi-tenancy"],
+    example: "A tool-using agent is denied by default, receives least-privilege access, logs every action, explains decisions, and asks for human approval before high-impact operations.",
+    tradeoff: "principle purity vs product usability; principles must become practical defaults, templates, and automated controls.",
+    exercise: "Score one AI product against the 12 cross-cutting principles and write the top three remediation actions."
+  },
+  "ai-governance-strategy-governance-lab": {
+    title: "Governance lab",
+    definition: "Governance lab is a hands-on exercise where you design a governed AI workflow with policy-as-code, identity, shields, evidence, cost limits, and dashboard metrics.",
+    controls: ["use-case intake", "risk tiering", "policy-as-code", "identity boundary", "shield checks", "audit event", "budget rule", "approval gate", "dashboard metric"],
+    example: "The lab governs an internal RAG assistant by requiring ACL-filtered retrieval, prompt injection checks, approved model routing, audit logs, and executive risk metrics.",
+    tradeoff: "complete coverage vs useful scope; start with one governed workflow and expand once controls are proven.",
+    exercise: "Build a governance plan for one AI assistant including policies, shields, logs, owner, budget, and launch gate."
+  },
+  "ai-governance-strategy-capstone": {
+    title: "Capstone",
+    definition: "The AI governance strategy capstone designs a complete enterprise governance platform across policy, security shields, data protection, models, agents, APIs, compliance, operations, analytics, and administration.",
+    controls: ["governance framework", "AI shields", "data protection", "model registry", "agent controls", "API gateway", "compliance evidence", "runtime protection", "cost governance", "audit logs", "AIOps", "executive dashboard"],
+    example: "A capstone architecture shows how a global enterprise governs customer support AI, coding assistants, internal RAG, and autonomous agents with one control plane.",
+    tradeoff: "enterprise completeness vs implementation sequencing; a roadmap must deliver useful controls in phases.",
+    exercise: "Create a three-phase roadmap for an enterprise AI governance platform: minimum viable control plane, shield expansion, and executive operating model."
+  },
+  "ai-governance-strategy-interview-pack": {
+    title: "Interview pack",
+    definition: "The AI governance strategy interview pack prepares you to explain enterprise AI governance, security shields, policy-as-code, compliance, audit, and executive metrics.",
+    controls: ["governance architecture questions", "risk and compliance answers", "AI security shield scenarios", "agent governance examples", "dashboard KPI discussion", "trade-off stories"],
+    example: "A strong interview answer explains how to stop shadow AI adoption without blocking useful engineering workflows.",
+    tradeoff: "breadth vs depth; governance interviews reward concrete controls and operating trade-offs more than buzzwords.",
+    exercise: "Prepare five governance interview answers: policy-as-code, RAG shield, model registry, agent approval, and executive dashboard."
+  }
+};
+
+function governanceConceptFromSeed(key, seed) {
+  const title = seed.title;
+  return {
+    definition: seed.definition,
+    analogy: "Think of this layer as part of a zero-trust AI control plane: every request, model, tool, document, agent, and user action must be policy-aware, identity-aware, observable, and auditable.",
+    fundamentals: seed.controls.map((control) => `${control}: define the policy, owner, enforcement point, evidence record, and failure response.`),
+    example: seed.example,
+    objectiveTeaching: [
+      `${title} matters because enterprise AI fails when controls are scattered across prompts, tools, teams, and dashboards with no shared enforcement model.`,
+      `The internal flow is classify the use case, verify identity, apply policy, enforce the shield, collect evidence, monitor behavior, and report status to owners.`,
+      `The main trade-off is ${seed.tradeoff}`,
+      `A production-shaped slice should implement one policy-as-code rule, one runtime enforcement point, one audit event, one owner approval path, and one dashboard metric for ${title}.`
+    ],
+    misconceptions: [
+      "Governance is not a PDF policy; it must become executable controls, defaults, evidence, and dashboards.",
+      "Security, compliance, cost, and adoption cannot be managed separately once AI systems connect to data and tools.",
+      seed.tradeoff.startsWith("Do not") ? seed.tradeoff : "Do not wait until after deployment to define ownership, evidence, and rollback."
+    ],
+    flowSteps: [
+      { label: "Classify", text: "Identify use case, data class, model/tool risk, user, tenant, and regulatory scope." },
+      { label: "Authorize", text: "Verify identity, role, attributes, policy version, and approval status." },
+      { label: "Enforce", text: "Apply prompt, RAG, MCP, model, agent, API, data, or runtime shield controls." },
+      { label: "Observe", text: "Record prompt, retrieval, model, tool, decision, cost, and policy events." },
+      { label: "Evidence", text: "Write immutable audit records that support incident response and compliance reporting." },
+      { label: "Improve", text: "Use violations, cost, adoption, and effectiveness metrics to tune policy and controls." }
+    ],
+    exercise: seed.exercise
+  };
+}
+
+Object.assign(
+  module.exports,
+  Object.fromEntries(
+    Object.entries(governanceLayerSeeds)
+      .filter(([key]) => !module.exports[key])
+      .map(([key, seed]) => [key, governanceConceptFromSeed(key, seed)])
+  )
+);
+
 Object.assign(module.exports["rag-overview"], {
   definition: "RAG, or Retrieval-Augmented Generation, is a production pattern that retrieves trusted context at request time, gives that context to a model, and requires the answer to stay grounded in the retrieved evidence.",
   fundamentals: [

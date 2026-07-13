@@ -10,10 +10,10 @@ The platform connects first-principles learning with practical product work: LLM
 
 ## What is included
 
-- 32 learning tracks and 500+ generated chapter pages.
+- 33 learning tracks and 500+ generated chapter pages.
 - Static HTML, CSS, JavaScript, SVG assets, search index, sitemap, manifest, and service worker.
 - Dark/light mode, instant command-palette search, LocalStorage progress, bookmarks, quizzes, reading time, breadcrumbs, previous/next navigation, keyboard shortcuts, and generated concept-flow maps.
-- Production-oriented lessons covering LLM internals, RAG, MCP, agents, guardrails, AI security, responsible AI, AI in SDLC, AWS, Azure, local AI, coding assistants, and interview preparation.
+- Production-oriented lessons covering LLM internals, RAG, MCP, agents, guardrails, AI security, AI governance strategy, responsible AI, AI in SDLC, AWS, Azure, local AI, coding assistants, and interview preparation.
 
 ## Local development
 
@@ -61,9 +61,9 @@ Generated pages are committed as plain static HTML so the platform can be hosted
 
 ## Project status
 
-The current generated platform includes 552 chapters across 32 tracks, 165 chapter-specific concept entries, topic-specific diagrams for priority lessons, setup-and-smoke-test guidance for cloud/local AI environments, and AWS/Azure deployment variants for major product labs.
+The current generated platform includes 577 chapters across 33 tracks, 207 chapter-specific concept entries, topic-specific diagrams for priority lessons, setup-and-smoke-test guidance for cloud/local AI environments, and AWS/Azure deployment variants for major product labs.
 
-Long-tail content work remains useful: 367 generated chapters still use an improved generic fallback. The next content push should continue replacing fallback chapters with hand-authored lessons, labs, diagrams, and evals.
+Long-tail content work remains useful: 352 generated chapters still use an improved generic fallback. The next content push should continue replacing fallback chapters with hand-authored lessons, labs, diagrams, and evals.
 
 ## Author
 

@@ -28,7 +28,8 @@ const sections = [
   ["grounding", "Grounding", ["Grounding overview", "Source selection", "Citations", "Evidence ranking", "Knowledge freshness", "Conflict resolution", "Abstention", "Traceability", "User trust", "Monitoring", "Evaluation", "Governance", "Operations", "Grounding lab", "Mini project", "Capstone", "Interview pack"]],
   ["ai-security", "AI Security", ["OWASP LLM Top 10", "Prompt injection", "Data leakage", "Model theft", "Supply chain", "Model poisoning", "RAG attacks", "MCP attacks", "Agent attacks", "Secrets", "Identity", "Sandboxing", "Threat models", "Security lab", "Mini project", "Capstone", "Interview pack"]],
   ["responsible-ai", "Responsible AI", ["Responsible AI overview", "Bias", "Fairness", "Privacy", "Compliance", "Explainability", "Human oversight", "EU AI Act", "Governance", "Audit", "Risk tiers", "Documentation", "Operations", "Responsible AI lab", "Mini project", "Capstone", "Interview pack"]],
-  ["ai-in-sdlc", "AI in SDLC", ["AI requirements", "Design reviews", "AI coding", "Testing", "Security reviews", "Evaluation", "Deployment", "Monitoring", "Continuous eval", "Copilot workflows", "Claude Code workflows", "Codex workflows", "Team enablement", "SDLC lab", "Mini project", "Capstone", "Interview pack"]],
+  ["ai-governance-strategy", "AI Governance Strategy", ["AI governance strategy", "Governance and policy layer", "AI security shield layer", "Prompt shield", "RAG shield", "MCP shield", "Authentication and identity shield", "Data protection shield", "Model shield", "Agent shield", "API shield", "Content safety shield", "Compliance shield", "Supply chain shield", "Runtime protection shield", "Cost and resource governance", "Observability and audit", "Administration and control plane", "AI operations AIOps", "Analytics and executive dashboard", "Cross-cutting principles", "Governance lab", "Capstone", "Interview pack"]],
+  ["ai-in-sdlc", "AI in SDLC", ["AI operating model", "AI requirements", "Design reviews", "AI coding", "Testing", "Security reviews", "Evaluation", "Deployment", "Monitoring", "Continuous eval", "Copilot workflows", "Claude Code workflows", "Codex workflows", "Team enablement", "SDLC lab", "Mini project", "Capstone", "Interview pack"]],
   ["production-ai-systems", "Production AI Systems", ["Reference architecture", "API gateways", "Queues", "Streaming", "Caching", "Rate limits", "Resilience", "Observability", "Cost optimization", "SLOs", "Incident response", "Release strategy", "Platform teams", "Production lab", "Mini project", "Capstone", "Interview pack"]],
   ["aws-ai-stack", "AWS AI Stack", ["AWS overview", "Bedrock", "SageMaker", "Lambda", "ECS", "EKS", "OpenSearch", "Aurora", "S3", "CloudWatch", "IAM", "Reference deployment", "Cost controls", "AWS lab", "Mini project", "Capstone", "Interview pack"]],
   ["azure-ai-stack", "Azure AI Stack", ["Azure overview", "Azure OpenAI", "AI Foundry", "Azure AI Search", "AKS", "Functions", "Blob Storage", "Entra ID", "Application Insights", "Networking", "Governance", "Reference deployment", "AWS vs Azure", "Azure lab", "Mini project", "Capstone", "Interview pack"]],
@@ -198,12 +199,19 @@ const sectionProfiles = {
     flow: ["Use case", "Risk", "Controls", "Review", "Monitor", "Audit"],
     diagramTitle: "Responsible AI governance loop"
   },
+  "ai-governance-strategy": {
+    analogy: "AI governance strategy is an enterprise control tower for AI: policies define safe lanes, shields enforce boundaries, telemetry proves what happened, and dashboards show leaders where risk, cost, and adoption stand.",
+    why: "Enterprise AI only scales when governance, security, compliance, identity, data protection, model controls, agent controls, runtime protection, cost management, and audit evidence are designed as one operating system.",
+    example: "A governed AI platform routes every prompt, retrieval, MCP tool call, model choice, agent action, API request, and audit event through policy-as-code controls with human approval gates for high-risk actions.",
+    flow: ["Policy", "Identity", "Shields", "Runtime", "Evidence", "Dashboard"],
+    diagramTitle: "AI governance control plane"
+  },
   "ai-in-sdlc": {
-    analogy: "AI in SDLC is like adding a smart power tool to a workshop. It speeds up work, but engineers still need design judgment, tests, reviews, and safety rules.",
-    why: "AI coding tools help across requirements, design, coding, testing, security review, and operations when used deliberately.",
-    example: "A team can ask Copilot to draft tests, Claude Code to refactor a module, and Codex-style agents to implement a scoped issue, then require normal CI and review.",
-    flow: ["Requirement", "Design", "Code", "Test", "Review", "Deploy"],
-    diagramTitle: "AI-assisted SDLC loop"
+    analogy: "AI in SDLC is not just adding a smart power tool to an old workshop; it is redesigning how the workshop operates so AI has clear stations, rules, owners, and inspection gates.",
+    why: "Efficient usage, responsible AI, and adoption only work when the daily SDLC changes: where AI is allowed, who owns the output, how quality is checked, how cost is controlled, and when humans must approve.",
+    example: "A team can let AI draft requirements, code, tests, and reviews only when each handoff has an owner, acceptance criteria, evidence, CI checks, security review, and rollback path.",
+    flow: ["Operating rules", "Ownership", "AI-assisted work", "Quality gates", "Cost controls", "Adoption loop"],
+    diagramTitle: "AI operating model for SDLC"
   },
   "production-ai-systems": {
     analogy: "A production AI system is a factory line. The model is one station, but queues, checks, logs, rollbacks, and operators make the whole line dependable.",
@@ -749,6 +757,17 @@ const cachedPrefix = await promptCache.get(cacheKey);`,
   ],
   launchMetrics: ["source recall@5", "citation precision", "p95 latency", "CSAT"]
 };`,
+    "ai-operating-model": `const aiOperatingModel = {
+  allowedUse: {
+    requirements: "draft and critique, product owner approves",
+    code: "generate scoped changes, engineer owns correctness",
+    tests: "suggest cases, CI is mandatory",
+    review: "risk triage, human reviewer decides"
+  },
+  qualityGates: ["acceptance criteria", "tests", "security review", "evals", "traceable owner"],
+  costControls: ["approved tools", "token budget", "model routing", "usage dashboard"],
+  adoptionSignals: ["cycle time", "defect escape rate", "review load", "developer satisfaction"]
+};`,
     bedrock: `# 1) Pick a region where the model is enabled, then confirm your identity.
 export AWS_REGION=us-east-1
 aws sts get-caller-identity
@@ -820,6 +839,32 @@ curl -s http://localhost:11434/api/chat \\
     toolAllowed: toolCall ? isLeastPrivilege(toolCall) : true
   };
 }`;
+  }
+
+  if (sectionSlug === "ai-in-sdlc") {
+    return `const sdlcGate = {
+  stage: "${chapter}",
+  aiAllowed: true,
+  owner: "named human reviewer",
+  requiredEvidence: ["acceptance criteria", "tests", "diff summary", "risk notes"],
+  pass({ testsPass, reviewerApproved, costWithinBudget }) {
+    return testsPass && reviewerApproved && costWithinBudget;
+  }
+};`;
+  }
+
+  if (sectionSlug === "ai-governance-strategy") {
+    return `const aiGovernancePolicy = {
+  control: "${chapter}",
+  defaultDecision: "deny",
+  appliesTo: ["prompts", "retrieval", "tools", "models", "agents", "apis"],
+  requiredEvidence: ["identity", "policy_version", "risk_score", "audit_event"],
+  allow(request) {
+    return request.identity.verified &&
+      request.riskScore <= request.policy.maxRisk &&
+      request.auditEventWritten === true;
+  }
+};`;
   }
 
   return `function runLearningSlice(input) {
@@ -926,6 +971,7 @@ function referencesForConcept(sectionSlug, chapter) {
     "distributed-inference": ["vLLM documentation — https://docs.vllm.ai/", "NVIDIA Triton Inference Server docs — https://docs.nvidia.com/deeplearning/triton-inference-server/"],
     "context-compression": ["LongLLMLingua — https://arxiv.org/abs/2310.06839"],
     "prompt-caching": ["Anthropic prompt caching — https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching", "OpenAI prompt caching — https://platform.openai.com/docs/guides/prompt-caching"],
+    "ai-operating-model": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework", "GitHub Copilot Trust Center — https://resources.github.com/copilot-trust-center/"],
     bm25: ["The Probabilistic Relevance Framework: BM25 and Beyond — https://www.staff.city.ac.uk/~sbrp622/papers/foundations_bm25_review.pdf"],
     hnsw: ["Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs — https://arxiv.org/abs/1603.09320"],
     ivf: ["FAISS documentation — https://faiss.ai/"],
@@ -943,6 +989,8 @@ function referencesForConcept(sectionSlug, chapter) {
   if (sectionSlug === "transformers") refs.push(shared.transformers[0]);
   if (sectionSlug === "rag") refs.push(shared.rag[0]);
   if (sectionSlug === "ai-security" || sectionSlug === "guardrails") refs.push(shared.security[0]);
+  if (sectionSlug === "ai-governance-strategy") refs.push("NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework", "ISO/IEC 42001 AI management system — https://www.iso.org/standard/81230.html", "EU AI Act overview — https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai");
+  if (sectionSlug === "ai-in-sdlc") refs.push("NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework", "GitHub Copilot Trust Center — https://resources.github.com/copilot-trust-center/");
   if (sectionSlug === "aws-ai-stack") refs.push(shared.aws[0]);
   if (sectionSlug === "azure-ai-stack") refs.push(shared.azure[0]);
   refs.push(shared.openai[0], shared.anthropic[0]);
@@ -1153,6 +1201,30 @@ function topicDiagramSpec(sectionSlug, chapter) {
         ["Azure", "service path"],
         ["Smoke tests", "prove behavior"],
         ["Launch", "metrics + rollback"]
+      ]
+    },
+    "ai-operating-model": {
+      title: "AI operating model for SDLC",
+      subtitle: "AI adoption works when daily delivery rules, ownership, quality gates, and cost controls change together.",
+      boxes: [
+        ["Rules", "where AI fits"],
+        ["Owner", "who signs off"],
+        ["Work", "AI-assisted flow"],
+        ["Gate", "quality checks"],
+        ["Cost", "usage control"],
+        ["Adopt", "team behavior"]
+      ]
+    },
+    "ai-governance-strategy": {
+      title: "AI governance control plane",
+      subtitle: "Enterprise AI governance connects policy, identity, shields, runtime enforcement, evidence, and executive visibility.",
+      boxes: [
+        ["Policy", "rules as code"],
+        ["Identity", "who/what acts"],
+        ["Shields", "prompt/RAG/MCP"],
+        ["Runtime", "detect/enforce"],
+        ["Evidence", "audit trail"],
+        ["Dashboard", "risk + cost"]
       ]
     },
     bedrock: {
