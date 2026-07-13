@@ -47,7 +47,7 @@
       <div>
         <p class="eyebrow">Generative AI · Chapter 3</p>
         <h1>Image generation</h1>
-        <p class="lede">Image generation is a practical building block inside generative ai creation loop. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
+        <p class="lede">Image generation produces novel images from a text description or other conditioning input, typically using a diffusion model that iteratively transforms random noise into a coherent image guided by the conditioning signal. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="generative-ai-image-generation">Bookmark</button>
@@ -58,42 +58,44 @@
       <ul class="checklist"><li>Explain why Image generation is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
     </section>
 
+    
+
     <section class="panel objective-map">
     <h2>Learning the objectives</h2>
     <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
     <div class="objective-grid">
-      <article><span>Objective 1</span><p>Image generation matters because it changes whether the AI product is useful, reliable, measurable, or safe for real users.</p></article><article><span>Objective 2</span><p>The internal flow usually follows Instruction → Context → Generation → Review → Edit → Release. Learn what each handoff means and what can break there.</p></article><article><span>Objective 3</span><p>Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</p></article><article><span>Objective 4</span><p>A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</p></article>
+      <article><span>Objective 1</span><p>Image generation matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on a diffusion model trained to predict and remove noise at each step of a gradual denoising process, conditioned on a text embedding or other input, repeated over many iterative steps starting from pure random noise until a coherent image results, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is more denoising steps generally produce higher-quality, more detailed images, but each additional step adds generation latency and compute cost, so production systems often use accelerated sampling methods that trade a small amount of quality for significantly faster generation</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Image generation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
     </div>
   </section>
     <section class="panel">
       <h2>Theory from first principles</h2>
-      <p>Image generation is a practical building block inside generative ai creation loop. It has a specific job, clear inputs, expected outputs, and failure modes engineers must understand.</p>
-      <p>The internal flow usually follows Instruction → Context → Generation → Review → Edit → Release. Learn what each handoff means and what can break there.</p>
+      <p>Image generation produces novel images from a text description or other conditioning input, typically using a diffusion model that iteratively transforms random noise into a coherent image guided by the conditioning signal.</p>
+      <p>The internal flow centers on a diffusion model trained to predict and remove noise at each step of a gradual denoising process, conditioned on a text embedding or other input, repeated over many iterative steps starting from pure random noise until a coherent image results, then hands a validated result to the next step in the product workflow.</p>
     </section>
 
     <section class="panel beginner-card">
     <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Image generation is a practical building block inside generative ai creation loop. It has a specific job, clear inputs, expected outputs, and failure modes engineers must understand.</p>
-    <p><strong>Analogy:</strong> Generative AI is like a creative apprentice that can draft text, images, audio, or code after learning patterns from many examples.</p>
+    <p>If you have no AI background, start here: Image generation produces novel images from a text description or other conditioning input, typically using a diffusion model that iteratively transforms random noise into a coherent image guided by the conditioning signal.</p>
+    <p><strong>Analogy:</strong> It is like an artist starting with a canvas of random static and gradually refining brushstrokes over many passes, using your description as a guide at every step, until a clear image emerges.</p>
   </section>
     <section class="panel">
     <h2>Core concept you must understand</h2>
-    <p>Image generation is a practical building block inside generative ai creation loop. It has a specific job, clear inputs, expected outputs, and failure modes engineers must understand.</p>
+    <p>Image generation produces novel images from a text description or other conditioning input, typically using a diffusion model that iteratively transforms random noise into a coherent image guided by the conditioning signal.</p>
     <h3>What to learn</h3>
-    <ul><li>Start with the user problem Image generation is supposed to help solve.</li><li>Identify the input, output, and handoff to the next system component.</li><li>Learn the normal path first, then study the failure path.</li><li>Connect the concept to measurable product signals such as quality, latency, cost, safety, or user trust.</li></ul>
+    <ul><li>Core mechanism: a diffusion model trained to predict and remove noise at each step of a gradual denoising process, conditioned on a text embedding or other input, repeated over many iterative steps starting from pure random noise until a coherent image results.</li><li>Inputs and outputs: identify what enters Image generation, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Image generation with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Image generation worked for the right reason.</li></ul>
     <h3>Common misunderstandings</h3>
-    <ul><li>Do not memorize the term without understanding what problem it solves.</li><li>Do not assume a model output is correct just because it sounds confident.</li><li>Do not skip measurement; without evaluation, improvement is guesswork.</li></ul>
+    <ul><li>Image generation models do not retrieve or collage pieces of real training images to construct output; they generate genuinely new pixel patterns through the denoising process, which is why generated images can depict scenes that never existed in any training example.</li><li>Image generation is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Image generation inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
   </section>
     <section class="panel explain-card">
     <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Image generation matters because it changes whether the AI product is useful, reliable, measurable, or safe for real users.</p>
-    <p><strong>When it breaks:</strong> Do not memorize the term without understanding what problem it solves.</p>
+    <p><strong>When to use it:</strong> Image generation matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
+    <p><strong>When it breaks:</strong> Image generation models do not retrieve or collage pieces of real training images to construct output; they generate genuinely new pixel patterns through the denoising process, which is why generated images can depict scenes that never existed in any training example.</p>
     <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
   </section>
     <section class="panel">
     <h2>Worked example</h2>
-    <p>A marketing assistant can draft five email variants. The product still needs brand rules, factual checks, approval, and measurement before sending anything to customers.</p>
-    <ol><li><strong>Instruction:</strong> Image generation is a practical building block inside generative ai creation loop.</li><li><strong>Context:</strong> The internal flow usually follows Instruction → Context → Generation → Review → Edit → Release. Learn what each handoff means and what can break there.</li><li><strong>Generation:</strong> A marketing assistant can draft five email variants. The product still needs brand rules, factual checks, approval, and measurement before sending anything to customers.</li><li><strong>Review:</strong> Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</li><li><strong>Edit:</strong> A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</li><li><strong>Release:</strong> Write a one-paragraph explanation of Image generation, draw the input-output flow, and create one success case plus one failure case.</li></ol>
+    <p>A prompt describing a red bicycle leaning against a brick wall guides a diffusion model&#39;s denoising process at every step, so the random noise it starts from gradually resolves into an image matching that description rather than an arbitrary scene.</p>
+    <ol><li><strong>Instruction:</strong> Image generation produces novel images from a text description or other conditioning input, typically using a diffusion model that iteratively transforms random noise into a coherent image guided by the conditioning signal.</li><li><strong>Context:</strong> The internal flow centers on a diffusion model trained to predict and remove noise at each step of a gradual denoising process, conditioned on a text embedding or other input, repeated over many iterative steps starting from pure random noise until a coherent image results, then hands a validated result to the next step in the product workflow.</li><li><strong>Generation:</strong> A prompt describing a red bicycle leaning against a brick wall guides a diffusion model&#39;s denoising process at every step, so the random noise it starts from gradually resolves into an image matching that description rather than an arbitrary scene.</li><li><strong>Review:</strong> The main trade-off is more denoising steps generally produce higher-quality, more detailed images, but each additional step adds generation latency and compute cost, so production systems often use accelerated sampling methods that trade a small amount of quality for significantly faster generation</li><li><strong>Edit:</strong> A production-shaped slice should implement Image generation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Release:</strong> Generate an image from the same text prompt with a low and a high number of denoising steps, and compare the quality and generation time difference.</li></ol>
     <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
   </section>
     <section class="panel">
@@ -102,27 +104,27 @@
     <article>
       <span>Step 1</span>
       <strong>Instruction</strong>
-      <p>Image generation is a practical building block inside generative ai creation loop.</p>
+      <p>Image generation produces novel images from a text description or other conditioning input, typically using a diffusion model that iteratively transforms random noise into a coherent image guided by the conditioning signal.</p>
     </article><article>
       <span>Step 2</span>
       <strong>Context</strong>
-      <p>The internal flow usually follows Instruction → Context → Generation → Review → Edit → Release. Learn what each handoff means and what can break there.</p>
+      <p>The internal flow centers on a diffusion model trained to predict and remove noise at each step of a gradual denoising process, conditioned on a text embedding or other input, repeated over many iterative steps starting from pure random noise until a coherent image results, then hands a validated result to the next step in the product workflow.</p>
     </article><article>
       <span>Step 3</span>
       <strong>Generation</strong>
-      <p>A marketing assistant can draft five email variants. The product still needs brand rules, factual checks, approval, and measurement before sending anything to customers.</p>
+      <p>A prompt describing a red bicycle leaning against a brick wall guides a diffusion model&#39;s denoising process at every step, so the random noise it starts from gradually resolves into an image matching that description rather than an arbitrary scene.</p>
     </article><article>
       <span>Step 4</span>
       <strong>Review</strong>
-      <p>Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</p>
+      <p>The main trade-off is more denoising steps generally produce higher-quality, more detailed images, but each additional step adds generation latency and compute cost, so production systems often use accelerated sampling methods that trade a small amount of quality for significantly faster generation</p>
     </article><article>
       <span>Step 5</span>
       <strong>Edit</strong>
-      <p>A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</p>
+      <p>A production-shaped slice should implement Image generation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
     </article><article>
       <span>Step 6</span>
       <strong>Release</strong>
-      <p>Write a one-paragraph explanation of Image generation, draw the input-output flow, and create one success case plus one failure case.</p>
+      <p>Generate an image from the same text prompt with a low and a high number of denoising steps, and compare the quality and generation time difference.</p>
     </article>
   </div>
     <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
@@ -134,12 +136,12 @@
 
     <section class="panel">
       <h2>What happens under the hood</h2>
-      <p>The internal flow usually follows Instruction → Context → Generation → Review → Edit → Release. Learn what each handoff means and what can break there.</p>
+      <p>The internal flow centers on a diffusion model trained to predict and remove noise at each step of a gradual denoising process, conditioned on a text embedding or other input, repeated over many iterative steps starting from pure random noise until a coherent image results, then hands a validated result to the next step in the product workflow.</p>
     </section>
 
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>Quality vs latency:</strong> The main trade-off is more denoising steps generally produce higher-quality, more detailed images, but each additional step adds generation latency and compute cost, so production systems often use accelerated sampling methods that trade a small amount of quality for significantly faster generation</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
   </section>
 
     <section class="panel">
@@ -152,40 +154,38 @@
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Image generation, shorten the Instruction to Release path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Image generation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Image generation, guard against do not memorize the term without understanding what problem it solves.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Image generation, shorten the Instruction to Release path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Image generation, shorten the Instruction to Release path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Image generation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Image generation, guard against image generation models do not retrieve or collage pieces of real training images to construct output; they generate genuinely new pixel patterns through the denoising process, which is why generated images can depict scenes that never existed in any training example.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Image generation, shorten the Instruction to Release path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
+    <pre><code>async function generateImage(prompt, steps = 30) {
+  let x = randomNoise();
+  for (let t = steps; t &gt; 0; t--) {
+    x = denoiseStep(x, t, encode(prompt));
+  }
+  return x; // fewer steps = faster but lower quality
 }</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</p>
+    <p><strong>Why this matters:</strong> A production-shaped slice should implement Image generation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     
     <section class="panel">
     <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Generate an image from the same text prompt with a low and a high number of denoising steps, and compare the quality and generation time difference.</p>
     <ol>
-      <li>Run or sketch the small example above with one normal input and one edge-case input.</li>
-      <li>Record the expected output, the actual output, and the first place the result could become wrong.</li>
-      <li>Add one check that would catch that failure before a user sees it.</li>
-      <li>Turn the check into an eval case with a clear pass/fail rule.</li>
-      <li>Write the operational note: what to log, what metric to watch, and what fallback to use.</li>
+      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Add one check that would specifically catch this mistake: Image generation models do not retrieve or collage pieces of real training images to construct output; they generate genuinely new pixel patterns through the denoising process, which is why generated images can depict scenes that never existed in any training example.</li>
+      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Practice extension:</strong> Write a one-paragraph explanation of Image generation, draw the input-output flow, and create one success case plus one failure case.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
   </section>
 
     <section class="panel practice-card">
     <h2>Practice to make it stick</h2>
-    <p>Write a one-paragraph explanation of Image generation, draw the input-output flow, and create one success case plus one failure case.</p>
+    <p>Generate an image from the same text prompt with a low and a high number of denoising steps, and compare the quality and generation time difference.</p>
     <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
   </section>
 
@@ -196,7 +196,7 @@
 
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not memorize the term without understanding what problem it solves.</li><li>Do not assume a model output is correct just because it sounds confident.</li><li>Do not skip measurement; without evaluation, improvement is guesswork.</li></ul>
+    <ul><li>Image generation models do not retrieve or collage pieces of real training images to construct output; they generate genuinely new pixel patterns through the denoising process, which is why generated images can depict scenes that never existed in any training example.</li><li>Image generation is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Image generation inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
   </section>
 
     <section class="panel">
@@ -207,9 +207,9 @@
     <section class="panel quiz" data-quiz="quiz-generative-ai-image-generation">
     <h2>Quiz</h2>
     <p><strong>Question:</strong> Which answer best shows production understanding of Image generation?</p>
-    <button data-answer="wrong">Do not memorize the term without understanding what problem it solves.</button>
-    <button data-answer="right">A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</button>
-    <button data-answer="wrong">Do not assume a model output is correct just because it sounds confident.</button>
+    <button data-answer="wrong">Image generation models do not retrieve or collage pieces of real training images to construct output; they generate genuinely new pixel patterns through the denoising process, which is why generated images can depict scenes that never existed in any training example.</button>
+    <button data-answer="right">A production-shaped slice should implement Image generation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
+    <button data-answer="wrong">Image generation is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
@@ -220,7 +220,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
+    <ul><li><a href="https://arxiv.org/abs/2006.11239" rel="noopener noreferrer">Denoising Diffusion Probabilistic Models</a></li></ul>
   </section>
 
     <div class="complete-box">

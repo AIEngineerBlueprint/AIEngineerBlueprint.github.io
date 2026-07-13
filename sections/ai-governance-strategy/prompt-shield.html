@@ -58,6 +58,8 @@
       <ul class="checklist"><li>Explain why Prompt shield is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
     </section>
 
+    
+
     <section class="panel objective-map">
     <h2>Learning the objectives</h2>
     <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
@@ -175,14 +177,14 @@
     
     <section class="panel">
     <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Create five prompt-shield test cases: direct jailbreak, indirect prompt injection, system prompt extraction, sensitive prompt, and benign false positive.</p>
     <ol>
-      <li>Run or sketch the small example above with one normal input and one edge-case input.</li>
-      <li>Record the expected output, the actual output, and the first place the result could become wrong.</li>
-      <li>Add one check that would catch that failure before a user sees it.</li>
-      <li>Turn the check into an eval case with a clear pass/fail rule.</li>
-      <li>Write the operational note: what to log, what metric to watch, and what fallback to use.</li>
+      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Add one check that would specifically catch this mistake: Governance is not a PDF policy; it must become executable controls, defaults, evidence, and dashboards.</li>
+      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Practice extension:</strong> Create five prompt-shield test cases: direct jailbreak, indirect prompt injection, system prompt extraction, sensitive prompt, and benign false positive.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
   </section>
 
     <section class="panel practice-card">
@@ -222,7 +224,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://www.nist.gov/itl/ai-risk-management-framework" rel="noopener noreferrer">NIST AI Risk Management Framework</a></li><li><a href="https://www.iso.org/standard/81230.html" rel="noopener noreferrer">ISO/IEC 42001 AI management system</a></li><li><a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" rel="noopener noreferrer">EU AI Act overview</a></li><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
+    <ul><li><a href="https://www.nist.gov/itl/ai-risk-management-framework" rel="noopener noreferrer">NIST AI Risk Management Framework</a></li><li><a href="https://www.iso.org/standard/81230.html" rel="noopener noreferrer">ISO/IEC 42001 AI management system</a></li><li><a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" rel="noopener noreferrer">EU AI Act overview</a></li></ul>
   </section>
 
     <div class="complete-box">

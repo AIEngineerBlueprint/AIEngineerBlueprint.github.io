@@ -821,9 +821,1052 @@ curl -s http://localhost:11434/api/chat \\
   -d '{"model":"llama3.2:3b","stream":false,"messages":[{"role":"user","content":"Reply with exactly: ollama smoke test ok"}]}'
 
 # Pass condition: the response message contains "ollama smoke test ok".
-# If it is slow, record model size, CPU/GPU, memory, and prompt tokens.`
+# If it is slow, record model size, CPU/GPU, memory, and prompt tokens.`,
+
+    /* ── Claude Code ── */
+    "claude-code-claude-code-overview": `# Ask Claude Code to read, plan, edit, and verify in one pass.
+cd your-project
+claude "add a rate limiter to the /login route, then run the tests"
+
+# Claude Code will: read the router and middleware, propose a plan,
+# edit the relevant files, run the test command, and report the diff.`,
+    "claude-code-command-reference": `# In-session slash commands
+/clear      # wipe context and start fresh
+/compact    # summarize history, keep the gist, free up context
+/model      # switch the active model for this session
+/agents     # list or configure available subagents
+
+# CLI flags for scripting (headless / non-interactive)
+claude -p "summarize the last 3 commits" --output-format json
+claude -p "check for TODOs touching auth.ts" --permission-mode plan`,
+    "claude-code-project-setup": `# .claude/settings.json (project-scoped)
+{
+  "permissions": {
+    "allow": ["Bash(npm test)", "Bash(git status)"],
+    "deny": ["Read(./.env)", "Read(./**/*.pem)"]
+  }
+}
+
+# CLAUDE.md (project root)
+# - Test command: npm test
+# - Convention: named exports only, no default exports
+# - Never edit files under /generated, they are build output`,
+    "claude-code-agent-workflows": `# Dispatch independent research to subagents, then synthesize.
+claude "Use three subagents to research how auth, billing, and
+search each handle rate limiting in this repo, then propose one
+consistent rate-limiting approach for all three."
+
+# Each subagent returns a summary; the main session never sees
+# their raw exploration, only the final result.`,
+    "claude-code-context-management": `# Symptom: the agent keeps referencing a dead-end hypothesis
+# from 30 messages ago.
+
+/compact   # summarize the debugging history into a few sentences
+# or, if the history is pure noise:
+/clear     # start the next step with zero prior context
+
+# Rule of thumb: compact when history has signal worth keeping,
+# clear when it's just dead ends.`,
+    "claude-code-testing-workflows": `claude "add input validation to parseOrder(), then run npm test
+and fix any failures you introduce"
+
+# Expected loop:
+# 1. edit parseOrder() to validate input
+# 2. run: npm test
+# 3. read the failing assertion's stack trace
+# 4. fix the specific line, not the whole file
+# 5. rerun until green`,
+    "claude-code-refactoring": `claude "extract the duplicated email-validation logic in
+signup.ts, login.ts, and resetPassword.ts into one shared
+function in validators.ts. Only touch these four files.
+Run npm test before and after to confirm behavior is unchanged."`,
+    "claude-code-code-review": `claude -p "review this diff for correctness bugs, missing edge
+cases, and any file touching auth or migrations" < pr-1234.diff
+
+# Good review findings are specific and falsifiable:
+# "line 42: new column is NOT NULL in schema.sql but nullable
+#  in the TypeScript type — insert will fail on missing value"`,
+    "claude-code-security-practices": `// .claude/settings.json
+{
+  "permissions": {
+    "deny": ["Read(./.env)", "Read(./secrets/**)"],
+    "ask": ["Bash(git push*)", "Bash(curl*)"]
+  },
+  "hooks": {
+    "PreToolUse": [{ "matcher": "Bash", "hooks": [{ "type": "command", "command": "./scripts/log-tool-call.sh" }] }]
+  }
+}`,
+    "claude-code-enterprise-usage": `// Managed settings (deployed by IT/security, cannot be
+// overridden by project or user settings)
+{
+  "permissions": {
+    "deny": ["Bash(curl*)", "Bash(wget*)"]
+  },
+  "mcpServers": {
+    "allowedServers": ["internal-docs", "jira"]
+  }
+}`,
+    "claude-code-team-standards": `# .claude/commands/deploy-check.md
+---
+description: Run the team's pre-deploy validation checklist
+---
+Run the full test suite, check for uncommitted migrations,
+verify the changelog was updated, and report pass/fail for
+each check before recommending a deploy.`,
+    "claude-code-automation": `# .github/workflows/pr-summary.yml (excerpt)
+- name: Summarize PR with Claude Code
+  run: |
+    claude -p "summarize this diff and flag if it touches
+    /billing or /auth" --output-format json < pr.diff`,
+    "claude-code-troubleshooting": `# Before rewording your prompt, check the actual cause:
+
+/permissions   # did a tool call get silently denied?
+/compact       # is context stale or contradictory?
+/cost          # did the session run out of budget mid-task?
+
+# Rewording only helps if the cause was genuinely a bad prompt,
+# not a permission, context, or budget problem.`,
+    "claude-code-claude-lab": `# Lab: run one real issue through the full loop.
+claude "read issue #142, propose a plan, implement it, and run
+the test suite. Stop and ask before touching any file outside
+src/orders/."
+
+# After it finishes, write down: what did you have to correct,
+# and what CLAUDE.md rule would have prevented that correction?`,
+    "claude-code-mini-project": `# .claude/commands/pr-summary.md
+---
+description: Summarize the current diff for a PR description
+---
+Read the current git diff against main. Write a PR summary with
+a one-line title, a bullet list of changes, and a test plan.`,
+    "claude-code-capstone": `# One-page operating model (excerpt)
+autonomous:   ["fix lint failures", "write missing tests"]
+needs_review: ["schema migrations", "auth or billing changes"]
+metrics:      ["% PRs from agents merged without rework",
+               "checkpoint rejection rate", "cost per merged PR"]`,
+    "claude-code-interview-pack": `// Structure a technical answer, don't just narrate features.
+const answer = {
+  situation: "Agent had broad file-write access with no test gate",
+  risk: "A wrong autonomous edit could reach main unreviewed",
+  fix: "Added a required-tests-pass hook + human checkpoint on auth/**",
+  result: "Zero unreviewed auth changes in the following quarter"
+};`,
+
+    /* ── Memory ── */
+    "memory-memory-types": `const memory = {
+  working: { scope: "current task", ttl: "discarded at task end" },
+  conversation: { scope: "current session", ttl: "session length" },
+  episodic: { scope: "one past event", ttl: "policy-defined" },
+  semantic: { scope: "durable fact", ttl: "until corrected or revoked" }
+};
+// Route each new piece of information to exactly one bucket.`,
+    "memory-conversation-memory": `function truncateConversation(turns, maxTokens) {
+  let kept = [];
+  let used = 0;
+  for (const turn of [...turns].reverse()) {
+    const cost = estimateTokens(turn);
+    if (used + cost > maxTokens) break;
+    kept.unshift(turn);
+    used += cost;
+  }
+  return kept; // oldest turns drop first
+}`,
+    "memory-semantic-memory": `async function extractFact(turn) {
+  // Extraction should produce a structured, correctable record,
+  // not a raw quote.
+  return {
+    subject: "user",
+    predicate: "prefers_language",
+    value: "TypeScript",
+    sourceTurnId: turn.id,
+    confidence: 0.9
+  };
+}`,
+    "memory-episodic-memory": `const episode = {
+  id: "ep_2024_08_pr_412",
+  when: "2024-08-14",
+  what: "team rejected Redis caching for the search endpoint",
+  why: "cache invalidation complexity outweighed latency gain",
+  retrievableBy: ["topic:caching", "topic:search"]
+};`,
+    "memory-working-memory": `function runTask(task) {
+  const scratch = { visited: new Set(), plan: [] }; // working memory
+  // ...perform the task using scratch...
+  const promoted = scratch.plan.find(step => step.isDurablePreference);
+  return { result: scratch, promoteToSemantic: promoted ?? null };
+  // scratch itself is discarded; only "promoted" survives the task.
+}`,
+    "memory-summarization": `async function summarizeSession(turns) {
+  // A summary should preserve decisions, not just compress words.
+  return llm.complete(\`Summarize what was decided and ruled out.
+Do not lose: final decisions, root causes, and open questions.
+Transcript:\n\${turns.map(t => t.text).join("\\n")}\`);
+}`,
+    "memory-retrieval-memory": `async function retrieveRelevantMemories(query, userId, topK = 5) {
+  const queryVector = await embed(query);
+  const candidates = await memoryStore.search(userId, queryVector, topK);
+  return candidates.filter(m => !m.expired && m.relevance > 0.6);
+}`,
+    "memory-privacy": `const NEVER_STORE = [/\\bcredit card\\b/i, /\\bpassword\\b/i, /\\bssn\\b/i];
+
+function shouldStore(fact) {
+  return !NEVER_STORE.some(pattern => pattern.test(fact.value));
+}
+// Deny-by-pattern at write time, not just redaction at read time.`,
+    "memory-retention": `const retentionPolicy = {
+  workingMemory: { ttlSeconds: 0 },            // gone at task end
+  conversationMemory: { ttlDays: 30 },
+  semanticMemory: { ttlDays: null },           // until revoked
+  episodicMemory: { ttlDays: 365 }
+};`,
+    "memory-forgetting": `async function forget(userId, factId) {
+  await factStore.delete(userId, factId);       // structured fact
+  await vectorIndex.remove(userId, factId);      // embedding entry
+  await auditLog.record({ userId, factId, action: "forgotten" });
+  // All three must succeed, not just the user-facing acknowledgment.
+}`,
+    "memory-evaluation": `const memoryEvalCases = [
+  { name: "correct recall", query: "what editor do I use", expectFactId: "pref_editor" },
+  { name: "respects expiry", query: "where do I work", expectFactId: null }, // expired
+  { name: "uses updated fact", query: "preferred contact method",
+    expectValue: "email" } // was "phone" before an update
+];`,
+    "memory-storage-patterns": `const storageChoice = {
+  "user preference": "key-value store (exact lookup and update)",
+  "similar past situation": "vector store (semantic similarity)",
+  "decision depends on earlier decision": "graph store (explicit edges)"
+};`,
+    "memory-operations": `const memoryDashboard = {
+  storeGrowthPerUser: "alert if > 2x median week-over-week",
+  retrievalRelevanceRate: "alert if < 70% thumbs-up on sampled retrievals",
+  forgetRequestSlaSeconds: "alert if p95 > 60s to full deletion"
+};`,
+    "memory-memory-lab": `// Lab: store, retrieve, update, forget — verify each transition.
+await store(userId, { key: "editor", value: "VS Code" });
+console.log(await retrieve(userId, "what editor do I use"));
+await update(userId, "editor", "Neovim");
+await forget(userId, "editor");
+console.log(await retrieve(userId, "what editor do I use")); // must be empty`,
+    "memory-mini-project": `// Minimal preference memory layer
+export const preferenceMemory = {
+  set: (userId, key, value) => store.upsert(userId, key, value),
+  get: (userId, key) => store.read(userId, key),
+  forget: (userId, key) => store.delete(userId, key) // must actually work
+};`,
+    "memory-capstone": `const memoryArchitecture = {
+  conversationMemory: { scope: "session", store: "in-process" },
+  semanticMemory: { scope: "customer", store: "key-value", retentionDays: 365 },
+  episodicMemory: { inScope: false },
+  deletion: "explicit, on request, cascades to all stores",
+  evalCadence: "weekly retrieval-relevance sample"
+};`,
+    "memory-interview-pack": `const answer = {
+  situation: "Assistant kept citing a customer's old employer",
+  cause: "semantic fact was never invalidated after an update",
+  fix: "added an update-in-place path instead of append-only facts",
+  result: "stale-fact complaints dropped to near zero"
+};`,
+
+    /* ── Agentic AI ── */
+    "agentic-systems-agentic-workflows": `const workflow = [
+  { step: "plan", output: "ordered subtasks" },
+  { step: "act", output: "tool call result" },
+  { step: "observe", output: "did it match expectation?" },
+  { step: "reflect", output: "retry, continue, or escalate" }
+];
+// Stop condition and escalation path must be explicit, not implied.`,
+    "agentic-systems-single-vs-multi-agent": `// Single agent: simplest, use when context fits and tasks don't parallelize.
+await agent.run(task);
+
+// Multi-agent: use when subtasks are independent and context-heavy.
+const [research, code, review] = await Promise.all([
+  researchAgent.run(subtaskA),
+  codeAgent.run(subtaskB),
+  reviewAgent.run(subtaskC)
+]);`,
+    "agentic-systems-task-decomposition": `const subtasks = [
+  { name: "audit schema", success: r => r.tablesListed > 0 },
+  { name: "design new schema", success: r => r.reviewedByOwner },
+  { name: "write migration", success: r => r.dryRunPassed },
+  { name: "apply migration", success: r => r.appliedWithoutError }
+];
+// Each subtask has its own explicit, checkable success condition.`,
+    "agentic-systems-coordination": `const taskQueue = new SharedTaskQueue();
+
+async function claimAndWork(agentId) {
+  const task = await taskQueue.claim(agentId); // locks the task
+  if (!task) return;
+  const result = await performTask(task);
+  await taskQueue.complete(task.id, result);
+}
+// Locking prevents two agents from claiming the same file/task.`,
+    "agentic-systems-state-machines": `const transitions = {
+  planning:        ["executing"],
+  executing:       ["verifying", "failed"],
+  verifying:       ["pending_approval", "failed"],
+  pending_approval: ["executed"],   // requires human action
+  executed:        ["done"],
+  failed:          ["planning"]     // retry from the top
+};
+// Any transition not listed here is invalid and must be rejected.`,
+    "agentic-systems-retries": `async function withRetry(fn, { maxAttempts = 3, isRetryable }) {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try { return await fn(); }
+    catch (err) {
+      if (!isRetryable(err) || attempt === maxAttempts) throw err;
+      await sleep(2 ** attempt * 100); // backoff
+    }
+  }
+}`,
+    "agentic-systems-human-checkpoints": `async function applyMigration(plan) {
+  const approval = await requestHumanApproval({
+    action: "apply migration",
+    plan,
+    reversible: false
+  });
+  if (!approval.granted) return { status: "blocked", reason: approval.reason };
+  return execute(plan);
+}`,
+    "agentic-systems-failure-scenarios": `const failureScenarios = [
+  { name: "wrong plan", detect: "output contradicts stated goal" },
+  { name: "tool error", detect: "non-zero exit code or exception" },
+  { name: "silent partial completion", detect: "fewer files changed than plan listed" },
+  { name: "compounding agent error", detect: "downstream agent builds on unverified upstream output" }
+];`,
+    "agentic-systems-careful-deployment": `const rolloutStages = [
+  { stage: "shadow", acts: false, logsProposedActions: true },
+  { stage: "limited", acts: true, scope: ["low_risk_categories"], requiresApproval: true },
+  { stage: "expanded", acts: true, scope: ["most_categories"], requiresApproval: false }
+];
+// Advance a stage only after the previous stage's metrics hit target.`,
+    "agentic-systems-governance": `const governancePolicy = {
+  owner: "platform-team@company.com",
+  auditLog: "every autonomous action, with trace id",
+  reviewCadence: "monthly near-miss review",
+  escalationPath: "pause agent -> notify owner -> incident review"
+};`,
+    "agentic-systems-evaluation": `const endToEndEvalCase = {
+  name: "recovers from injected failure",
+  setup: () => breakTestFileOnPurpose(),
+  run: task => agent.run(task),
+  assert: result => result.rootCauseIdentified && result.testsPassAfterFix
+};`,
+    "agentic-systems-operations": `const agentDashboard = {
+  taskCompletionRate: "alert if drops below 90% of 7-day baseline",
+  checkpointRejectionRate: "alert if rises above 2x 7-day baseline",
+  costPerTask: "alert if p95 exceeds budget"
+};`,
+    "agentic-systems-agentic-lab": `// Lab: 3-step workflow with one checkpoint and one injected failure.
+const steps = ["fetch", "transform", "write"];
+// inject a failure at "transform" and confirm escalation, not silent continue
+const result = await runWorkflow(steps, { injectFailureAt: "transform" });
+assert(result.status === "escalated_to_human");`,
+    "agentic-systems-mini-project": `const prTriageWorkflow = {
+  autonomous: ["label pr", "summarize diff"],
+  checkpoint: "assign reviewer",   // requires human approval
+  onLowConfidence: "escalate to human triage queue"
+};`,
+    "agentic-systems-capstone": `const incidentResponseAgent = {
+  coordinator: "dispatches to diagnosis and remediation agents",
+  checkpoint: "human approval required before any remediation action",
+  rollout: ["shadow", "limited (read-only diagnosis)", "expanded (with approval gate)"]
+};`,
+    "agentic-systems-interview-pack": `const answer = {
+  situation: "Multi-agent research task compounded a wrong summary",
+  cause: "downstream agent trusted upstream output with no cross-check",
+  fix: "added a verification step before any agent builds on another's output",
+  result: "caught 2 similar errors in eval before they reached production"
+};`,
+
+    /* ── GitHub Copilot ── */
+    "github-copilot-copilot-overview": `// Same task, three modes of increasing autonomy:
+// 1) inline completion — accept/reject per keystroke
+// 2) chat — "@workspace where is validateOrder() called?"
+// 3) agent mode — "add pagination to /orders, update tests"`,
+    "github-copilot-ide-workflows": `// Inline chat: scoped fix without leaving the cursor
+// select the broken line, then:
+// Cmd+I -> "this throws on empty input, add a guard clause"
+
+// Chat panel: cross-file question
+// "@workspace why does OrderTest#testEmptyCart fail?"`,
+    "github-copilot-agent-mode": `// Prompt with explicit scope to keep the diff reviewable:
+// "Add pagination to GET /orders. Only touch orders.controller.ts,
+//  orders.service.ts, and orders.test.ts. Run tests when done."`,
+    "github-copilot-prompting": `// Vague — produces a guess:
+// "fix the bug"
+
+// Specific — gives Copilot enough to act correctly:
+// "parseOrder() throws when items is an empty array; add a guard
+//  clause that returns an empty total, and add a test for it"`,
+    "github-copilot-workspace-setup": `<!-- .github/copilot-instructions.md -->
+# Conventions
+- Strict TypeScript, no implicit any
+- Named exports only
+- New endpoints must include OpenAPI annotations
+- Test command: npm run test:ci`,
+    "github-copilot-code-review": `// Copilot review comment on a PR diff:
+// "Line 58: new column is nullable here but NOT NULL in schema.sql —
+//  inserts without this field will fail. Consider a default value
+//  or making the field required in the type."`,
+    "github-copilot-testing": `// Generated tests for validate(input) — classify before trusting:
+test("valid input passes", () => { expect(validate(good)).toBe(true); });
+test("empty input rejected", () => { expect(validate([])).toBe(false); });
+test("malformed input rejected", () => {
+  expect(() => validate(malformed)).toThrow("invalid shape"); // check the assertion, not just "no crash"
+});`,
+    "github-copilot-security": `// Suggested (vulnerable):
+// db.query("SELECT * FROM users WHERE id = " + userId);
+
+// Copilot-flagged fix (parameterized):
+db.query("SELECT * FROM users WHERE id = ?", [userId]);`,
+    "github-copilot-enterprise-controls": `{
+  "content_exclusions": ["licensed-vendor-code/**"],
+  "public_code_matching": "block",
+  "auditLogging": true
+}`,
+    "github-copilot-team-rollout": `const rolloutPlan = [
+  { stage: "pilot", team: "checkout", durationWeeks: 2 },
+  { stage: "feedback", action: "classify suggestions: useful vs noisy" },
+  { stage: "expansion", gate: "shared copilot-instructions.md exists" }
+];`,
+    "github-copilot-metrics": `const copilotMetrics = {
+  usage: "acceptance rate, active seats, suggestions/day",
+  outcome: "cycle time, review comment volume, defect-escape rate"
+};
+// Track both together — usage alone doesn't prove impact.`,
+    "github-copilot-best-practices": `const checklist = [
+  "run tests on any agent-mode change before requesting review",
+  "review accepted suggestions like hand-written code, not exempt from it",
+  "keep copilot-instructions.md in sync with real conventions",
+  "scope agent-mode prompts to specific files when the task allows it"
+];`,
+    "github-copilot-troubleshooting": `// "Copilot won't suggest anything in this file" — check first:
+// 1. is the file open / referenced?
+// 2. is this path in content_exclusions?
+// 3. is there an org policy disabling this feature for this repo?
+// Only reword the prompt after ruling out 1-3.`,
+    "github-copilot-copilot-lab": `// Lab: implement the same small feature 3 ways, compare.
+const results = {
+  inlineOnly: { timeMin: null, linesChanged: null, reviewIssues: null },
+  chatAssisted: { timeMin: null, linesChanged: null, reviewIssues: null },
+  agentMode: { timeMin: null, linesChanged: null, reviewIssues: null }
+};`,
+    "github-copilot-mini-project": `<!-- .github/copilot-instructions.md + review-checklist.md -->
+# Review checklist for Copilot-assisted PRs
+- [ ] Tests run and pass locally
+- [ ] Non-trivial accepted suggestions explained in PR description
+- [ ] No new dependency added without approval`,
+    "github-copilot-capstone": `const copilotProgram = {
+  rollout: ["pilot", "feedback", "org-wide"],
+  requiredPerRepo: "copilot-instructions.md",
+  enterprisePolicy: { contentExclusions: ["vendor-licensed/**"] },
+  metrics: ["acceptance rate", "defect-escape rate"]
+};`,
+    "github-copilot-interview-pack": `const answer = {
+  situation: "Team's high acceptance rate hid a rise in review rework",
+  cause: "suggestions were accepted under time pressure, not reviewed",
+  fix: "added 'review accepted code like your own' to the checklist",
+  result: "review comment volume dropped the next sprint"
+};`,
+
+    /* ── AWS AI Stack ── */
+    "aws-ai-stack-ecs": `# Minimal ECS task definition for a model-serving API (excerpt)
+{
+  "family": "rag-api",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512", "memory": "1024",
+  "containerDefinitions": [{
+    "name": "rag-api",
+    "image": "123456789.dkr.ecr.us-east-1.amazonaws.com/rag-api:latest",
+    "healthCheck": { "command": ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"] }
+  }]
+}`,
+    "aws-ai-stack-eks": `# Taint a GPU node pool so only inference pods land there
+kubectl taint nodes -l pool=gpu-inference nvidia.com/gpu=true:NoSchedule
+
+# Pod spec requests the taint tolerance + a GPU
+resources:
+  limits:
+    nvidia.com/gpu: 1
+tolerations:
+  - key: "nvidia.com/gpu"
+    operator: "Exists"
+    effect: "NoSchedule"`,
+    "aws-ai-stack-opensearch": `PUT /rag-chunks
+{
+  "mappings": { "properties": {
+    "text": { "type": "text" },
+    "embedding": { "type": "knn_vector", "dimension": 1536 }
+  }}
+}
+# Hybrid query: keyword match + vector k-NN in one request`,
+    "aws-ai-stack-aurora": `-- Aurora PostgreSQL with pgvector
+CREATE EXTENSION IF NOT EXISTS vector;
+CREATE TABLE tickets (
+  id serial PRIMARY KEY,
+  body text,
+  embedding vector(1536)
+);
+CREATE INDEX ON tickets USING hnsw (embedding vector_cosine_ops);
+SELECT id, body FROM tickets ORDER BY embedding <=> $1 LIMIT 5;`,
+    "aws-ai-stack-s3": `aws s3api put-bucket-lifecycle-configuration \\
+  --bucket rag-documents \\
+  --lifecycle-configuration '{
+    "Rules": [{
+      "ID": "archive-old-raw-docs", "Status": "Enabled",
+      "Filter": { "Prefix": "raw/" },
+      "Transitions": [{ "Days": 90, "StorageClass": "GLACIER" }]
+    }]
+  }'`,
+    "aws-ai-stack-cloudwatch": `aws cloudwatch put-metric-alarm \\
+  --alarm-name rag-api-p95-latency \\
+  --namespace RagApi --metric-name P95LatencyMs \\
+  --statistic Average --period 300 --threshold 2000 \\
+  --comparison-operator GreaterThanThreshold --evaluation-periods 1`,
+    "aws-ai-stack-iam": `{
+  "Version": "2012-10-17",
+  "Statement": [
+    { "Effect": "Allow", "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::rag-documents/raw/*" },
+    { "Effect": "Allow", "Action": "bedrock:InvokeModel",
+      "Resource": "arn:aws:bedrock:*::foundation-model/anthropic.claude-3-haiku*" }
+  ]
+}`,
+    "aws-ai-stack-reference-deployment": `# Reference RAG stack (one deployable unit)
+compute:   ECS Fargate service, 2 tasks behind an ALB
+retrieval: S3 (raw docs) -> OpenSearch (chunks + embeddings)
+inference: Bedrock (Converse API)
+identity:  one IAM role per component, least privilege
+observability: CloudWatch alarms on p95 latency + error rate`,
+    "aws-ai-stack-cost-controls": `aws budgets create-budget --account-id 123456789012 \\
+  --budget '{
+    "BudgetName": "rag-feature-budget", "BudgetLimit": { "Amount": "500", "Unit": "USD" },
+    "TimeUnit": "MONTHLY", "BudgetType": "COST",
+    "CostFilters": { "TagKeyValue": ["user:feature\$rag"] }
+  }'`,
+    "aws-ai-stack-aws-lab": `# Lab: S3 upload -> Lambda -> Bedrock -> S3, verified end to end
+aws s3 cp report.pdf s3://rag-documents/raw/report.pdf
+aws logs tail /aws/lambda/summarize-on-upload --since 2m
+# Pass condition: summary object appears in s3://rag-documents/processed/`,
+    "aws-ai-stack-mini-project": `# infra/main.tf (excerpt) — redeployable by a teammate
+resource "aws_ecs_service" "rag_api" { desired_count = 2 }
+resource "aws_s3_bucket" "documents" {}
+resource "aws_cloudwatch_metric_alarm" "p95_latency" {}
+# terraform apply -var-file=prod.tfvars`,
+    "aws-ai-stack-capstone": `const architecture = {
+  compute: "ECS Fargate", retrieval: "S3 + OpenSearch",
+  identity: "per-component least-privilege IAM roles",
+  observability: "CloudWatch dashboard: latency, error rate, cost",
+  costControl: "budget alert at 80% of monthly forecast"
+};`,
+    "aws-ai-stack-interview-pack": `const answer = {
+  situation: "RAG feature cost spiked 3x with no traffic increase",
+  cause: "a retry loop was re-embedding the same documents nightly",
+  fix: "added an idempotency check before re-embedding + a cost alarm",
+  result: "cost returned to baseline within a day of the fix"
+};`,
+
+    /* ── Azure AI Stack ── */
+    "azure-ai-stack-aks": `# Taint a GPU node pool so only inference pods land there
+az aks nodepool add --cluster-name rag-cluster --name gpupool \\
+  --node-vm-size Standard_NC6s_v3 --node-taints sku=gpu:NoSchedule
+
+# Pod spec requests the taint tolerance + a GPU
+resources:
+  limits:
+    nvidia.com/gpu: 1`,
+    "azure-ai-stack-functions": `# function.json trigger (blob-triggered ingestion)
+{
+  "bindings": [{
+    "type": "blobTrigger", "direction": "in",
+    "path": "raw-documents/{name}", "connection": "AzureWebJobsStorage"
+  }]
+}
+# On upload: extract text -> embed -> write to processed container`,
+    "azure-ai-stack-blob-storage": `az storage account management-policy create \\
+  --account-name ragstorage --policy '{
+    "rules": [{
+      "name": "archiveRawDocs", "enabled": true,
+      "definition": {
+        "actions": { "baseBlob": { "tierToArchive": { "daysAfterModificationGreaterThan": 90 } } },
+        "filters": { "prefixMatch": ["raw/"] }
+      }
+    }]
+  }'`,
+    "azure-ai-stack-entra-id": `# Assign a managed identity least-privilege access
+az role assignment create \\
+  --assignee <managed-identity-object-id> \\
+  --role "Storage Blob Data Reader" \\
+  --scope "/subscriptions/.../containers/raw-documents"
+# plus a role assignment scoped only to the Azure OpenAI resource`,
+    "azure-ai-stack-application-insights": `// Track the Azure OpenAI call as a dependency
+const start = Date.now();
+const result = await openaiClient.getChatCompletions(deployment, messages);
+telemetryClient.trackDependency({
+  name: "azure-openai-chat", duration: Date.now() - start,
+  success: true, dependencyTypeName: "HTTP"
+});`,
+    "azure-ai-stack-networking": `az network private-endpoint create \\
+  --name openai-pe --vnet-name rag-vnet --subnet ai-subnet \\
+  --private-connection-resource-id <azure-openai-resource-id> \\
+  --group-id account --connection-name openai-connection`,
+    "azure-ai-stack-governance": `# Azure Policy (excerpt): deny Azure OpenAI without a private endpoint
+{
+  "if": {
+    "allOf": [
+      { "field": "type", "equals": "Microsoft.CognitiveServices/accounts" },
+      { "field": "Microsoft.CognitiveServices/accounts/publicNetworkAccess", "equals": "Enabled" }
+    ]
+  },
+  "then": { "effect": "deny" }
+}`,
+    "azure-ai-stack-reference-deployment": `# Reference RAG stack (one deployable unit)
+compute:   AKS deployment, 2 replicas behind an ingress
+retrieval: Blob Storage (raw docs) -> Azure AI Search (chunks)
+inference: Azure OpenAI (chat completions)
+identity:  managed identity per component, least privilege
+observability: Application Insights dashboard + alerts`,
+    "azure-ai-stack-aws-vs-azure": `const comparison = {
+  inference: { aws: "Bedrock (multi-vendor)", azure: "Azure OpenAI (OpenAI models)" },
+  compute:   { aws: "EKS / ECS", azure: "AKS / Functions" },
+  identity:  { aws: "IAM roles", azure: "Entra ID managed identities" },
+  vectorSearch: { aws: "OpenSearch / Aurora pgvector", azure: "Azure AI Search" }
+};`,
+    "azure-ai-stack-azure-lab": `# Lab: blob upload -> Function -> Azure OpenAI -> blob, verified end to end
+az storage blob upload --account-name ragstorage \\
+  --container-name raw-documents --file report.pdf --name report.pdf
+# Pass condition: summary blob appears in the processed container,
+# visible as a dependency call in Application Insights`,
+    "azure-ai-stack-mini-project": `# main.bicep (excerpt) — redeployable by a teammate
+resource ragFunction 'Microsoft.Web/sites@2023-01-01' = { }
+resource ragStorage 'Microsoft.Storage/storageAccounts@2023-01-01' = { }
+resource insightsAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = { }
+// az deployment group create --template-file main.bicep`,
+    "azure-ai-stack-capstone": `const architecture = {
+  compute: "AKS", retrieval: "Blob Storage + Azure AI Search",
+  identity: "managed identities per component",
+  observability: "Application Insights: latency, error rate, cost",
+  governance: "Azure Policy requiring private endpoints on AI resources"
+};`,
+    "azure-ai-stack-interview-pack": `const answer = {
+  situation: "Azure OpenAI resource was reachable over the public internet",
+  cause: "private endpoint was never configured for that resource",
+  fix: "added a private endpoint + an Azure Policy to prevent recurrence",
+  result: "policy now blocks any new public-facing AI resource org-wide"
+};`,
+
+    /* ── Embeddings ── */
+    "embeddings-vector-spaces": `import numpy as np
+king, man, woman = embed("king"), embed("man"), embed("woman")
+candidate = king - man + woman
+# candidate should land close to embed("queen") in cosine distance`,
+    "embeddings-similarity": `function cosineSimilarity(a, b) {
+  const dot = a.reduce((sum, v, i) => sum + v * b[i], 0);
+  const normA = Math.sqrt(a.reduce((s, v) => s + v * v, 0));
+  const normB = Math.sqrt(b.reduce((s, v) => s + v * v, 0));
+  return dot / (normA * normB); // -1..1, higher = more similar
+}`,
+    "embeddings-embedding-models": `// Same sentence, two models tuned for different jobs
+const shortQuery = await embed(text, { model: "short-query-optimized" });
+const longDoc = await embed(text, { model: "long-document-optimized" });
+// Evaluate both on your real queries before picking one — don't assume.`,
+    "embeddings-chunk-embeddings": `function chunkBySection(document) {
+  return document.split(/\\n## /).map((section, i) => ({
+    id: \`chunk-\${i}\`,
+    text: section,
+    sourceDoc: document.id
+  }));
+}
+// One embedding per chunk, not one embedding for the whole document.`,
+    "embeddings-dimensionality": `const storageCostPerVector = (dims, bytesPerFloat = 4) => dims * bytesPerFloat;
+console.log(storageCostPerVector(384));   // 1536 bytes/vector
+console.log(storageCostPerVector(1536));  // 6144 bytes/vector — 4x more`,
+    "embeddings-normalization": `function normalize(vec) {
+  const norm = Math.sqrt(vec.reduce((s, v) => s + v * v, 0));
+  return vec.map(v => v / norm); // unit length, ready for cosine similarity
+}`,
+    "embeddings-distance-metrics": `const metrics = {
+  cosine: (a, b) => dot(a, b) / (norm(a) * norm(b)),
+  euclidean: (a, b) => Math.sqrt(a.reduce((s, v, i) => s + (v - b[i]) ** 2, 0)),
+  dotProduct: (a, b) => dot(a, b)
+};
+// Use whichever metric your embedding model was trained/evaluated with.`,
+    "embeddings-metadata": `const results = await index.query(queryVector, {
+  topK: 10,
+  filter: { department: "legal", date: { \$gte: "2024-01-01" } }
+});
+// Similarity ranks candidates; metadata filter scopes which ones are eligible.`,
+    "embeddings-evaluation": `const evalSet = [{ query: "how do I reset my password", correctChunkId: "faq-12" }, /* ... */];
+let hits = 0;
+for (const { query, correctChunkId } of evalSet) {
+  const top5 = await retrieve(query, { topK: 5 });
+  if (top5.some(r => r.id === correctChunkId)) hits++;
+}
+console.log("recall@5:", hits / evalSet.length);`,
+    "embeddings-drift": `const driftPolicy = {
+  trigger: "recall@5 on the eval set drops below 0.75, OR embedding model has a new major version",
+  action: "re-embed the full corpus, run the eval set again before cutover"
+};`,
+    "embeddings-storage": `async function onDocumentUpdated(doc) {
+  const newEmbedding = await embed(doc.text);
+  await vectorStore.upsert(doc.id, newEmbedding, { updatedAt: Date.now() });
+  // If this step silently fails, retrieval serves a stale vector forever.
+}`,
+    "embeddings-serving": `const cache = new Map();
+async function embedQuery(text) {
+  if (cache.has(text)) return cache.get(text); // skip recompute for repeats
+  const vec = await embeddingModel.embed(text);
+  cache.set(text, vec);
+  return vec;
+}`,
+    "embeddings-embedding-lab": `// Lab: label the correct chunk BEFORE running retrieval
+const labeledQueries = [
+  { query: "what is the refund window?", correctChunkId: "policy-chunk-4" },
+  // ...4 more
+];
+// Run retrieval, then check: did the correct chunk land in the top 3?`,
+    "embeddings-mini-project": `export const wikiSearch = {
+  chunk: (doc) => chunkBySection(doc),
+  embed: (chunk) => embeddingModel.embed(chunk.text),
+  retrieve: (query, topK = 5) => index.query(embedQuery(query), { topK }),
+  evalSet: require("./eval-queries.json") // 10 labeled queries
+};`,
+    "embeddings-capstone": `const embeddingArchitecture = {
+  chunking: "section-based, ~400 tokens",
+  model: "chosen after evaluation on 50 real legal queries",
+  metadata: ["jurisdiction", "effective_date"],
+  driftTrigger: "quarterly re-embed OR recall@5 < 0.75",
+  evalCadence: "monthly recall@5 report"
+};`,
+    "embeddings-interview-pack": `const answer = {
+  situation: "Search recall silently dropped over 6 months",
+  cause: "new product terminology wasn't in the original embedded corpus",
+  fix: "added a recall@5 monitor + quarterly re-embed trigger",
+  result: "regressions now caught within a week instead of a customer complaint"
+};`,
+
+    /* ── Grounding ── */
+    "grounding-grounding-overview": `async function groundedAnswer(query) {
+  const sources = await retrieve(query, { topK: 5 });
+  const answer = await generate(query, { evidence: sources });
+  return { answer, citations: sources.map(s => s.id) };
+}`,
+    "grounding-source-selection": `const sourceEligibility = {
+  "official-statute-db": { trust: "authoritative", eligible: true },
+  "internal-forum-posts": { trust: "unverified", eligible: false }
+};`,
+    "grounding-citations": `function attachCitations(claims, evidenceUsed) {
+  return claims.map(c => ({
+    text: c.text,
+    citation: evidenceUsed.find(e => e.id === c.sourceId)?.title ?? null
+  }));
+}`,
+    "grounding-evidence-ranking": `function rankEvidence(candidates) {
+  return candidates
+    .map(c => ({ ...c, score: 0.6 * c.similarity + 0.3 * c.authority + 0.1 * c.recency }))
+    .sort((a, b) => b.score - a.score);
+}`,
+    "grounding-knowledge-freshness": `const FRESHNESS_DAYS = 30;
+const eligible = sources.filter(s => daysSince(s.effectiveDate) <= FRESHNESS_DAYS);
+if (eligible.length === 0) return { status: "no_fresh_source", fallback: true };`,
+    "grounding-conflict-resolution": `function resolveConflict(sourceA, sourceB) {
+  if (sourceA.claim === sourceB.claim) return sourceA;
+  if (sourceA.date !== sourceB.date) return { conflict: true, prefer: "most_recent", sourceA, sourceB };
+  return { conflict: true, prefer: "surface_both", sourceA, sourceB };
+}`,
+    "grounding-abstention": `function shouldAbstain(evidenceSupport) {
+  const CONFIDENCE_THRESHOLD = 0.6;
+  return evidenceSupport < CONFIDENCE_THRESHOLD;
+}
+// If true: "I don't have reliable information on that. Escalating to a human."`,
+    "grounding-traceability": `const trace = {
+  traceId: uuid(), query, retrievedSourceIds: sources.map(s => s.id),
+  modelVersion: "v2.3", timestamp: Date.now()
+};
+await traceLog.write(trace); // reconstructable months later`,
+    "grounding-user-trust": `<output-with-citation>
+  <answer>{{generatedText}}</answer>
+  <citation href="{{sourceUrl}}">Source: {{sourceTitle}}</citation>
+  <confidence>{{evidenceSupportScore}}</confidence>
+</output-with-citation>`,
+    "grounding-evaluation": `let faithful = 0;
+for (const { answer, citedSource } of evalSet) {
+  if (await humanVerifiesClaimInSource(answer.claim, citedSource)) faithful++;
+}
+console.log("faithfulness:", faithful / evalSet.length);`,
+    "grounding-governance": `const groundingPolicy = {
+  minSourceFreshnessDays: 30,
+  abstentionThreshold: 0.6,
+  conflictDefault: "prefer_most_recent_or_surface_both"
+};`,
+    "grounding-operations": `const groundingDashboard = {
+  citationAccuracySample: "5% of live answers, weekly",
+  alertIf: "citationAccuracy drops below 90% of 30-day baseline"
+};`,
+    "grounding-grounding-lab": `const testQueries = [
+  { query: "what is the refund window?", hasSource: true },
+  { query: "what is our stance on time travel insurance?", hasSource: false } // must abstain
+];`,
+    "grounding-mini-project": `export const wikiGroundedQA = {
+  retrieve: (q) => index.query(q, { topK: 5 }),
+  generate: (q, evidence) => llm.answerWithCitations(q, evidence),
+  abstainIf: (support) => support < 0.6
+};`,
+    "grounding-capstone": `const groundingArchitecture = {
+  sourceCorpus: "curated, versioned, authority-tagged",
+  ranking: "0.6*similarity + 0.3*authority + 0.1*recency",
+  conflictRule: "abstain on unresolved conflict",
+  monitoring: "weekly citation-accuracy audit"
+};`,
+    "grounding-interview-pack": `const answer = {
+  situation: "Assistant confidently cited a superseded policy document",
+  cause: "no freshness filter or conflict check on retrieval",
+  fix: "added freshness threshold + conflict detection with abstention",
+  result: "zero stale-citation incidents in the following quarter"
+};`,
+
+    /* ── Responsible AI ── */
+    "responsible-ai-responsible-ai-overview": `const review = {
+  biasRisk: "disparate screen-out rate by demographic proxy",
+  privacyRisk: "resume text may contain unnecessary PII",
+  oversightPoint: "human review before any final rejection"
+};`,
+    "responsible-ai-bias": `function disaggregatedAcceptanceRate(predictions, group) {
+  const byGroup = groupBy(predictions, p => p[group]);
+  return Object.fromEntries(
+    Object.entries(byGroup).map(([g, preds]) => [g, mean(preds.map(p => p.accepted))])
+  );
+}`,
+    "responsible-ai-fairness": `const fairnessCriteria = {
+  demographicParity: (preds) => equalAcceptanceRateAcrossGroups(preds),
+  equalizedOdds: (preds) => equalTPRandFPRAcrossGroups(preds)
+};
+// Pick one deliberately — they can be mutually incompatible.`,
+    "responsible-ai-privacy": `async function testMemorization(model, knownTrainingExample) {
+  const output = await model.complete(knownTrainingExample.prefix);
+  return output.includes(knownTrainingExample.sensitiveSuffix); // should be false
+}`,
+    "responsible-ai-compliance": `const riskMapping = {
+  "employment-screening": { euAiActTier: "high", requires: ["risk_assessment", "human_oversight"] },
+  "meeting-scheduler": { euAiActTier: "minimal", requires: [] }
+};`,
+    "responsible-ai-explainability": `function explainDenial(applicant, model) {
+  const topFactors = attributeFeatureImportance(model, applicant).slice(0, 3);
+  return topFactors.map(f => \`\${f.name}: \${f.direction} (weight \${f.weight})\`);
+}`,
+    "responsible-ai-human-oversight": `async function autoDecision(application) {
+  const recommendation = await model.score(application);
+  if (recommendation.action === "deny") {
+    return await routeToHumanReviewer(application, recommendation); // never auto-send denial
+  }
+  return recommendation;
+}`,
+    "responsible-ai-eu-ai-act": `const tierObligations = {
+  unacceptable: "prohibited",
+  high: ["risk_management_system", "technical_documentation", "human_oversight"],
+  limited: ["transparency_disclosure"],
+  minimal: []
+};`,
+    "responsible-ai-governance": `const launchGate = {
+  requiredArtifacts: ["bias_test_report", "human_oversight_point", "privacy_review"],
+  approver: "named accountable executive"
+};`,
+    "responsible-ai-audit": `const quarterlyAudit = {
+  sample: "outcomes from last 90 days",
+  disaggregateBy: ["demographic_proxy"],
+  flagIf: "gap widens beyond baseline + 5pp"
+};`,
+    "responsible-ai-risk-tiers": `const riskTiers = {
+  high: { example: "medical diagnosis support", oversight: "mandatory per-decision review" },
+  minimal: { example: "meeting time suggestion", oversight: "standard QA only" }
+};`,
+    "responsible-ai-operations": `const monitoringMetrics = {
+  biasDriftMonthly: disaggregatedAcceptanceRate,
+  oversightBypassRate: "% of decisions approved in under 2 seconds (likely rubber-stamped)"
+};`,
+    "responsible-ai-responsible-ai-lab": `const disparity = disaggregatedAcceptanceRate(sampleLoanData, "zipCodeTier");
+console.log(disparity); // { tierA: 0.62, tierB: 0.31 } -> investigate + mitigate`,
+    "responsible-ai-mini-project": `export const reviewTemplate = {
+  biasTest: () => disaggregatedAcceptanceRate(predictions, "protectedProxy"),
+  privacyCheck: () => auditLoggedFields(),
+  oversightPoint: "human approval required before final rejection"
+};`,
+    "responsible-ai-capstone": `const responsibleAiProgram = {
+  riskTiers: ["high", "medium", "low"],
+  biasTestRequired: ["high", "medium"],
+  oversightRequired: ["high"],
+  auditCadence: "quarterly"
+};`,
+    "responsible-ai-interview-pack": `const answer = {
+  situation: "Hiring model showed a 20-point acceptance gap by proxy group",
+  cause: "training data reflected historically skewed hiring outcomes",
+  fix: "rebalanced training data + added equalized-odds constraint",
+  result: "gap reduced to under 5 points, monitored monthly"
+};`,
+
+    /* ── Neural Networks ── */
+    "neural-networks-neuron-model": `function neuron(inputs, weights, bias, activation) {
+  const z = inputs.reduce((sum, x, i) => sum + x * weights[i], bias);
+  return activation(z); // e.g. sigmoid, relu
+}`,
+    "neural-networks-layers": `function denseLayer(input, weightsMatrix, biases, activation) {
+  return weightsMatrix.map((weights, i) => neuron(input, weights, biases[i], activation));
+}`,
+    "neural-networks-forward-pass": `function forwardPass(input, layers) {
+  return layers.reduce((activations, layer) => layer.forward(activations), input);
+}`,
+    "neural-networks-backpropagation-internals": `// Chain rule, one layer at a time (simplified)
+function backprop(lossGrad, layers) {
+  let grad = lossGrad;
+  for (const layer of [...layers].reverse()) {
+    grad = layer.backward(grad); // dL/dW_layer computed here
+  }
+}`,
+    "neural-networks-initialization": `// He initialization for ReLU networks
+function heInit(fanIn) {
+  const std = Math.sqrt(2 / fanIn);
+  return () => gaussianRandom(0, std);
+}`,
+    "neural-networks-normalization": `function batchNorm(activations, gamma, beta, eps = 1e-5) {
+  const mean = mean(activations), variance = variance(activations);
+  return activations.map(a => gamma * (a - mean) / Math.sqrt(variance + eps) + beta);
+}`,
+    "neural-networks-residuals": `function residualBlock(x, transform) {
+  return add(x, transform(x)); // learn only the residual, not the full mapping
+}`,
+    "neural-networks-architectures": `const architectureFit = {
+  images: "convolutional (local spatial pattern assumption)",
+  sequences: "transformer (any-token-to-any-token attention)"
+};`,
+    "neural-networks-debugging-training": `// Sanity check: can the network overfit 10 examples?
+const tinyBatch = trainingData.slice(0, 10);
+trainOn(tinyBatch, { epochs: 200 });
+// If loss doesn't approach zero, it's a bug or learning-rate problem, not a data problem.`,
+    "neural-networks-interpretability": `function saliencyMap(model, image, predictedClass) {
+  const grad = gradientOfOutputWrtInput(model, image, predictedClass);
+  return normalize(Math.abs(grad)); // highlights influential pixels
+}`,
+    "neural-networks-latency-trade-offs": `const configs = {
+  fullPrecision: { dtype: "float32", latencyMs: 300 },
+  quantized: { dtype: "int8", latencyMs: 20 } // small accuracy cost
+};`,
+    "neural-networks-production-serving": `const canaryRollout = {
+  newModelTrafficPercent: 5,
+  monitor: "business metric vs. current production model",
+  rollbackTrigger: "metric regression beyond 2%"
+};`,
+    "neural-networks-nn-lab": `// Deliberately break it, then fix it
+train(model, { learningRate: 10.0 });  // watch loss diverge/oscillate
+train(model, { learningRate: 0.001 }); // watch loss stabilize and decrease`,
+    "neural-networks-mini-project": `const { trainLoss, valLoss } = trainWithValidationSplit(model, data, { valFraction: 0.2 });
+console.log({ trainLoss, valLoss, gap: valLoss - trainLoss }); // large gap = overfitting`,
+    "neural-networks-capstone": `const solutionDesign = {
+  architecture: "lightweight CNN, justified by latency budget",
+  evaluation: "held-out set representative of production traffic",
+  serving: "canary rollout, 5% traffic, rollback on regression"
+};`,
+    "neural-networks-interview-pack": `const diagnosisOrder = [
+  "check data loading / label correctness",
+  "check learning rate (off by 10x is common)",
+  "check for dead activations (e.g. all-negative ReLU inputs)",
+  "only then consider architecture changes"
+];`,
+
+    /* ── Generative AI ── */
+    "generative-ai-generation-patterns": `const patterns = {
+  autoregressive: "predict next token given all previous tokens",
+  diffusion: "iteratively denoise random noise into coherent output"
+};`,
+    "generative-ai-text-generation": `async function generateText(prompt, temperature) {
+  let tokens = [];
+  while (!isStopToken(tokens.at(-1))) {
+    const dist = await model.nextTokenDistribution(prompt, tokens);
+    tokens.push(sample(dist, temperature));
+  }
+  return detokenize(tokens);
+}`,
+    "generative-ai-image-generation": `async function generateImage(prompt, steps = 30) {
+  let x = randomNoise();
+  for (let t = steps; t > 0; t--) {
+    x = denoiseStep(x, t, encode(prompt));
+  }
+  return x; // fewer steps = faster but lower quality
+}`,
+    "generative-ai-audio-generation": `async function textToSpeech(text, voiceStyle) {
+  const audioTokens = await ttsModel.generate(text, { style: voiceStyle });
+  return decodeToWaveform(audioTokens);
+}`,
+    "generative-ai-multimodal-systems": `async function answerAboutImage(image, question) {
+  const imageEmbedding = await visionEncoder(image);
+  const textEmbedding = await textEncoder(question);
+  return await model.generate({ image: imageEmbedding, text: textEmbedding });
+}`,
+    "generative-ai-latent-spaces": `const z1 = encode(imageA), z2 = encode(imageB);
+const zMid = interpolate(z1, z2, 0.5); // halfway point in latent space
+const blended = decode(zMid); // semantically meaningful blend`,
+    "generative-ai-prompt-to-output-flow": `async function pipeline(rawPrompt) {
+  const expanded = await rewritePrompt(rawPrompt);
+  const conditioning = await encode(expanded);
+  const raw = await generate(conditioning);
+  return await postProcess(raw); // safety filter, upscaling, formatting
+}`,
+    "generative-ai-controllability": `await generateImage(prompt, {
+  guidanceScale: 12 // higher = stricter adherence to prompt, less creative variation
+});`,
+    "generative-ai-evaluation": `const scores = {
+  promptAdherence: scoreAdherence(output, prompt),
+  safety: safetyClassifier(output),
+  aesthetic: humanRating(output)
+};
+// A high score on one dimension doesn't imply the others.`,
+    "generative-ai-safety": `function isSafe(output) {
+  return trainingTimeAlignmentPassed(output) && runtimeSafetyFilter(output);
+  // layered: neither alone is sufficient against adversarial prompting
+}`,
+    "generative-ai-product-ux": `<generation-result>
+  <variation id="1" />
+  <variation id="2" />
+  <variation id="3" />
+  <variation id="4" />
+  <button>Regenerate</button>
+</generation-result>`,
+    "generative-ai-cost-control": `const generationModes = {
+  fast: { steps: 15, costPerImage: 0.002 },
+  premium: { steps: 50, costPerImage: 0.01 }
+};
+// default = fast; premium is opt-in`,
+    "generative-ai-governance": `const genAiPolicy = {
+  prohibitedCategories: ["non-consensual likeness", "graphic violence"],
+  requiredBeforeLaunch: ["safety_evaluation_report"],
+  accountableTeam: "trust-and-safety"
+};`,
+    "generative-ai-genai-lab": `const prompts = [/* 5 real prompts */];
+const results = prompts.map(p => ({
+  prompt: p,
+  adherence: scoreAdherence(generate(p), p),
+  safety: safetyClassifier(generate(p))
+}));`,
+    "generative-ai-mini-project": `export const descriptionGenerator = {
+  generate: (product) => llm.complete(promptTemplate(product)),
+  evaluate: (output) => ({ factual: checkFacts(output), tone: checkTone(output) }),
+  costPerCall: 0.001
+};`,
+    "generative-ai-capstone": `const productDesign = {
+  generation: "autoregressive text, adjustable tone",
+  evaluation: ["factual_accuracy", "brand_voice"],
+  ux: "show 3 variations per request",
+  costControl: "fast mode default, premium opt-in"
+};`,
+    "generative-ai-interview-pack": `const answer = {
+  situation: "Image generator occasionally produced flagged content",
+  cause: "runtime filter alone, no training-time alignment layer",
+  fix: "added alignment training + kept runtime filter as second layer",
+  result: "false-negative rate dropped, monitored via weekly sampling"
+};`
   };
 
+  const sectionSlugKey = `${sectionSlug}-${slug}`;
+  if (snippets[sectionSlugKey]) return snippets[sectionSlugKey];
   if (snippets[slug]) return snippets[slug];
 
   if (/interview|behavioral|leadership|question-bank|mock/i.test(chapter)) {
@@ -928,6 +1971,8 @@ function tradeoffsForConcept(sectionSlug, chapter, concept) {
     ]
   };
 
+  const sectionSlugKey = `${sectionSlug}-${slug}`;
+  if (bySlug[sectionSlugKey]) return bySlug[sectionSlugKey];
   if (bySlug[slug]) return bySlug[slug];
   if (/interview|behavioral|leadership|question-bank|mock/i.test(chapter)) {
     return [
@@ -997,10 +2042,207 @@ function referencesForConcept(sectionSlug, chapter) {
     "security-model": ["MCP security best practices — https://modelcontextprotocol.io/specification/"],
     bedrock: [shared.aws[0]],
     "azure-openai": [shared.azure[0]],
-    ollama: ["Ollama documentation — https://github.com/ollama/ollama/tree/main/docs"]
+    ollama: ["Ollama documentation — https://github.com/ollama/ollama/tree/main/docs"],
+
+    /* ── Claude Code ── */
+    "claude-code-claude-code-overview": ["Claude Code overview — https://code.claude.com/docs/en/overview", "Claude Code quickstart — https://code.claude.com/docs/en/quickstart"],
+    "claude-code-command-reference": ["Claude Code CLI reference — https://code.claude.com/docs/en/cli-reference"],
+    "claude-code-project-setup": ["Claude Code memory (CLAUDE.md) — https://code.claude.com/docs/en/memory", "Claude Code settings — https://code.claude.com/docs/en/settings"],
+    "claude-code-agent-workflows": ["Claude Code subagents — https://code.claude.com/docs/en/sub-agents", "Claude Agent SDK overview — https://code.claude.com/docs/en/agent-sdk/overview"],
+    "claude-code-context-management": ["Claude Code memory (CLAUDE.md) — https://code.claude.com/docs/en/memory", "Claude Code best practices — https://code.claude.com/docs/en/best-practices"],
+    "claude-code-testing-workflows": ["Claude Code common workflows — https://code.claude.com/docs/en/common-workflows"],
+    "claude-code-refactoring": ["Claude Code common workflows — https://code.claude.com/docs/en/common-workflows", "Claude Code best practices — https://code.claude.com/docs/en/best-practices"],
+    "claude-code-code-review": ["Claude Code GitHub code review — https://code.claude.com/docs/en/code-review", "Claude Code GitHub Actions — https://code.claude.com/docs/en/github-actions"],
+    "claude-code-security-practices": ["Claude Code security — https://code.claude.com/docs/en/security", "Claude Code permissions — https://code.claude.com/docs/en/permissions"],
+    "claude-code-enterprise-usage": ["Claude Code settings (managed settings) — https://code.claude.com/docs/en/settings", "Claude Code monitoring usage — https://code.claude.com/docs/en/monitoring-usage"],
+    "claude-code-team-standards": ["Claude Code best practices — https://code.claude.com/docs/en/best-practices", "Claude Code skills — https://code.claude.com/docs/en/skills"],
+    "claude-code-automation": ["Claude Code GitHub Actions — https://code.claude.com/docs/en/github-actions", "Claude Code CLI reference — https://code.claude.com/docs/en/cli-reference"],
+    "claude-code-troubleshooting": ["Claude Code troubleshooting — https://code.claude.com/docs/en/troubleshooting", "Claude Code install troubleshooting — https://code.claude.com/docs/en/troubleshoot-install"],
+    "claude-code-claude-lab": ["Claude Code common workflows — https://code.claude.com/docs/en/common-workflows"],
+    "claude-code-mini-project": ["Claude Code skills — https://code.claude.com/docs/en/skills"],
+    "claude-code-capstone": ["Claude Code settings — https://code.claude.com/docs/en/settings", "Claude Code monitoring usage — https://code.claude.com/docs/en/monitoring-usage"],
+    "claude-code-interview-pack": ["Claude Code overview — https://code.claude.com/docs/en/overview", "Claude Code security — https://code.claude.com/docs/en/security"],
+
+    /* ── Memory ── */
+    "memory-memory-types": ["MemGPT: Towards LLMs as Operating Systems — https://arxiv.org/abs/2310.08560"],
+    "memory-conversation-memory": ["MemGPT: Towards LLMs as Operating Systems — https://arxiv.org/abs/2310.08560"],
+    "memory-semantic-memory": ["MemGPT: Towards LLMs as Operating Systems — https://arxiv.org/abs/2310.08560"],
+    "memory-episodic-memory": ["MemGPT: Towards LLMs as Operating Systems — https://arxiv.org/abs/2310.08560"],
+    "memory-working-memory": ["MemGPT: Towards LLMs as Operating Systems — https://arxiv.org/abs/2310.08560"],
+    "memory-summarization": ["LongLLMLingua — https://arxiv.org/abs/2310.06839"],
+    "memory-retrieval-memory": ["Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks — https://arxiv.org/abs/2005.11401"],
+    "memory-privacy": ["Anthropic privacy center — https://privacy.anthropic.com/"],
+    "memory-retention": ["Anthropic privacy center — https://privacy.anthropic.com/"],
+    "memory-forgetting": ["Anthropic privacy center — https://privacy.anthropic.com/"],
+    "memory-evaluation": ["MemGPT: Towards LLMs as Operating Systems — https://arxiv.org/abs/2310.08560"],
+    "memory-storage-patterns": ["FAISS documentation — https://faiss.ai/"],
+    "memory-operations": ["MemGPT: Towards LLMs as Operating Systems — https://arxiv.org/abs/2310.08560"],
+    "memory-memory-lab": ["MemGPT: Towards LLMs as Operating Systems — https://arxiv.org/abs/2310.08560"],
+    "memory-mini-project": ["MemGPT: Towards LLMs as Operating Systems — https://arxiv.org/abs/2310.08560"],
+    "memory-capstone": ["MemGPT: Towards LLMs as Operating Systems — https://arxiv.org/abs/2310.08560"],
+    "memory-interview-pack": ["MemGPT: Towards LLMs as Operating Systems — https://arxiv.org/abs/2310.08560"],
+
+    /* ── Agentic AI ── */
+    "agentic-systems-agentic-workflows": ["ReAct: Synergizing Reasoning and Acting in Language Models — https://arxiv.org/abs/2210.03629"],
+    "agentic-systems-single-vs-multi-agent": ["Model Context Protocol documentation — https://modelcontextprotocol.io/"],
+    "agentic-systems-task-decomposition": ["ReAct: Synergizing Reasoning and Acting in Language Models — https://arxiv.org/abs/2210.03629"],
+    "agentic-systems-coordination": ["Model Context Protocol documentation — https://modelcontextprotocol.io/"],
+    "agentic-systems-state-machines": ["ReAct: Synergizing Reasoning and Acting in Language Models — https://arxiv.org/abs/2210.03629"],
+    "agentic-systems-retries": ["Claude Code security (network request approval) — https://code.claude.com/docs/en/security"],
+    "agentic-systems-human-checkpoints": ["Claude Code permissions — https://code.claude.com/docs/en/permissions"],
+    "agentic-systems-failure-scenarios": ["ReAct: Synergizing Reasoning and Acting in Language Models — https://arxiv.org/abs/2210.03629"],
+    "agentic-systems-careful-deployment": ["Claude Code security — https://code.claude.com/docs/en/security"],
+    "agentic-systems-governance": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "agentic-systems-evaluation": ["ReAct: Synergizing Reasoning and Acting in Language Models — https://arxiv.org/abs/2210.03629"],
+    "agentic-systems-operations": ["Claude Code monitoring usage — https://code.claude.com/docs/en/monitoring-usage"],
+    "agentic-systems-agentic-lab": ["ReAct: Synergizing Reasoning and Acting in Language Models — https://arxiv.org/abs/2210.03629"],
+    "agentic-systems-mini-project": ["Model Context Protocol documentation — https://modelcontextprotocol.io/"],
+    "agentic-systems-capstone": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "agentic-systems-interview-pack": ["ReAct: Synergizing Reasoning and Acting in Language Models — https://arxiv.org/abs/2210.03629"],
+
+    /* ── GitHub Copilot ── */
+    "github-copilot-copilot-overview": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-ide-workflows": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-agent-mode": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-prompting": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-workspace-setup": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-code-review": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-testing": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-security": ["GitHub Copilot documentation — https://docs.github.com/en/copilot", "OWASP Top 10 for Large Language Model Applications — https://owasp.org/www-project-top-10-for-large-language-model-applications/"],
+    "github-copilot-enterprise-controls": ["GitHub Copilot documentation — https://docs.github.com/en/copilot", "GitHub Copilot Trust Center — https://resources.github.com/copilot-trust-center/"],
+    "github-copilot-team-rollout": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-metrics": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-best-practices": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-troubleshooting": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-copilot-lab": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-mini-project": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+    "github-copilot-capstone": ["GitHub Copilot documentation — https://docs.github.com/en/copilot", "GitHub Copilot Trust Center — https://resources.github.com/copilot-trust-center/"],
+    "github-copilot-interview-pack": ["GitHub Copilot documentation — https://docs.github.com/en/copilot"],
+
+    /* ── AWS AI Stack ── */
+    "aws-ai-stack-ecs": ["Amazon ECS developer guide — https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html"],
+    "aws-ai-stack-eks": ["Amazon EKS user guide — https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html"],
+    "aws-ai-stack-opensearch": ["OpenSearch Service k-NN search — https://docs.aws.amazon.com/opensearch-service/latest/developerguide/knn.html"],
+    "aws-ai-stack-aurora": ["Amazon Aurora user guide — https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html", "pgvector extension — https://github.com/pgvector/pgvector"],
+    "aws-ai-stack-s3": ["Amazon S3 user guide — https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"],
+    "aws-ai-stack-cloudwatch": ["Amazon CloudWatch user guide — https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html"],
+    "aws-ai-stack-iam": ["AWS IAM user guide — https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html"],
+    "aws-ai-stack-reference-deployment": [shared.aws[0], "Amazon ECS developer guide — https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html"],
+    "aws-ai-stack-cost-controls": ["AWS Budgets user guide — https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html"],
+    "aws-ai-stack-aws-lab": [shared.aws[0], "Amazon S3 user guide — https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"],
+    "aws-ai-stack-mini-project": ["AWS IAM user guide — https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html"],
+    "aws-ai-stack-capstone": [shared.aws[0], "AWS IAM user guide — https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html"],
+    "aws-ai-stack-interview-pack": [shared.aws[0], "AWS Budgets user guide — https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html"],
+
+    /* ── Azure AI Stack ── */
+    "azure-ai-stack-aks": ["Azure Kubernetes Service overview — https://learn.microsoft.com/en-us/azure/aks/what-is-aks"],
+    "azure-ai-stack-functions": ["Azure Functions overview — https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview"],
+    "azure-ai-stack-blob-storage": ["Azure Blob Storage overview — https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction"],
+    "azure-ai-stack-entra-id": ["Microsoft Entra ID overview — https://learn.microsoft.com/en-us/entra/fundamentals/whatis"],
+    "azure-ai-stack-application-insights": ["Application Insights overview — https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview"],
+    "azure-ai-stack-networking": ["Azure Private Link / private endpoints — https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"],
+    "azure-ai-stack-governance": ["Azure Policy overview — https://learn.microsoft.com/en-us/azure/governance/policy/overview"],
+    "azure-ai-stack-reference-deployment": [shared.azure[0], "Azure Kubernetes Service overview — https://learn.microsoft.com/en-us/azure/aks/what-is-aks"],
+    "azure-ai-stack-aws-vs-azure": [shared.azure[0], shared.aws[0]],
+    "azure-ai-stack-azure-lab": [shared.azure[0], "Azure Functions overview — https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview"],
+    "azure-ai-stack-mini-project": ["Microsoft Entra ID overview — https://learn.microsoft.com/en-us/entra/fundamentals/whatis"],
+    "azure-ai-stack-capstone": [shared.azure[0], "Azure Policy overview — https://learn.microsoft.com/en-us/azure/governance/policy/overview"],
+    "azure-ai-stack-interview-pack": [shared.azure[0], "Azure Private Link / private endpoints — https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"],
+
+    /* ── Embeddings ── */
+    "embeddings-vector-spaces": ["OpenAI embeddings guide — https://developers.openai.com/api/docs/guides/embeddings"],
+    "embeddings-similarity": ["OpenAI embeddings guide — https://developers.openai.com/api/docs/guides/embeddings"],
+    "embeddings-embedding-models": ["MTEB: Massive Text Embedding Benchmark — https://arxiv.org/abs/2210.07316", "Sentence Transformers documentation — https://www.sbert.net/"],
+    "embeddings-chunk-embeddings": ["Pinecone chunking strategies — https://www.pinecone.io/learn/chunking-strategies/"],
+    "embeddings-dimensionality": ["OpenAI embeddings guide — https://developers.openai.com/api/docs/guides/embeddings"],
+    "embeddings-normalization": ["Sentence Transformers documentation — https://www.sbert.net/"],
+    "embeddings-distance-metrics": ["Sentence Transformers documentation — https://www.sbert.net/"],
+    "embeddings-metadata": [shared.rag[0]],
+    "embeddings-evaluation": ["MTEB: Massive Text Embedding Benchmark — https://arxiv.org/abs/2210.07316"],
+    "embeddings-drift": ["MTEB: Massive Text Embedding Benchmark — https://arxiv.org/abs/2210.07316"],
+    "embeddings-storage": ["FAISS documentation — https://faiss.ai/"],
+    "embeddings-serving": ["OpenAI embeddings guide — https://developers.openai.com/api/docs/guides/embeddings"],
+    "embeddings-embedding-lab": ["MTEB: Massive Text Embedding Benchmark — https://arxiv.org/abs/2210.07316"],
+    "embeddings-mini-project": ["Sentence Transformers documentation — https://www.sbert.net/"],
+    "embeddings-capstone": [shared.rag[0], "MTEB: Massive Text Embedding Benchmark — https://arxiv.org/abs/2210.07316"],
+    "embeddings-interview-pack": ["MTEB: Massive Text Embedding Benchmark — https://arxiv.org/abs/2210.07316"],
+
+    /* ── Grounding ── */
+    "grounding-grounding-overview": [shared.rag[0]],
+    "grounding-source-selection": [shared.rag[0]],
+    "grounding-citations": [shared.rag[0]],
+    "grounding-evidence-ranking": ["BEIR benchmark — https://arxiv.org/abs/2104.08663"],
+    "grounding-knowledge-freshness": [shared.rag[0]],
+    "grounding-conflict-resolution": [shared.rag[0]],
+    "grounding-abstention": ["Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection — https://arxiv.org/abs/2302.12173"],
+    "grounding-traceability": [shared.rag[0]],
+    "grounding-user-trust": [shared.rag[0]],
+    "grounding-evaluation": ["Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena — https://arxiv.org/abs/2306.05685"],
+    "grounding-governance": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "grounding-operations": [shared.rag[0]],
+    "grounding-grounding-lab": [shared.rag[0]],
+    "grounding-mini-project": [shared.rag[0]],
+    "grounding-capstone": [shared.rag[0], "NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "grounding-interview-pack": [shared.rag[0]],
+
+    /* ── Responsible AI ── */
+    "responsible-ai-responsible-ai-overview": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "responsible-ai-bias": ["Equality of Opportunity in Supervised Learning — https://arxiv.org/abs/1610.02413"],
+    "responsible-ai-fairness": ["Equality of Opportunity in Supervised Learning — https://arxiv.org/abs/1610.02413"],
+    "responsible-ai-privacy": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "responsible-ai-compliance": ["EU AI Act overview — https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai"],
+    "responsible-ai-explainability": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "responsible-ai-human-oversight": ["EU AI Act overview — https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai"],
+    "responsible-ai-eu-ai-act": ["EU AI Act overview — https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai"],
+    "responsible-ai-governance": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "responsible-ai-audit": ["Equality of Opportunity in Supervised Learning — https://arxiv.org/abs/1610.02413"],
+    "responsible-ai-risk-tiers": ["EU AI Act overview — https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai"],
+    "responsible-ai-operations": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "responsible-ai-responsible-ai-lab": ["Equality of Opportunity in Supervised Learning — https://arxiv.org/abs/1610.02413"],
+    "responsible-ai-mini-project": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "responsible-ai-capstone": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework", "EU AI Act overview — https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai"],
+    "responsible-ai-interview-pack": ["Equality of Opportunity in Supervised Learning — https://arxiv.org/abs/1610.02413"],
+
+    /* ── Neural Networks ── */
+    "neural-networks-neuron-model": ["Deep Residual Learning for Image Recognition — https://arxiv.org/abs/1512.03385"],
+    "neural-networks-layers": ["Deep Residual Learning for Image Recognition — https://arxiv.org/abs/1512.03385"],
+    "neural-networks-forward-pass": ["Deep Residual Learning for Image Recognition — https://arxiv.org/abs/1512.03385"],
+    "neural-networks-backpropagation-internals": ["Deep Residual Learning for Image Recognition — https://arxiv.org/abs/1512.03385"],
+    "neural-networks-initialization": ["Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift — https://arxiv.org/abs/1502.03167"],
+    "neural-networks-normalization": ["Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift — https://arxiv.org/abs/1502.03167"],
+    "neural-networks-residuals": ["Deep Residual Learning for Image Recognition — https://arxiv.org/abs/1512.03385"],
+    "neural-networks-architectures": [shared.transformers[0], "Deep Residual Learning for Image Recognition — https://arxiv.org/abs/1512.03385"],
+    "neural-networks-debugging-training": ["Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift — https://arxiv.org/abs/1502.03167"],
+    "neural-networks-interpretability": ["Deep Residual Learning for Image Recognition — https://arxiv.org/abs/1512.03385"],
+    "neural-networks-latency-trade-offs": ["vLLM PagedAttention paper — https://arxiv.org/abs/2309.06180"],
+    "neural-networks-production-serving": ["NVIDIA Triton Inference Server docs — https://docs.nvidia.com/deeplearning/triton-inference-server/"],
+    "neural-networks-nn-lab": ["Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift — https://arxiv.org/abs/1502.03167"],
+    "neural-networks-mini-project": ["Deep Residual Learning for Image Recognition — https://arxiv.org/abs/1512.03385"],
+    "neural-networks-capstone": ["Deep Residual Learning for Image Recognition — https://arxiv.org/abs/1512.03385", "NVIDIA Triton Inference Server docs — https://docs.nvidia.com/deeplearning/triton-inference-server/"],
+    "neural-networks-interview-pack": ["Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift — https://arxiv.org/abs/1502.03167"],
+
+    /* ── Generative AI ── */
+    "generative-ai-generation-patterns": ["Denoising Diffusion Probabilistic Models — https://arxiv.org/abs/2006.11239"],
+    "generative-ai-text-generation": [shared.openai[0]],
+    "generative-ai-image-generation": ["Denoising Diffusion Probabilistic Models — https://arxiv.org/abs/2006.11239"],
+    "generative-ai-audio-generation": ["Denoising Diffusion Probabilistic Models — https://arxiv.org/abs/2006.11239"],
+    "generative-ai-multimodal-systems": ["GPT-4V system card — https://openai.com/research/gpt-4v-system-card", "Gemini technical report — https://arxiv.org/abs/2312.11805"],
+    "generative-ai-latent-spaces": ["Denoising Diffusion Probabilistic Models — https://arxiv.org/abs/2006.11239"],
+    "generative-ai-prompt-to-output-flow": [shared.openai[0]],
+    "generative-ai-controllability": ["Denoising Diffusion Probabilistic Models — https://arxiv.org/abs/2006.11239"],
+    "generative-ai-evaluation": ["Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena — https://arxiv.org/abs/2306.05685"],
+    "generative-ai-safety": [shared.security[0]],
+    "generative-ai-product-ux": [shared.openai[0]],
+    "generative-ai-cost-control": [shared.anthropic[0]],
+    "generative-ai-governance": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "generative-ai-genai-lab": ["Denoising Diffusion Probabilistic Models — https://arxiv.org/abs/2006.11239"],
+    "generative-ai-mini-project": [shared.openai[0]],
+    "generative-ai-capstone": ["NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework"],
+    "generative-ai-interview-pack": [shared.security[0]]
   };
 
-  const refs = bySlug[slug] ? [...bySlug[slug]] : [];
+  const sectionSlugKey = `${sectionSlug}-${slug}`;
+  const refs = bySlug[sectionSlugKey] ? [...bySlug[sectionSlugKey]] : bySlug[slug] ? [...bySlug[slug]] : [];
   if (sectionSlug === "transformers") refs.push(shared.transformers[0]);
   if (sectionSlug === "rag") refs.push(shared.rag[0]);
   if (sectionSlug === "ai-security" || sectionSlug === "guardrails") refs.push(shared.security[0]);
@@ -1008,7 +2250,7 @@ function referencesForConcept(sectionSlug, chapter) {
   if (sectionSlug === "ai-in-sdlc") refs.push("NIST AI Risk Management Framework — https://www.nist.gov/itl/ai-risk-management-framework", "GitHub Copilot Trust Center — https://resources.github.com/copilot-trust-center/");
   if (sectionSlug === "aws-ai-stack") refs.push(shared.aws[0]);
   if (sectionSlug === "azure-ai-stack") refs.push(shared.azure[0]);
-  refs.push(shared.openai[0], shared.anthropic[0]);
+  if (refs.length === 0) refs.push(shared.openai[0], shared.anthropic[0]);
   return [...new Set(refs)].slice(0, 5);
 }
 
@@ -1331,6 +2573,15 @@ function beginnerConceptSection(sectionSlug, chapter) {
   </section>`;
 }
 
+function businessContextSection(sectionSlug, chapter) {
+  const concept = getConcept(sectionSlug, chapter);
+  if (!concept.businessAngle) return "";
+  return `<section class="panel business-card">
+    <h2>For non-technical readers</h2>
+    <p>${esc(concept.businessAngle)}</p>
+  </section>`;
+}
+
 function objectiveTeachingSection(sectionSlug, chapter) {
   const concept = getConcept(sectionSlug, chapter);
   return `<section class="panel objective-map">
@@ -1572,25 +2823,27 @@ function labSection(sectionSlug, chapter) {
   if (isInterview) {
     return `<section class="panel">
       <h2>Hands-on lab</h2>
+      <p><strong>Task:</strong> ${esc(concept.exercise)}</p>
       <ol>
-        <li>Draft one STAR story for ${esc(chapter)} with situation, task, action, and result separated.</li>
+        <li>Draft the answer with situation, task, action, and result kept separate.</li>
         <li>Add two measurable outcomes: latency reduced, cost saved, incidents avoided, revenue protected, or team impact.</li>
-        <li>Write one likely follow-up question and answer it without changing the facts.</li>
-        <li>Score the answer for clarity, ownership, trade-off judgment, and reflection.</li>
+        <li>Write one likely follow-up question and answer it without changing the underlying facts.</li>
       </ol>
+      <p><strong>Done when:</strong> you can deliver the answer in under two minutes and the follow-up answer doesn't contradict the original story.</p>
     </section>`;
   }
 
+  const mistake = concept.misconceptions?.[0] || "treating a plausible-looking result as correct without checking it";
   return `<section class="panel">
     <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> ${esc(concept.exercise)}</p>
     <ol>
-      <li>Run or sketch the small example above with one normal input and one edge-case input.</li>
-      <li>Record the expected output, the actual output, and the first place the result could become wrong.</li>
-      <li>Add one check that would catch that failure before a user sees it.</li>
-      <li>Turn the check into an eval case with a clear pass/fail rule.</li>
-      <li>Write the operational note: what to log, what metric to watch, and what fallback to use.</li>
+      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Add one check that would specifically catch this mistake: ${esc(mistake)}</li>
+      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Practice extension:</strong> ${esc(concept.exercise)}</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
   </section>`;
 }
 
@@ -1816,6 +3069,8 @@ function chapterBody(sectionSlug, sectionName, chapter, index) {
     </div>
 
     ${learningObjectivesSection(sectionSlug, chapter)}
+
+    ${businessContextSection(sectionSlug, chapter)}
 
     ${objectiveTeachingSection(sectionSlug, chapter)}
     ${theorySection(sectionSlug, chapter)}

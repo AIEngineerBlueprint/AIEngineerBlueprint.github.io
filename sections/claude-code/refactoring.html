@@ -47,7 +47,7 @@
       <div>
         <p class="eyebrow">Claude Code · Chapter 7</p>
         <h1>Refactoring</h1>
-        <p class="lede">Refactoring is a practical building block inside claude code workflow. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
+        <p class="lede">Refactoring with Claude Code means using it to restructure code without changing behavior, verified by running the existing test suite before and after the change, not just by reading the diff. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="claude-code-refactoring">Bookmark</button>
@@ -58,42 +58,44 @@
       <ul class="checklist"><li>Explain why Refactoring is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
     </section>
 
+    
+
     <section class="panel objective-map">
     <h2>Learning the objectives</h2>
     <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
     <div class="objective-grid">
-      <article><span>Objective 1</span><p>Refactoring matters because it changes whether the AI product is useful, reliable, measurable, or safe for real users.</p></article><article><span>Objective 2</span><p>The internal flow usually follows Repo context → Instruction → Plan/edit → Run checks → Review diff → Ship. Learn what each handoff means and what can break there.</p></article><article><span>Objective 3</span><p>Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</p></article><article><span>Objective 4</span><p>A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</p></article>
+      <article><span>Objective 1</span><p>Refactoring matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on scoping a refactor to an explicit, bounded set of files and behavior-preserving goals, then asking the agent to make the change and run tests before and after to confirm behavior did not shift, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is a tightly scoped refactor request is easy to review and verify, while a broad request produces a larger diff that is harder to check line by line and more likely to include unintended behavior changes</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Refactoring on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
     </div>
   </section>
     <section class="panel">
       <h2>Theory from first principles</h2>
-      <p>Refactoring is a practical building block inside claude code workflow. It has a specific job, clear inputs, expected outputs, and failure modes engineers must understand.</p>
-      <p>The internal flow usually follows Repo context → Instruction → Plan/edit → Run checks → Review diff → Ship. Learn what each handoff means and what can break there.</p>
+      <p>Refactoring with Claude Code means using it to restructure code without changing behavior, verified by running the existing test suite before and after the change, not just by reading the diff.</p>
+      <p>The internal flow centers on scoping a refactor to an explicit, bounded set of files and behavior-preserving goals, then asking the agent to make the change and run tests before and after to confirm behavior did not shift, then hands a validated result to the next step in the product workflow.</p>
     </section>
 
     <section class="panel beginner-card">
     <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Refactoring is a practical building block inside claude code workflow. It has a specific job, clear inputs, expected outputs, and failure modes engineers must understand.</p>
-    <p><strong>Analogy:</strong> Claude Code is like a pair programmer that can read the repo, run tools, make edits, and remember project conventions when you give it a clear operating lane.</p>
+    <p>If you have no AI background, start here: Refactoring with Claude Code means using it to restructure code without changing behavior, verified by running the existing test suite before and after the change, not just by reading the diff.</p>
+    <p><strong>Analogy:</strong> It is like reorganizing a warehouse&#39;s shelving without moving any of the products to the wrong section.</p>
   </section>
     <section class="panel">
     <h2>Core concept you must understand</h2>
-    <p>Refactoring is a practical building block inside claude code workflow. It has a specific job, clear inputs, expected outputs, and failure modes engineers must understand.</p>
+    <p>Refactoring with Claude Code means using it to restructure code without changing behavior, verified by running the existing test suite before and after the change, not just by reading the diff.</p>
     <h3>What to learn</h3>
-    <ul><li>Start with the user problem Refactoring is supposed to help solve.</li><li>Identify the input, output, and handoff to the next system component.</li><li>Learn the normal path first, then study the failure path.</li><li>Connect the concept to measurable product signals such as quality, latency, cost, safety, or user trust.</li></ul>
+    <ul><li>Core mechanism: scoping a refactor to an explicit, bounded set of files and behavior-preserving goals, then asking the agent to make the change and run tests before and after to confirm behavior did not shift.</li><li>Inputs and outputs: identify what enters Refactoring, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Refactoring with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Refactoring worked for the right reason.</li></ul>
     <h3>Common misunderstandings</h3>
-    <ul><li>Do not memorize the term without understanding what problem it solves.</li><li>Do not assume a model output is correct just because it sounds confident.</li><li>Do not skip measurement; without evaluation, improvement is guesswork.</li></ul>
+    <ul><li>A refactor that compiles and looks cleaner is not automatically safe; without a passing test suite covering the affected behavior, a refactor can silently change edge-case behavior.</li><li>Refactoring is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Refactoring inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
   </section>
     <section class="panel explain-card">
     <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Refactoring matters because it changes whether the AI product is useful, reliable, measurable, or safe for real users.</p>
-    <p><strong>When it breaks:</strong> Do not memorize the term without understanding what problem it solves.</p>
+    <p><strong>When to use it:</strong> Refactoring matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
+    <p><strong>When it breaks:</strong> A refactor that compiles and looks cleaner is not automatically safe; without a passing test suite covering the affected behavior, a refactor can silently change edge-case behavior.</p>
     <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
   </section>
     <section class="panel">
     <h2>Worked example</h2>
-    <p>For a bug fix, ask Claude Code to inspect the failing test, identify the root cause, patch the smallest files, run the focused test, and explain the change.</p>
-    <ol><li><strong>Repo context:</strong> Refactoring is a practical building block inside claude code workflow.</li><li><strong>Instruction:</strong> The internal flow usually follows Repo context → Instruction → Plan/edit → Run checks → Review diff → Ship. Learn what each handoff means and what can break there.</li><li><strong>Plan/edit:</strong> For a bug fix, ask Claude Code to inspect the failing test, identify the root cause, patch the smallest files, run the focused test, and explain the change.</li><li><strong>Run checks:</strong> Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</li><li><strong>Review diff:</strong> A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</li><li><strong>Ship:</strong> Write a one-paragraph explanation of Refactoring, draw the input-output flow, and create one success case plus one failure case.</li></ol>
+    <p>Extracting a shared validation function used in four places works well when the agent is told the exact four call sites and the test command to confirm nothing else changed; an unscoped request risks touching unrelated code.</p>
+    <ol><li><strong>Repo context:</strong> Refactoring with Claude Code means using it to restructure code without changing behavior, verified by running the existing test suite before and after the change, not just by reading the diff.</li><li><strong>Instruction:</strong> The internal flow centers on scoping a refactor to an explicit, bounded set of files and behavior-preserving goals, then asking the agent to make the change and run tests before and after to confirm behavior did not shift, then hands a validated result to the next step in the product workflow.</li><li><strong>Plan/edit:</strong> Extracting a shared validation function used in four places works well when the agent is told the exact four call sites and the test command to confirm nothing else changed; an unscoped request risks touching unrelated code.</li><li><strong>Run checks:</strong> The main trade-off is a tightly scoped refactor request is easy to review and verify, while a broad request produces a larger diff that is harder to check line by line and more likely to include unintended behavior changes</li><li><strong>Review diff:</strong> A production-shaped slice should implement Refactoring on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Ship:</strong> Pick a function with duplicated logic in three places, ask the agent to extract a shared helper, and verify test results are identical before and after.</li></ol>
     <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
   </section>
     <section class="panel">
@@ -102,27 +104,27 @@
     <article>
       <span>Step 1</span>
       <strong>Repo context</strong>
-      <p>Refactoring is a practical building block inside claude code workflow.</p>
+      <p>Refactoring with Claude Code means using it to restructure code without changing behavior, verified by running the existing test suite before and after the change, not just by reading the diff.</p>
     </article><article>
       <span>Step 2</span>
       <strong>Instruction</strong>
-      <p>The internal flow usually follows Repo context → Instruction → Plan/edit → Run checks → Review diff → Ship. Learn what each handoff means and what can break there.</p>
+      <p>The internal flow centers on scoping a refactor to an explicit, bounded set of files and behavior-preserving goals, then asking the agent to make the change and run tests before and after to confirm behavior did not shift, then hands a validated result to the next step in the product workflow.</p>
     </article><article>
       <span>Step 3</span>
       <strong>Plan/edit</strong>
-      <p>For a bug fix, ask Claude Code to inspect the failing test, identify the root cause, patch the smallest files, run the focused test, and explain the change.</p>
+      <p>Extracting a shared validation function used in four places works well when the agent is told the exact four call sites and the test command to confirm nothing else changed; an unscoped request risks touching unrelated code.</p>
     </article><article>
       <span>Step 4</span>
       <strong>Run checks</strong>
-      <p>Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</p>
+      <p>The main trade-off is a tightly scoped refactor request is easy to review and verify, while a broad request produces a larger diff that is harder to check line by line and more likely to include unintended behavior changes</p>
     </article><article>
       <span>Step 5</span>
       <strong>Review diff</strong>
-      <p>A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</p>
+      <p>A production-shaped slice should implement Refactoring on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
     </article><article>
       <span>Step 6</span>
       <strong>Ship</strong>
-      <p>Write a one-paragraph explanation of Refactoring, draw the input-output flow, and create one success case plus one failure case.</p>
+      <p>Pick a function with duplicated logic in three places, ask the agent to extract a shared helper, and verify test results are identical before and after.</p>
     </article>
   </div>
     <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
@@ -134,12 +136,12 @@
 
     <section class="panel">
       <h2>What happens under the hood</h2>
-      <p>The internal flow usually follows Repo context → Instruction → Plan/edit → Run checks → Review diff → Ship. Learn what each handoff means and what can break there.</p>
+      <p>The internal flow centers on scoping a refactor to an explicit, bounded set of files and behavior-preserving goals, then asking the agent to make the change and run tests before and after to confirm behavior did not shift, then hands a validated result to the next step in the product workflow.</p>
     </section>
 
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> Architecture trade-offs come from constraints: faster systems often use less context, safer systems add checks, and higher-quality systems usually need better data and evaluation.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>Quality vs latency:</strong> The main trade-off is a tightly scoped refactor request is easy to review and verify, while a broad request produces a larger diff that is harder to check line by line and more likely to include unintended behavior changes</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
   </section>
 
     <section class="panel">
@@ -152,40 +154,35 @@
             <option value="safety">Strict safety and compliance</option>
           </select>
         </label>
-        <output data-sim-output data-latency="For Refactoring, shorten the Repo context to Ship path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Refactoring, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Refactoring, guard against do not memorize the term without understanding what problem it solves.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Refactoring, shorten the Repo context to Ship path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
+        <output data-sim-output data-latency="For Refactoring, shorten the Repo context to Ship path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Refactoring, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Refactoring, guard against a refactor that compiles and looks cleaner is not automatically safe; without a passing test suite covering the affected behavior, a refactor can silently change edge-case behavior.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Refactoring, shorten the Repo context to Ship path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality.</output>
       </div>
     </section>
 
     <section class="panel">
     <h2>Small runnable example</h2>
     <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</p>
+    <pre><code>claude &quot;extract the duplicated email-validation logic in
+signup.ts, login.ts, and resetPassword.ts into one shared
+function in validators.ts. Only touch these four files.
+Run npm test before and after to confirm behavior is unchanged.&quot;</code></pre>
+    <p><strong>Why this matters:</strong> A production-shaped slice should implement Refactoring on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
   </section>
     
     <section class="panel">
     <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Pick a function with duplicated logic in three places, ask the agent to extract a shared helper, and verify test results are identical before and after.</p>
     <ol>
-      <li>Run or sketch the small example above with one normal input and one edge-case input.</li>
-      <li>Record the expected output, the actual output, and the first place the result could become wrong.</li>
-      <li>Add one check that would catch that failure before a user sees it.</li>
-      <li>Turn the check into an eval case with a clear pass/fail rule.</li>
-      <li>Write the operational note: what to log, what metric to watch, and what fallback to use.</li>
+      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Add one check that would specifically catch this mistake: A refactor that compiles and looks cleaner is not automatically safe; without a passing test suite covering the affected behavior, a refactor can silently change edge-case behavior.</li>
+      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Practice extension:</strong> Write a one-paragraph explanation of Refactoring, draw the input-output flow, and create one success case plus one failure case.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
   </section>
 
     <section class="panel practice-card">
     <h2>Practice to make it stick</h2>
-    <p>Write a one-paragraph explanation of Refactoring, draw the input-output flow, and create one success case plus one failure case.</p>
+    <p>Pick a function with duplicated logic in three places, ask the agent to extract a shared helper, and verify test results are identical before and after.</p>
     <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
   </section>
 
@@ -196,7 +193,7 @@
 
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not memorize the term without understanding what problem it solves.</li><li>Do not assume a model output is correct just because it sounds confident.</li><li>Do not skip measurement; without evaluation, improvement is guesswork.</li></ul>
+    <ul><li>A refactor that compiles and looks cleaner is not automatically safe; without a passing test suite covering the affected behavior, a refactor can silently change edge-case behavior.</li><li>Refactoring is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Refactoring inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
   </section>
 
     <section class="panel">
@@ -207,9 +204,9 @@
     <section class="panel quiz" data-quiz="quiz-claude-code-refactoring">
     <h2>Quiz</h2>
     <p><strong>Question:</strong> Which answer best shows production understanding of Refactoring?</p>
-    <button data-answer="wrong">Do not memorize the term without understanding what problem it solves.</button>
-    <button data-answer="right">A production-shaped slice should include a small working example, visible inputs and outputs, at least three test cases, logging, and a clear failure response.</button>
-    <button data-answer="wrong">Do not assume a model output is correct just because it sounds confident.</button>
+    <button data-answer="wrong">A refactor that compiles and looks cleaner is not automatically safe; without a passing test suite covering the affected behavior, a refactor can silently change edge-case behavior.</button>
+    <button data-answer="right">A production-shaped slice should implement Refactoring on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
+    <button data-answer="wrong">Refactoring is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
@@ -220,7 +217,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
+    <ul><li><a href="https://code.claude.com/docs/en/common-workflows" rel="noopener noreferrer">Claude Code common workflows</a></li><li><a href="https://code.claude.com/docs/en/best-practices" rel="noopener noreferrer">Claude Code best practices</a></li></ul>
   </section>
 
     <div class="complete-box">

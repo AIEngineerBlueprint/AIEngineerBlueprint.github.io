@@ -58,6 +58,11 @@
       <ul class="checklist"><li>Explain why Pretraining is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
     </section>
 
+    <section class="panel business-card">
+    <h2>For non-technical readers</h2>
+    <p>The business-relevant fact: pretraining is the enormously expensive part, tens or hundreds of millions of dollars in compute for the largest models, which is exactly why only a handful of companies build these foundation models from scratch, and why almost every business, including yours, should be renting access to one via an API rather than trying to build its own from the ground up. It also explains the &#39;knowledge cutoff&#39; you may have heard about: a model only knows about the world up to whenever its training data was collected, which is why it can be confidently out of date on recent events.</p>
+  </section>
+
     <section class="panel objective-map">
     <h2>Learning the objectives</h2>
     <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
@@ -173,14 +178,14 @@
     
     <section class="panel">
     <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Find a topic you know well (your technical domain). Write 10 facts about it that would be rare or absent in general internet text. For each, explain whether a general pretrained model would know it and why.</p>
     <ol>
-      <li>Run or sketch the small example above with one normal input and one edge-case input.</li>
-      <li>Record the expected output, the actual output, and the first place the result could become wrong.</li>
-      <li>Add one check that would catch that failure before a user sees it.</li>
-      <li>Turn the check into an eval case with a clear pass/fail rule.</li>
-      <li>Write the operational note: what to log, what metric to watch, and what fallback to use.</li>
+      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Add one check that would specifically catch this mistake: Pretraining does not make a model safe or instruction-following. That requires RLHF and instruction tuning.</li>
+      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Practice extension:</strong> Find a topic you know well (your technical domain). Write 10 facts about it that would be rare or absent in general internet text. For each, explain whether a general pretrained model would know it and why.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
   </section>
 
     <section class="panel practice-card">
@@ -220,7 +225,7 @@
 
     <section class="panel">
     <h2>References</h2>
-    <ul><li><a href="https://arxiv.org/abs/2203.15556" rel="noopener noreferrer">Chinchilla scaling laws</a></li><li><a href="https://arxiv.org/abs/2005.14165" rel="noopener noreferrer">GPT-3 Language Models are Few-Shot Learners</a></li><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
+    <ul><li><a href="https://arxiv.org/abs/2203.15556" rel="noopener noreferrer">Chinchilla scaling laws</a></li><li><a href="https://arxiv.org/abs/2005.14165" rel="noopener noreferrer">GPT-3 Language Models are Few-Shot Learners</a></li></ul>
   </section>
 
     <div class="complete-box">

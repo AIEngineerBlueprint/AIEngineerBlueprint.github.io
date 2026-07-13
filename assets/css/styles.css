@@ -300,6 +300,12 @@ h3 { margin: 0 0 .5rem; font-size: 1.25rem; }
     linear-gradient(135deg, color-mix(in srgb, var(--brand) 12%, transparent), color-mix(in srgb, var(--brand-2) 10%, transparent)),
     var(--card);
 }
+.business-card {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--ok) 14%, transparent), color-mix(in srgb, var(--brand-2) 8%, transparent)),
+    var(--card);
+  border: 1px solid color-mix(in srgb, var(--ok) 30%, var(--line));
+}
 .track-grid {
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }
