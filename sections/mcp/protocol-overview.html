@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="MCP protocol overview explains how clients, servers, tools, resources, and prompts exchange structured context so AI apps can connect to external capabilities">
+  <meta name="description" content="The Model Context Protocol (MCP) is an open standard for connecting AI applications to tools, data, and prompts through servers — one protocol contract instea">
   <meta name="theme-color" content="#0f172a">
   <title>Protocol overview | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">MCP · Chapter 1</p>
         <h1>Protocol overview</h1>
-        <p class="lede">MCP protocol overview explains how clients, servers, tools, resources, and prompts exchange structured context so AI apps can connect to external capabilities safely.</p>
+        <p class="lede">The Model Context Protocol (MCP) is an open standard for connecting AI applications to tools, data, and prompts through servers — one protocol contract instead of a custom integration per app-tool pair.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="mcp-protocol-overview">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>Your team built the ticket-system integration three times: once for the IDE assistant, once for the support bot, once for the agent platform. All three drifted apart; two have auth bugs. MCP exists so the fourth time is the last time.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>MCP matters because integrations are where AI products spend most of their engineering: a standard protocol turns each integration from a per-app project into a reusable asset.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like a standard adapter between an AI application and many tool providers.</p>
+    <p>It is like USB-C for AI integrations: before it, every device needed its own cable for every laptop; after it, anything that speaks the standard plugs into anything else — and the interesting engineering moves from cables to what you plug in.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to client-server handshake, capabilities, tools, resources, prompts, JSON-RPC messages, permissions, and lifecycle.</p>
-    
+    <p>The flow: host starts a client per server → initialize handshake negotiates versions and capabilities → client discovers tools/resources/prompts → model or user invokes them → server executes and returns structured results → host feeds results back into context.</p>
+    <ul><li>The problem it solves is M×N integration sprawl: M AI applications times N tools previously meant M×N custom connectors; with MCP it is M clients + N servers, each written once against the same contract.</li><li>Three roles: the host (the AI application — an IDE, a chat app, an agent runtime), the client (the protocol connection the host manages, one per server), and the server (the program exposing capabilities). One host can hold many clients; one server can serve many hosts.</li><li>Servers expose three primitives: tools (functions the model can call — &#39;create_ticket&#39;), resources (data the host can read into context — files, records), and prompts (reusable templates users invoke). Which primitive you choose shapes who controls the interaction: model, application, or user.</li><li>The wire protocol is JSON-RPC 2.0 over a transport (stdio for local, streamable HTTP for remote), with an initialization handshake where client and server negotiate protocol version and capabilities before any calls happen.</li><li>Adoption is the point: because major hosts (Claude, IDEs, agent frameworks, OpenAI and Google tooling) speak MCP, a server you write once works across all of them — and the ecosystem of existing servers works inside whatever you&#39;re building.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>An IDE assistant can connect to an MCP server that exposes repository files as resources and test commands as tools.</p>
+    <p>A team wants their internal ticket system available to AI assistants. Pre-MCP: one plugin for the IDE assistant, one function-calling integration for the support bot, one bespoke connector for the agent platform — three codebases drifting apart. With MCP: one &#39;tickets&#39; server exposing search_tickets and create_ticket tools plus recent-incidents resources. Every MCP host in the company — and every future one — connects to the same server with the same permissions model.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Standard protocols improve interoperability but require careful trust and permission boundaries.</li></ul>
+    <ul><li><strong>The core tension:</strong> A standard buys interoperability at the cost of protocol constraints — you accept MCP&#39;s shapes for tools and resources instead of designing a bespoke API that fits one app perfectly.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Draw an MCP client-server exchange for listing a resource and calling one read-only tool.</p>
+    <p><strong>Task:</strong> Pick one internal system worth exposing to AI assistants. Write the server&#39;s capability list: three tools with one-line contracts, two resources, one prompt template — and mark which of the three primitives each capability uses and why.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped first step is one read-only server exposing a single high-value system, connected to one real host, with logging on every call — prove the contract before scaling the catalog.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not connect an MCP server without reviewing what resources and tools it exposes.</li></ul>
+    <ul><li>MCP is not an agent framework or a model feature; it is a wire protocol for connecting capabilities — the intelligence stays in the host and model.</li><li>MCP does not make integrations safe by itself; it standardizes how capabilities are exposed, and permissions, consent, and audit remain your design work.</li><li>It is not only for local desktop tools; remote servers over streamable HTTP with OAuth are how organizations share governed capabilities across teams.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-mcp-protocol-overview-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Protocol overview?</strong></p>
     <button data-answer="wrong">Once Protocol overview is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
-    <button data-answer="right">Do not connect an MCP server without reviewing what resources and tools it exposes.</button>
+    <button data-answer="right">MCP is not an agent framework or a model feature; it is a wire protocol for connecting capabilities — the intelligence stays in the host and model.</button>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-mcp-protocol-overview-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Protocol overview into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production-shaped first step is one read-only server exposing a single high-value system, connected to one real host, with logging on every call — prove the contract before scaling the catalog.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

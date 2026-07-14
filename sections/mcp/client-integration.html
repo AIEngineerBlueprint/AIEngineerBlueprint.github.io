@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="MCP client integration connects an AI host to MCP servers, discovers capabilities, chooses tools/resources, and enforces user or workspace policy.">
+  <meta name="description" content="Client integration is the host-side work: connecting to servers, negotiating capabilities, deciding what the model sees, enforcing user consent and approval p">
   <meta name="theme-color" content="#0f172a">
   <title>Client integration | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">MCP · Chapter 8</p>
         <h1>Client integration</h1>
-        <p class="lede">MCP client integration connects an AI host to MCP servers, discovers capabilities, chooses tools/resources, and enforces user or workspace policy.</p>
+        <p class="lede">Client integration is the host-side work: connecting to servers, negotiating capabilities, deciding what the model sees, enforcing user consent and approval policy, and handling server failures — the layer where MCP&#39;s safety model actually gets enforced.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="mcp-client-integration">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The user approved the server once, at install, in a dialog they didn&#39;t read. Four months later &#39;the AI deleted my branch&#39; — and the approval trail shows one blanket consent covering forty tools. The client is where safety was supposed to live.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Client integration matters because MCP&#39;s security model is host-enforced by design: the protocol standardizes plumbing, and every meaningful safety property — consent, approval, curation, audit — exists only if the client builds it.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like adding vetted plugins to an editor but routing every action through a permission-aware client.</p>
+    <p>It is like being the general contractor who hires subcontractors: the subs (servers) bring skills, but the contractor decides who gets hired, what they&#39;re allowed to touch, supervises the risky work, and answers to the homeowner when anything goes wrong.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to server discovery, connection lifecycle, capability caching, user consent, tool selection, and error handling.</p>
-    
+    <p>The flow: configure and connect servers → initialize + capability discovery → apply trust policy (pin descriptions, set approval tiers) → per task, curate the visible toolset → mediate invocations through approval policy → log everything → handle server failure as graceful capability loss.</p>
+    <ul><li>The client is where policy lives: servers offer capabilities, but the host decides which servers to trust, which tools the model may see per task, what requires approval, and what gets logged — none of that is in the protocol; all of it is your integration.</li><li>Connection lifecycle is real engineering: spawn or dial each server, run the initialize handshake, cache discovered capabilities, handle list-changed notifications, and manage reconnection and timeouts — a hung server must degrade that one capability, not the whole session.</li><li>Consent must be meaningful, not modal-fatigue: users should see what a server can do at install time (its tools, their annotations) and what a specific consequential call will do at invocation time — one-time blanket consent to everything is how incidents get user-approved.</li><li>Tool-list curation is a quality feature: passing every connected server&#39;s every tool to the model degrades selection accuracy and bloats context — good clients filter by task, dedupe overlapping tools, and namespace collisions (two servers both exposing &#39;search&#39;).</li><li>Trust changes over time: a server that updates its tool descriptions after installation is a rug-pull vector — pin what was approved, diff on change, and re-prompt for consent when a server&#39;s capabilities materially shift.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A coding assistant discovers a test-runner tool, asks for approval, calls it, then passes the result back to the model.</p>
+    <p>An IDE assistant integrates MCP: at install, connecting the &#39;deployments&#39; server shows its three tools with risk annotations and asks for scope consent. During a session, get_deploy_status runs silently, but trigger_prod_deploy raises an approval card showing arguments. When the server ships an update changing trigger_prod_deploy&#39;s description, the client detects the diff, disables the tool, and asks the user to re-approve — that diff-and-re-consent path is what stopped a poisoned-description update in a security exercise from ever reaching the model.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Client-side convenience can hide risky tool access if permissions are not visible.</li></ul>
+    <ul><li><strong>The core tension:</strong> Friction versus safety — every approval prompt costs UX and every auto-approval expands blast radius; the resolution is risk-tiered gating driven by tool annotations and per-server trust, not one global setting.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Design a client approval flow for connecting a new MCP server.</p>
+    <p><strong>Task:</strong> Design the client policy for a host with three servers (filesystem, CI, payments): the install-time consent screen contents, the approval tier per tool category, the tool-filtering rule per task type, and the exact behavior when the payments server updates its tool descriptions.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: a host connecting two servers of different trust levels, with pinned capability snapshots, a working approval card for one destructive tool, per-task tool filtering, and logs tying each invocation to server, user, and decision.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not auto-approve new server capabilities without user or policy review.</li></ul>
+    <ul><li>Connecting a server is not integrating it; without curation, approval policy, and failure handling, you&#39;ve integrated a liability with a config file.</li><li>User consent at install time does not cover runtime consequences; meaningful consent is layered — scope at install, confirmation at consequential invocation.</li><li>More connected servers do not make a better assistant; unmanaged tool sprawl measurably degrades the model&#39;s tool selection — curation is a performance feature, not just hygiene.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-mcp-client-integration-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Client integration?</strong></p>
     <button data-answer="wrong">Once Client integration is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
-    <button data-answer="right">Do not auto-approve new server capabilities without user or policy review.</button>
+    <button data-answer="right">Connecting a server is not integrating it; without curation, approval policy, and failure handling, you&#39;ve integrated a liability with a config file.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-mcp-client-integration-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Client integration into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production-shaped slice: a host connecting two servers of different trust levels, with pinned capability snapshots, a working approval card for one destructive tool, per-task tool filtering, and logs tying each invocation to server, user, and decision.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

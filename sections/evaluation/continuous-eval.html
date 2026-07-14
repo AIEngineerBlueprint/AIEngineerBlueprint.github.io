@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Continuous eval means re-running evaluation regularly against live or recent production data, not just once before launch, since model behavior, user query pa">
+  <meta name="description" content="Continuous evaluation extends measurement past release into live traffic: sampled production scoring, drift detection against baselines, and feedback loops th">
   <meta name="theme-color" content="#0f172a">
   <title>Continuous eval | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,33 +47,39 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 13</p>
         <h1>Continuous eval</h1>
-        <p class="lede">Continuous eval means re-running evaluation regularly against live or recent production data, not just once before launch, since model behavior, user query patterns, and underlying source content can all drift after deployment in ways a one-time evaluation would never catch.</p>
+        <p class="lede">Continuous evaluation extends measurement past release into live traffic: sampled production scoring, drift detection against baselines, and feedback loops that recruit real failures into the eval suite — because the world keeps changing after your last deploy.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-continuous-eval">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>Release evals were green in March and green in June. Between them, a provider model update and a new product tier quietly took real-traffic quality down eight points — measured by nobody, because nothing was measuring production.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Continuous eval matters because release-time evals answer &#39;did we break it?&#39; while production quietly asks &#39;did the world break it?&#39; — input drift, provider updates, and corpus rot all degrade quality with zero deploys on your side.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like a restaurant&#39;s ongoing health inspections, not just the one inspection required to open.</p>
+    <p>It is like water-quality monitoring downstream of the treatment plant: the plant&#39;s exit tests (release evals) can all pass while the river changes — new inflows, seasonal shifts — and only continuous sampling downstream catches contamination that no pre-release test could have predicted.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to scheduling the evaluation suite to run on a recurring cadence against recent production queries or a periodically refreshed golden set, tracking the trend over time rather than a single point-in-time score, and alerting when quality trends downward.</p>
-    
+    <p>The flow: sample live traffic (random + risk-stratified) → score with judges calibrated by human review → compare against rolling baselines with alert thresholds → triage flagged cases → recruit real failures into golden sets and unit evals → repeat, with the suite compounding.</p>
+    <ul><li>Production is the eval set you didn&#39;t write: live traffic contains query types, phrasings, and contexts your golden set never imagined — sampling it (randomly plus stratified by risk: low confidence, thumbs-down, high-value tenants) and scoring with judges is how you measure the distribution you actually serve.</li><li>Drift arrives from both directions: inputs drift (user intents shift, new product features spawn new questions) and behavior drifts (provider model updates, index staleness, slow prompt rot) — week-over-week comparisons of input clusters and quality scores catch both before they compound.</li><li>Baselines make &#39;worse&#39; detectable: continuous scores only mean something against a rolling baseline with control limits — &#39;faithfulness this week: 94.1%&#39; is a number; &#39;down 2.3 points from the 8-week band, starting the day of the provider update&#39; is a finding.</li><li>The loop must close into the suite: sampled failures get triaged — real regression, new query type, or judge error — and the keepers become golden-set rows and unit evals; a continuous-eval program that doesn&#39;t grow the offline suite is a smoke detector nobody rewires.</li><li>Live measurement carries live obligations: judge-scoring production traffic costs money (sample rates are a budget decision), and traffic contains user data (redaction and retention rules apply to eval pipelines exactly as they do to logs).</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A weekly continuous eval run reveals that a RAG system&#39;s citation accuracy has been slowly declining over two months as new, unindexed content accumulated, a trend that a single pre-launch evaluation would never have surfaced.</p>
+    <p>A support assistant, three months post-launch, all release evals green. Continuous eval — 2% of traffic judge-scored daily — flags two things: a new cluster of queries about a just-launched pricing tier (recall on them: 41%; the golden set predates the tier) and a slow faithfulness drift starting with an index-refresh config change. Both fixed within the week; twelve sampled failures join golden set v9. The team that relied on release evals alone would have met both problems as a renewals-quarter escalation.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Continuous evaluation catches drift and degradation that would otherwise go unnoticed for a long time, but running comprehensive evaluations repeatedly has real ongoing compute and maintenance cost, so cadence should match how quickly the specific system&#39;s inputs and behavior actually change</li></ul>
+    <ul><li><strong>The core tension:</strong> Sampling rate versus cost and privacy — score everything and the eval bill rivals the product bill; score too little and drift hides in the noise; risk-stratified sampling puts the budget where failures concentrate.</li></ul>
   </section>
     <section class="panel">
     <h2>Try it in code</h2>
@@ -87,28 +93,37 @@
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Design a continuous evaluation cadence for one real AI system, specifying how often it runs and what trend, not just what single score, would trigger an investigation.</p>
+    <p><strong>Task:</strong> Design continuous eval for one live AI feature: the sampling plan (rate and strata), the judge metrics with rolling baselines and one alert threshold, the weekly triage ritual, and the explicit criteria for when a sampled failure becomes a permanent golden-set row.</p>
     <ol>
       <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: a daily judge-scored sample with a defined rate, rolling baselines with one alert threshold, a weekly triage that has actually promoted failures into the golden set, and redaction rules on the eval pipeline.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>A system that passed its evaluation before launch is not guaranteed to still pass months later; model updates, changing user behavior, and evolving source content can all degrade quality gradually, which only continuous evaluation, not a one-time pre-launch check, can catch.</li></ul>
+    <ul><li>Green release evals are not lasting quality; they certify the moment of shipping, and drift starts the moment after.</li><li>Continuous eval is not logging user feedback; thumbs are one biased input — the substance is systematic sampling, judge scoring against baselines, and a loop that feeds the offline suite.</li><li>Drift alerts are not always regressions to fix; sometimes the world legitimately changed and the eval set is what&#39;s stale — triage decides which artifact gets updated, and both outcomes are wins.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-evaluation-continuous-eval-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Continuous eval?</strong></p>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
-    <button data-answer="right">A system that passed its evaluation before launch is not guaranteed to still pass months later; model updates, changing user behavior, and evolving source content can all degrade quality gradually, which only continuous evaluation, not a one-time pre-launch check, can catch.</button>
+    <button data-answer="right">Green release evals are not lasting quality; they certify the moment of shipping, and drift starts the moment after.</button>
     <button data-answer="wrong">Once Continuous eval is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-evaluation-continuous-eval-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Continuous eval into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="right">A production-shaped slice: a daily judge-scored sample with a defined rate, rolling baselines with one alert threshold, a weekly triage that has actually promoted failures into the golden set, and redaction rules on the eval pipeline.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

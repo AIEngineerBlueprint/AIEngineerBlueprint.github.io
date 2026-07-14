@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Observability gives engineers enough traces, metrics, logs, and examples to understand AI system behavior in production.">
+  <meta name="description" content="MCP observability is seeing what flows through the protocol layer: which tools get called with what arguments and outcomes, which resources enter context, per">
   <meta name="theme-color" content="#0f172a">
   <title>Observability | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">MCP · Chapter 11</p>
         <h1>Observability</h1>
-        <p class="lede">Observability gives engineers enough traces, metrics, logs, and examples to understand AI system behavior in production.</p>
+        <p class="lede">MCP observability is seeing what flows through the protocol layer: which tools get called with what arguments and outcomes, which resources enter context, per-server latency and errors, and enough trace context to reconstruct any interaction after the fact.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="mcp-observability">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>&#39;The assistant did something to the staging database yesterday.&#39; Which server? Which tool? What arguments? Approved by whom? Without invocation logs, the answer to all four is the same: nobody knows.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>MCP observability matters because the protocol layer is where AI intent becomes real action across trust boundaries: without invocation records, every incident is unreconstructable and every governance promise is unverifiable.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like adding gauges and a flight recorder to a complex machine.</p>
+    <p>It is like putting flight recorders on the contractor entrance of a building: you vetted everyone at the door, but when something goes missing you need to know who came in, what they touched, and when — vetting and logging are different controls, and you need both.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to trace IDs, prompt/version metadata, token cost, latency, retrieval hits, tool calls, scores, and user feedback.</p>
-    
+    <p>The flow: instrument client-side (attempts, policy decisions) and server-side (executions, outcomes) → propagate session trace IDs → aggregate into per-tool and per-server dashboards → alert on anomalies in rate, error, and argument patterns → feed sampled records into policy and toolset tuning.</p>
+    <ul><li>The unit is the invocation record: timestamp, host/user identity, server, tool or resource URI, arguments (redacted where sensitive), outcome or error, latency, and the session/task ID linking it to the conversation — every question you&#39;ll ever ask starts from this record.</li><li>Both sides should log, because they see different truths: the client sees what the model attempted and what policy decided (including denials and approval outcomes); the server sees what was actually executed against the real system — discrepancies between the two views are themselves signals.</li><li>MCP-shaped metrics differ from service metrics: tool-call frequency by tool and caller, approval/denial rates, tool-selection error patterns (calls immediately followed by &#39;wrong tool&#39; retries), resource read volumes, and per-server error and timeout rates — a healthy green service can still host a confused model.</li><li>Traces make debugging cross-boundary: one task may touch three servers over minutes — session-scoped trace IDs propagated across client and servers are what let you replay &#39;what did the assistant actually do&#39; as a sequence instead of grepping four logs.</li><li>The same records serve security and improvement: anomaly detection (a server suddenly reading ten times the resources; a tool called with out-of-pattern arguments) and product tuning (which tools are never used, where approvals get rubber-stamped) come from the identical stream.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A bad answer can be traced to the exact prompt version, retrieved chunks, model, and validation results.</p>
+    <p>A user reports: &#39;the assistant deleted the wrong branch yesterday.&#39; With MCP observability: query session traces, find the git server&#39;s delete_branch call at 15:42 with argument &#39;main&#39; (denied by policy), followed by &#39;feature/main-fix&#39; (approved by user click) — the model chose the wrong branch, the approval card showed it, and the user clicked through. Fix: the approval card now renders the branch&#39;s last-commit info, and delete_branch gains a typed-confirmation tier. Time to root cause: 20 minutes, entirely from invocation records.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> More observability helps debugging but raises privacy and storage concerns.</li></ul>
+    <ul><li><strong>The core tension:</strong> Complete records collide with privacy and volume — arguments and resource contents can be sensitive, so redaction at write time, tiered retention, and logging decisions-about-content (rather than full content) where possible are the standard resolutions.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Define five fields needed to debug a hallucinated answer.</p>
+    <p><strong>Task:</strong> Define the invocation-record schema for one MCP deployment (fields on the client record and the server record, and what&#39;s redacted), then write the three queries you&#39;d run after a &#39;the assistant did something wrong yesterday&#39; report.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: invocation logging on both ends with shared trace IDs, one dashboard showing per-server call/error/latency and approval rates, one anomaly alert, and a demonstrated end-to-end trace of a real multi-server task.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not log sensitive prompts without retention and redaction rules.</li></ul>
+    <ul><li>Server logs alone are not MCP observability; denials, approvals, and model attempts that never executed live only on the client side — and those are often the interesting events.</li><li>Uptime and latency dashboards do not show a misbehaving integration; a model calling the wrong tools successfully looks perfectly healthy in service metrics.</li><li>Logging everything raw is not the safe default; invocation arguments routinely contain sensitive data, and the audit layer must not become the leak.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-mcp-observability-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Observability?</strong></p>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
     <button data-answer="wrong">Once Observability is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
-    <button data-answer="right">Do not log sensitive prompts without retention and redaction rules.</button>
+    <button data-answer="right">Server logs alone are not MCP observability; denials, approvals, and model attempts that never executed live only on the client side — and those are often the interesting events.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-mcp-observability-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Observability into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="right">A production-shaped slice: invocation logging on both ends with shared trace IDs, one dashboard showing per-server call/error/latency and approval rates, one anomaly alert, and a demonstrated end-to-end trace of a real multi-server task.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

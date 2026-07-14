@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Transports in MCP are the communication mechanisms, such as stdio for local processes or HTTP-based streaming for remote servers, that carry messages between ">
+  <meta name="description" content="Transports are how MCP messages physically travel: stdio for servers running locally as child processes, and streamable HTTP for remote servers — with the cho">
   <meta name="theme-color" content="#0f172a">
   <title>Transports | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,33 +47,39 @@
       <div>
         <p class="eyebrow">MCP · Chapter 3</p>
         <h1>Transports</h1>
-        <p class="lede">Transports in MCP are the communication mechanisms, such as stdio for local processes or HTTP-based streaming for remote servers, that carry messages between an MCP client and server, chosen based on whether the server runs locally or remotely.</p>
+        <p class="lede">Transports are how MCP messages physically travel: stdio for servers running locally as child processes, and streamable HTTP for remote servers — with the choice determining latency, deployment model, authentication, and operational surface.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="mcp-transports">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The demo server worked perfectly on the developer&#39;s laptop. Then the team tried to share it: no auth story, no TLS, dies when the laptop sleeps. Local stdio and remote HTTP aren&#39;t two configs of one thing — they&#39;re two different operational worlds.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Transport choice is really a deployment-and-trust choice: it decides who can reach the server, whose credentials it runs with, and which team owns its uptime.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like choosing between an internal intercom for people in the same building versus a phone line for someone offsite; both carry the same kind of conversation, but the physical connection is different.</p>
+    <p>It is like the difference between an intercom to the room next door and a phone line to another building: same language on both, but one is private by physical proximity while the other needs dial tones, authentication, and someone maintaining the line.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to a local transport such as standard input and output for a server running as a subprocess on the same machine, or a remote transport such as HTTP with streaming for a server running on different infrastructure, with the protocol&#39;s message format staying the same regardless of which transport carries it.</p>
-    
+    <p>The flow (remote): client POSTs JSON-RPC to the endpoint → server responds directly or opens an SSE stream for async/server-initiated messages → session ID carries continuity → auth headers gate every request. stdio compresses all of that into process spawning and pipes.</p>
+    <ul><li>stdio is the local workhorse: the host spawns the server as a child process and speaks JSON-RPC over stdin/stdout — near-zero latency, no network exposure, inheriting the user&#39;s local permissions. Its constraint: the server lives and dies with the host machine.</li><li>Streamable HTTP is the remote transport: a single endpoint accepting POSTed JSON-RPC messages, with optional server-sent event streams for server-initiated messages — it replaced the older HTTP+SSE dual-endpoint design, so expect both in the wild during transition.</li><li>Remote transport pulls in web concerns wholesale: TLS, OAuth-based authorization, session management, origin validation, load balancing, timeouts — a remote MCP server is a web service and needs the full web-service operational treatment.</li><li>Statefulness is the subtle difference: stdio sessions are inherently stateful (one process per session); streamable HTTP must manage session identity across requests explicitly — which matters for resumability and horizontal scaling of servers.</li><li>Choose by deployment reality, not fashion: personal/developer-machine capabilities (files, local git, local DB) fit stdio; shared, governed, team-wide capabilities (company APIs, centralized data access) fit remote HTTP behind proper auth.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A local MCP server that reads files from a developer&#39;s own machine uses a stdio transport since it runs as a subprocess, while an MCP server exposing a company&#39;s shared database runs remotely and uses an HTTP-based transport.</p>
+    <p>The same &#39;database&#39; capability, two transports: a developer&#39;s stdio server spawns locally and queries their dev database with their local credentials — setup is one config line. The production analytics server runs as a remote streamable-HTTP service: OAuth against the company IdP, per-user scoped queries, TLS, rate limits, and centralized logs. Same tool names, same schemas — completely different operational worlds, correctly matched to their audiences.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> A local stdio transport is simple and has minimal latency for tools running on the same machine, but a remote transport is necessary for shared, centrally-hosted tools that many clients need to access, at the cost of network latency and additional security considerations</li></ul>
+    <ul><li><strong>The core tension:</strong> Stdio is simple and private but unshareable and unscalable; streamable HTTP is shareable and governable but brings the entire web-security-and-operations checklist with it.</li></ul>
   </section>
     <section class="panel">
     <h2>Try it in code</h2>
@@ -87,28 +93,37 @@ const server = new MCPServer({ transport: &quot;http&quot;, port: 8080 });</code
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> For one real tool you&#39;d want to expose via MCP, decide whether a local or remote transport fits, based on where the underlying capability actually runs.</p>
+    <p><strong>Task:</strong> For three capabilities — project-file access, a personal notes database, and the company CRM — pick the transport for each and justify it in one sentence covering who needs access, whose credentials apply, and who operates it.</p>
     <ol>
       <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: take one working stdio server and stand up its remote twin — endpoint, TLS, OAuth, logging — and note every new operational requirement that appeared purely from changing transport.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Transport choice is not just an implementation detail; it determines real operational properties like latency, how the server is deployed, and what security boundary applies, so it should match where the underlying tool or data actually lives.</li></ul>
+    <ul><li>Transports are not interchangeable details; moving a server from stdio to HTTP changes its security model, credential story, and failure modes — it&#39;s a redeployment, not a config flip.</li><li>Remote MCP is not &#39;just an API call&#39;; sessions, streaming, and server-initiated messages make it a longer-lived, stateful conversation that load balancers and proxies must be configured to respect.</li><li>Local does not mean safe: a stdio server runs with your user&#39;s permissions, so a malicious or buggy local server is a local-code-execution problem, not a sandboxed plugin.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-mcp-transports-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Transports?</strong></p>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
-    <button data-answer="right">Transport choice is not just an implementation detail; it determines real operational properties like latency, how the server is deployed, and what security boundary applies, so it should match where the underlying tool or data actually lives.</button>
+    <button data-answer="right">Transports are not interchangeable details; moving a server from stdio to HTTP changes its security model, credential story, and failure modes — it&#39;s a redeployment, not a config flip.</button>
     <button data-answer="wrong">Once Transports is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-mcp-transports-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Transports into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="right">A production-shaped slice: take one working stdio server and stand up its remote twin — endpoint, TLS, OAuth, logging — and note every new operational requirement that appeared purely from changing transport.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

@@ -54,7 +54,10 @@
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> MCP is like a USB-C port for AI applications: one standard way for a model client to discover tools, resources, and prompts from many servers. A protocol boundary keeps tool access governable. Teams can add capabilities without hard-wiring every integration into every assistant.</p>
   </section>
-  
+  <section class="panel hook-card">
+    <h2>The running example</h2>
+    <p>Throughout this track, imagine you own &#39;tickets-mcp&#39;: your company&#39;s internal ticket-system server, used by the IDE assistant, the support bot, and the agent platform. Every chapter is a decision you&#39;ll make taking it from a laptop demo to a governed, versioned, observable piece of company infrastructure.</p>
+  </section>
   <section class="panel deep-dive">
         <h2>Production build path</h2>
         <p>Use this track to contribute to one of the platform projects below. These projects are intentionally track-level because they combine multiple chapters into a complete product slice.</p>
@@ -64,55 +67,55 @@
   <section class="chapter-grid"><a class="chapter-card" href="/sections/mcp/protocol-overview.html">
       <span>Chapter 1</span>
       <strong>Protocol overview</strong>
-      <small>MCP protocol overview explains how clients, servers, tools, resources, and prompts exchange structured context so AI apps can connect to external capabilities safely.</small>
+      <small>The Model Context Protocol (MCP) is an open standard for connecting AI applications to tools, data, and prompts through servers — one protocol contract instead of a custom integration per app-tool pair.</small>
     </a><a class="chapter-card" href="/sections/mcp/mcp-architecture.html">
       <span>Chapter 2</span>
       <strong>MCP architecture</strong>
-      <small>MCP architecture defines where the host app, client, server, tools, resources, prompts, permissions, and transport boundaries sit.</small>
+      <small>MCP architecture defines where responsibilities sit — host application, per-server clients, servers, and transports — and how capability discovery, invocation, and permission boundaries flow between them.</small>
     </a><a class="chapter-card" href="/sections/mcp/transports.html">
       <span>Chapter 3</span>
       <strong>Transports</strong>
-      <small>Transports in MCP are the communication mechanisms, such as stdio for local processes or HTTP-based streaming for remote servers, that carry messages between an MCP client and server, chosen based on whether the server runs locally or remotely.</small>
+      <small>Transports are how MCP messages physically travel: stdio for servers running locally as child processes, and streamable HTTP for remote servers — with the choice determining latency, deployment model, authentication, and operational surface.</small>
     </a><a class="chapter-card" href="/sections/mcp/resources.html">
       <span>Chapter 4</span>
       <strong>Resources</strong>
-      <small>Resources in MCP are a way for a server to expose readable data, such as files or database records, to a client in a structured, addressable way, distinct from tools which perform actions.</small>
+      <small>Resources are MCP&#39;s read-side primitive: URI-addressed data — files, records, schemas, documents — that a server exposes for the host to read into model context, with the application (not the model) deciding what gets loaded.</small>
     </a><a class="chapter-card" href="/sections/mcp/tools.html">
       <span>Chapter 5</span>
       <strong>Tools</strong>
-      <small>Tools in MCP are the functions a server exposes that a client&#39;s model can invoke to perform an action or computation, following the same schema-based function-calling pattern used across most agentic AI systems.</small>
+      <small>Tools are MCP&#39;s action primitive: schema-defined functions a server exposes for the model to invoke — search, create, update, execute — making them the highest-power and highest-risk part of the protocol surface.</small>
     </a><a class="chapter-card" href="/sections/mcp/prompts.html">
       <span>Chapter 6</span>
       <strong>Prompts</strong>
-      <small>Prompts in MCP are reusable, server-defined prompt templates that a client can discover and use, letting a server share proven prompting patterns for its specific domain rather than every client having to write its own from scratch.</small>
+      <small>Prompts are MCP&#39;s user-controlled primitive: named, parameterized templates a server exposes — slash-command style workflows like /review-pr or /summarize-incident — that users explicitly invoke and hosts expand into structured messages.</small>
     </a><a class="chapter-card" href="/sections/mcp/server-implementation.html">
       <span>Chapter 7</span>
       <strong>Server implementation</strong>
-      <small>MCP server implementation exposes tools, resources, and prompts through a protocol contract that clients can discover and call.</small>
+      <small>Server implementation is building the program that speaks MCP: registering capabilities with schemas, handling tool and resource requests with validation and honest errors, and behaving like the production service it is — because hosts and models will exercise every path you didn&#39;t test.</small>
     </a><a class="chapter-card" href="/sections/mcp/client-integration.html">
       <span>Chapter 8</span>
       <strong>Client integration</strong>
-      <small>MCP client integration connects an AI host to MCP servers, discovers capabilities, chooses tools/resources, and enforces user or workspace policy.</small>
+      <small>Client integration is the host-side work: connecting to servers, negotiating capabilities, deciding what the model sees, enforcing user consent and approval policy, and handling server failures — the layer where MCP&#39;s safety model actually gets enforced.</small>
     </a><a class="chapter-card" href="/sections/mcp/security-model.html">
       <span>Chapter 9</span>
       <strong>Security model</strong>
-      <small>The MCP security model defines how servers, tools, resources, users, and hosts are trusted, permissioned, isolated, and audited.</small>
+      <small>The MCP security model is how hosts, servers, tools, and users get trusted, permissioned, isolated, and audited — built on the assumption that servers may be malicious, content may carry instructions, and the model can be talked into anything.</small>
     </a><a class="chapter-card" href="/sections/mcp/enterprise-governance.html">
       <span>Chapter 10</span>
       <strong>Enterprise governance</strong>
-      <small>Enterprise governance for MCP defines how organizations approve servers, manage versions, enforce policies, monitor usage, and respond to incidents.</small>
+      <small>Enterprise governance for MCP is how an organization decides which servers are allowed, who approves them, how versions are pinned and updated, what usage gets logged, and who responds when a connector misbehaves — an internal app store plus audit program for AI capability.</small>
     </a><a class="chapter-card" href="/sections/mcp/observability.html">
       <span>Chapter 11</span>
       <strong>Observability</strong>
-      <small>Observability gives engineers enough traces, metrics, logs, and examples to understand AI system behavior in production.</small>
+      <small>MCP observability is seeing what flows through the protocol layer: which tools get called with what arguments and outcomes, which resources enter context, per-server latency and errors, and enough trace context to reconstruct any interaction after the fact.</small>
     </a><a class="chapter-card" href="/sections/mcp/versioning.html">
       <span>Chapter 12</span>
       <strong>Versioning</strong>
-      <small>Versioning for MCP means managing changes to a server&#39;s exposed tools, resources, and prompts over time so that connected clients aren&#39;t unexpectedly broken by a change to the server&#39;s interface.</small>
+      <small>Versioning in MCP spans three layers that drift independently — the protocol revision clients and servers negotiate, each server&#39;s capability surface (tools, schemas, descriptions), and the host&#39;s pinned expectations — and unmanaged drift at any layer breaks integrations or security assumptions silently.</small>
     </a><a class="chapter-card" href="/sections/mcp/operations.html">
       <span>Chapter 13</span>
       <strong>Operations</strong>
-      <small>Operations for MCP means monitoring server uptime, tool call latency and error rate, and resource access patterns in production, so a connected agent&#39;s failures can be traced back to the specific MCP server or tool responsible.</small>
+      <small>MCP operations is running the connector layer day to day: deploying and updating servers, managing their credentials, watching health and usage, handling incidents where an AI-driven integration misbehaves, and retiring what nobody uses.</small>
     </a><a class="chapter-card" href="/sections/mcp/mcp-lab.html">
       <span>Chapter 14</span>
       <strong>MCP lab</strong>

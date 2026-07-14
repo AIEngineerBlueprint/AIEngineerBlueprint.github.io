@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Human review brings trained people into AI evaluation or operation for cases where judgment, risk, or ambiguity exceeds automation limits.">
+  <meta name="description" content="Human review is structured human judgment inside the eval loop — rubric-scored samples, side-by-side comparisons, and adjudication of disputed cases — the gro">
   <meta name="theme-color" content="#0f172a">
   <title>Human review | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 6</p>
         <h1>Human review</h1>
-        <p class="lede">Human review brings trained people into AI evaluation or operation for cases where judgment, risk, or ambiguity exceeds automation limits.</p>
+        <p class="lede">Human review is structured human judgment inside the eval loop — rubric-scored samples, side-by-side comparisons, and adjudication of disputed cases — the ground truth that calibrates every automated metric and catches what they can&#39;t see.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-human-review">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The LLM judge scored the answer 5/5. A human reviewer noticed it politely cited the right document while stating the opposite of what it says. Judges are scalable, not infallible — and nobody was checking the checker.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Human review matters because every automated metric is a proxy that drifts: judges miss subtle wrongness, proxies saturate, and users change — periodic human ground truth is what keeps the whole measurement stack honest.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like an editor reviewing high-impact drafts before publication.</p>
+    <p>It is like restaurant inspections in a world of kitchen sensors: the sensors run continuously and cheaply, but someone still has to taste the food — and the sensors are only trusted because inspections keep confirming they correlate with reality.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to review queues, sampling, rubrics, disagreement handling, escalation, calibration, and feedback loops.</p>
-    
+    <p>The flow: define a rubric with anchored questions → sample strategically (random + stratified by risk and disagreement) → score with measured inter-rater agreement → adjudicate disputes → feed results back into judges, golden sets, and product decisions.</p>
+    <ul><li>Humans are the calibration layer, not the volume layer: automated metrics and LLM judges score everything; humans score samples that verify the judges — when human and judge disagree beyond a threshold, the judge (or its rubric) gets fixed, not the human.</li><li>Rubrics turn opinion into data: &#39;rate 1–5&#39; produces noise; &#39;correct per source: yes/no; complete: covers all asked sub-questions: yes/no; tone: within guidelines: yes/no&#39; produces decisions — good rubrics are small sets of binary-ish, evidence-anchored questions.</li><li>Agreement is measured, not assumed: double-score a slice and compute inter-rater agreement; low agreement means the rubric is ambiguous or reviewers need calibration examples — publishing scores from a rubric nobody agrees on is measurement theater.</li><li>Sampling design decides what humans see: random samples estimate overall quality, but stratified samples — low-judge-confidence cases, user-thumbs-down traffic, tagged-critical intents, disagreement cases — put expensive human attention where it changes decisions.</li><li>Review output is an asset, not a report: adjudicated examples flow into the golden set, judge-rubric fixes, and training data — a review program that only produces a weekly score is discarding most of its value.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A medical assistant routes low-confidence or high-risk answers to clinician review.</p>
+    <p>A support assistant&#39;s review program: 60 sampled answers weekly — 20 random, 20 low-judge-confidence, 20 thumbs-down — scored by two rotating reviewers against a four-question rubric. Month one: inter-rater agreement on &#39;complete&#39; is 0.55; the rubric&#39;s completeness question gets rewritten with examples, agreement rises to 0.85. Month two: humans flag a polite-but-subtly-wrong pattern in refund answers the judge scores 5/5 — the judge rubric gains a source-check question, and eight adjudicated cases join the golden set. The automated metrics got better because humans audited them.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Human review improves safety but costs time and can become inconsistent without calibration.</li></ul>
+    <ul><li><strong>The core tension:</strong> Human judgment is the most trustworthy and most expensive signal — the design goal is minimum human hours for maximum calibration power, which means small well-designed samples reviewing the right cases, not heroic volume.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Create a review rubric with three pass/fail criteria and one free-text note field.</p>
+    <p><strong>Task:</strong> Design a human review program for one AI feature: the four rubric questions with anchors, the weekly sample size and strata, how you&#39;d measure inter-rater agreement, and the explicit path a reviewed example takes into the golden set or the judge rubric.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: a written rubric, a weekly stratified sample of 30–60 items, two reviewers with agreement tracked, and a documented path from review findings into golden-set rows and judge fixes.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not ask reviewers for vague opinions; give them a rubric and examples.</li></ul>
+    <ul><li>Human review is not the fallback for teams without automated evals; it is what makes automated evals trustworthy — mature teams have more structured human review, not less.</li><li>Thumbs-up/down from users is not human review; it is a noisy, biased signal worth collecting but never a substitute for rubric-scored samples with measured agreement.</li><li>Disagreement between reviewers is not a people problem; it is rubric information — the ambiguity they disagree on is usually the same ambiguity confusing your judge and your model.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-evaluation-human-review-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Human review?</strong></p>
-    <button data-answer="right">Do not ask reviewers for vague opinions; give them a rubric and examples.</button>
+    <button data-answer="right">Human review is not the fallback for teams without automated evals; it is what makes automated evals trustworthy — mature teams have more structured human review, not less.</button>
     <button data-answer="wrong">Once Human review is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-evaluation-human-review-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Human review into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production-shaped slice: a written rubric, a weekly stratified sample of 30–60 items, two reviewers with agreement tracked, and a documented path from review findings into golden-set rows and judge fixes.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

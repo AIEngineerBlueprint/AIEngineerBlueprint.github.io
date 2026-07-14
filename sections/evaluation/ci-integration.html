@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="CI integration for evaluation runs a defined set of eval cases automatically on every relevant code, prompt, or model change, blocking or flagging changes tha">
+  <meta name="description" content="CI integration wires evals into the same pipeline that gates code: prompt edits, model version bumps, and retrieval changes trigger eval runs automatically, a">
   <meta name="theme-color" content="#0f172a">
   <title>CI integration | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,33 +47,39 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 12</p>
         <h1>CI integration</h1>
-        <p class="lede">CI integration for evaluation runs a defined set of eval cases automatically on every relevant code, prompt, or model change, blocking or flagging changes that regress quality below an accepted threshold, the same way unit tests gate a traditional software change.</p>
+        <p class="lede">CI integration wires evals into the same pipeline that gates code: prompt edits, model version bumps, and retrieval changes trigger eval runs automatically, and failures block merges — making quality regression as hard to ship accidentally as a failing unit test.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-ci-integration">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The eval suite was thorough, documented, and manual. Under a deadline, a prompt change shipped without it — the regression it would have caught took two weeks to trace back. Evals that don&#39;t run themselves eventually don&#39;t run.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>CI integration matters because manual eval discipline decays under deadline pressure — the only evals that reliably run are the ones that run themselves, and the only results that reliably matter are the ones that can block a merge.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like a factory quality-control checkpoint on the assembly line, checking every unit before it ships, rather than sampling finished products after they&#39;ve already reached customers.</p>
+    <p>It is like putting the crash-test lab inside the assembly line instead of across town: when every chassis change automatically rolls through the test rig before joining the line, &#39;we forgot to test that change&#39; stops being a possible sentence.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to running a golden evaluation set automatically as part of the build or deploy pipeline whenever a prompt, model version, or relevant code changes, comparing results against a baseline threshold, and failing the pipeline or requiring explicit approval if quality drops below that threshold.</p>
-    
+    <p>The flow: map change types to eval tiers → trigger on the full behavioral surface (prompts, configs, models, not just code) → run with pinned versions and managed nondeterminism → surface per-example diffs in the PR → block on red with a recorded-override escape hatch → feed every override into the weekly quality review.</p>
+    <ul><li>The trigger map is wider than code: prompt files, model/parameter configs, retrieval settings, guardrail thresholds, and eval datasets themselves all change behavior — CI watches those paths and runs the eval tier each change class deserves, not just `src/`.</li><li>Tiering keeps CI honest and fast: unit evals (minutes, deterministic, every PR) → golden-set regression runs (tens of minutes, on prompt-meaning and model changes) → full suites with safety probes and agent scenarios (scheduled or on high-risk changes) — one-size CI either rubber-stamps or paralyzes.</li><li>Nondeterminism needs engineering, not tolerance: temperature 0 where possible, N-run thresholds where not, pinned model versions in CI (a floating &#39;latest&#39; makes every run a different experiment), and cached responses for unchanged examples to control cost and time.</li><li>A red eval must actually block: advisory-only eval results decay into ignored noise within weeks — the cultural contract is the same as tests: a red gate means fix it, consciously override it with a recorded justification, or don&#39;t ship.</li><li>Cost is a designed property: golden-set runs on every commit of a busy repo can cost real money — response caching, changed-example detection, cheap-model judges for the inner tier, and full runs reserved for merge-to-main keep the pipeline affordable enough to never be &#39;temporarily disabled&#39;.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A prompt change that would have subtly broken structured output formatting is caught automatically in CI because the evaluation suite includes a schema-validation check that runs on every prompt pull request, before it ever reaches production.</p>
+    <p>A repo where prompts live next to code: PR #412 tweaks the support assistant&#39;s system prompt &#39;for tone&#39;. CI detects the prompt path, runs the 90-second unit tier (passes) and the golden-set diff (fails: 4 refund-policy examples regress — the tone change weakened a constraint sentence). The engineer sees the per-example diff in the PR, restores the constraint, re-push, green, merge. Total loop: 40 minutes, no reviewer had to remember evals exist — the pipeline remembered.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Automated CI evaluation catches regressions before they reach users, but building and maintaining a golden evaluation set comprehensive enough to catch real regressions takes ongoing investment, and an evaluation suite that&#39;s too slow can bottleneck every deployment</li></ul>
+    <ul><li><strong>The core tension:</strong> Gate strictness versus iteration speed — heavy suites on every commit stall teams, loose gates ship regressions; tiering by change risk, caching, and a fast inner loop are what let the gate be strict where it counts.</li></ul>
   </section>
     <section class="panel">
     <h2>Try it in code</h2>
@@ -86,28 +92,37 @@
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Design one CI-integrated eval check for a real AI feature that would catch a specific kind of regression, such as a formatting break or a factual accuracy drop, before it reaches production.</p>
+    <p><strong>Task:</strong> Write the CI eval policy for one repo: the watched paths and their change classes, the eval tier per class with time and cost budgets, the pinning and nondeterminism rules, what a blocking failure looks like in the PR, and the override procedure with its audit trail.</p>
     <ol>
       <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: eval triggers on prompt and config paths, a two-tier pipeline (fast unit tier on PR, regression tier on merge), pinned model versions, per-example diffs as PR comments, and at least one real regression caught and blocked to prove the wiring.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Passing normal software unit tests does not mean an AI feature&#39;s actual output quality is protected; without eval cases specifically checking the AI-generated behavior in CI, a prompt or model change can silently regress quality while all traditional tests still pass.</li></ul>
+    <ul><li>Running evals nightly is not CI integration; the value is coupling eval runs to the specific change and blocking before merge — feedback after shipping is just faster archaeology.</li><li>Eval nondeterminism does not make CI gating impossible; determinism engineering (temperature, thresholds, pinning, caching) is a solved pattern, and &#39;too flaky to gate&#39; usually means &#39;not yet engineered&#39;.</li><li>A gate that can never be overridden is not rigor; it is an incentive to delete the gate — the escape hatch with recorded justification is what keeps red gates honest and rare.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-evaluation-ci-integration-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about CI integration?</strong></p>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
-    <button data-answer="right">Passing normal software unit tests does not mean an AI feature&#39;s actual output quality is protected; without eval cases specifically checking the AI-generated behavior in CI, a prompt or model change can silently regress quality while all traditional tests still pass.</button>
+    <button data-answer="right">Running evals nightly is not CI integration; the value is coupling eval runs to the specific change and blocking before merge — feedback after shipping is just faster archaeology.</button>
     <button data-answer="wrong">Once CI integration is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-evaluation-ci-integration-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing CI integration into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production-shaped slice: eval triggers on prompt and config paths, a two-tier pipeline (fast unit tier on PR, regression tier on merge), pinned model versions, per-example diffs as PR comments, and at least one real regression caught and blocked to prove the wiring.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Safety evals test whether an AI system avoids harmful, private, policy-violating, or unauthorized behavior under normal and adversarial inputs.">
+  <meta name="description" content="Safety evals systematically probe an AI system&#39;s failure modes with adversarial and sensitive inputs — injection, jailbreaks, harmful-content requests, PII ha">
   <meta name="theme-color" content="#0f172a">
   <title>Safety evals | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 9</p>
         <h1>Safety evals</h1>
-        <p class="lede">Safety evals test whether an AI system avoids harmful, private, policy-violating, or unauthorized behavior under normal and adversarial inputs.</p>
+        <p class="lede">Safety evals systematically probe an AI system&#39;s failure modes with adversarial and sensitive inputs — injection, jailbreaks, harmful-content requests, PII handling, bias probes — measuring not whether the system is polite on average but whether it holds at the edges where harm lives.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-safety-evals">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The assistant was polite for three months, so safety testing got deprioritized. Then a viral thread showed it explaining how to bypass the product&#39;s own paywall — roleplay-framed, third attempt. The edges were never probed; users found them first.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Safety evals matter because safety failures are tail events with headline consequences: averages can&#39;t see them, adversaries actively search for them, and every system change re-rolls the dice — systematic probing is the only way to know your edges.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>They are like crash tests for product risk.</p>
+    <p>It is like crash-testing a car rather than test-driving it: the commute tells you about comfort, but the crumple zones are judged by deliberately driving into a wall — under controlled conditions, before customers do it under uncontrolled ones.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to policy test sets, adversarial prompts, jailbreak attempts, PII probes, unsafe tool calls, and severity scoring.</p>
-    
+    <p>The flow: write the threat model (&#39;what must never happen here&#39;) → build probe sets per threat with dual metrics (attack success, false refusal) → run on every behavioral change → red-team on a schedule → distill every novel attack into a permanent probe → track both metrics over time.</p>
+    <ul><li>Safety evals are adversarial by construction: the suite includes prompt injections (direct and embedded in documents/tool outputs), jailbreak families (roleplay, encoding, authority claims, multi-turn escalation), harmful-content requests, PII-extraction attempts, and bias probes across demographic variations of the same query.</li><li>The metric is dual-sided: attack success rate (how often does the harmful thing get through?) and false-refusal rate (how often do legitimate requests get blocked?) — a system tuned only on the first metric quietly becomes useless, which is its own harm.</li><li>Coverage follows a threat model, not a template: a children&#39;s education app, a code assistant, and an insurance bot need different probe sets — generic safety benchmarks are a floor, and the ceiling is probes written against your product&#39;s specific &#39;what must never happen&#39; list.</li><li>Safety regressions ride in on every change: model updates shift refusal behavior, prompt edits weaken constraint language, new tools create new abuse paths — safety suites run on the same triggers as regression evals, not on an annual audit schedule.</li><li>Red-teaming feeds the suite: automated probes catch known families; humans (and increasingly attacker-LLMs) find novel ones — every successful manual attack gets distilled into a permanent automated probe, so the suite compounds like scar tissue.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A safety eval checks that a finance assistant refuses requests for insider trading advice and does not reveal customer data.</p>
+    <p>An insurance assistant&#39;s safety suite: 140 probes — 40 injection (half embedded in retrieved policy documents), 30 jailbreaks across five families, 25 harmful/out-of-scope (medical, legal advice), 25 PII-extraction attempts, 20 bias probes (same claim scenario, varied names and zip codes). Run on every prompt/model change. A provider update passes quality evals but attack success on document-embedded injection jumps from 2% to 11% — caught pre-ship, mitigated with a retrieval-content labeling change, and the incident&#39;s novel probe joins the suite at position 141.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> More safety filters can reduce helpfulness if not tuned.</li></ul>
+    <ul><li><strong>The core tension:</strong> Hardening against attacks raises false refusals on legitimate edge users (nurses, researchers, novelists) — the dual metric forces the trade to be measured and owned instead of accidental.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Write five adversarial cases for a tool-using assistant and define expected safe behavior.</p>
+    <p><strong>Task:</strong> Write the threat model for one AI product as five &#39;this must never happen&#39; statements, then design four probes for each — including at least one embedded-content injection and one bias pair — and define the two rates you&#39;d track on every release.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: a 50+ probe suite mapped to a written threat model, both metrics on a dashboard, wired into the release gate, with at least three probes born from real red-team findings.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not run safety evals only once; new prompts and tools change the risk surface.</li></ul>
+    <ul><li>The model provider&#39;s safety training is not your safety eval; it is a strong baseline that your prompts, tools, and retrieved content can accidentally defeat — you test the system, not the model.</li><li>A zero attack-success rate is not the target if false refusals are unmeasured; maximal blocking is trivially achievable and product-destroying.</li><li>Passing today&#39;s suite is not lasting safety; attack phrasings evolve weekly, which is why the suite grows from red-teaming and every probe set has a last-reviewed date.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-evaluation-safety-evals-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Safety evals?</strong></p>
     <button data-answer="wrong">Once Safety evals is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
-    <button data-answer="right">Do not run safety evals only once; new prompts and tools change the risk surface.</button>
+    <button data-answer="right">The model provider&#39;s safety training is not your safety eval; it is a strong baseline that your prompts, tools, and retrieved content can accidentally defeat — you test the system, not the model.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-evaluation-safety-evals-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Safety evals into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="right">A production-shaped slice: a 50+ probe suite mapped to a written threat model, both metrics on a dashboard, wired into the release gate, with at least three probes born from real red-team findings.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

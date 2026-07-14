@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Regression evals compare new AI system behavior against a previous baseline to catch quality, safety, cost, or latency regressions before release.">
+  <meta name="description" content="Regression evals compare a candidate change against the current baseline on the same fixed dataset — prompt edits, model upgrades, retrieval changes — to answ">
   <meta name="theme-color" content="#0f172a">
   <title>Regression evals | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 4</p>
         <h1>Regression evals</h1>
-        <p class="lede">Regression evals compare new AI system behavior against a previous baseline to catch quality, safety, cost, or latency regressions before release.</p>
+        <p class="lede">Regression evals compare a candidate change against the current baseline on the same fixed dataset — prompt edits, model upgrades, retrieval changes — to answer the only pre-ship question that matters: did anything that used to work stop working?</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-regression-evals">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The model upgrade improved the average score by two points, so it shipped. Hidden inside: refund-policy answers regressed badly. Averages don&#39;t have a conscience — only a per-example diff would have shown the eight cases that flipped.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Regression evals matter because AI changes have invisible blast radii: nothing in a prompt diff or model changelog tells you which working behaviors just broke — only paired comparison on fixed inputs does.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like a smoke test suite that protects model and prompt changes from breaking known behavior.</p>
+    <p>It is like before-and-after lab tests around a medication change: the doctor doesn&#39;t ask whether the new numbers are abstractly good, but whether they moved — and refuses to change two prescriptions at once, because then nobody knows which one moved them.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to baseline runs, diffing, pass thresholds, cost tracking, latency tracking, and release gates.</p>
-    
+    <p>The flow: freeze the dataset and settings → run baseline and candidate → diff per example → re-run flips to separate signal from sampling noise → review regressed examples by hand → apply the pre-agreed ship/block policy → the shipped change becomes the new baseline.</p>
+    <ul><li>The comparison is paired, not absolute: run baseline and candidate on identical inputs with identical settings, and diff per-example — aggregate scores can stay flat while 8 examples break and 8 different ones improve, and the per-example diff is where the truth lives.</li><li>Regressions hide inside improvements: the prompt change that lifts average helpfulness by 3 points and breaks refund-policy answers is the classic case — which is why regression review means reading the flipped examples, not just the summary row.</li><li>One variable at a time: change the model and the prompt together and a regression is unattributable — disciplined teams stage changes (model first at fixed prompt, then prompt) or accept that debugging a mixed change costs more than the staging did.</li><li>Statistical honesty at small scale: with 60 examples and sampling nondeterminism, a 2% dip may be noise — run flipped examples multiple times, demand consistency before declaring regression, and treat the golden set&#39;s size as a known confidence limit.</li><li>The verdict needs a policy: define in advance what blocks a ship (any regression on the &#39;critical&#39; tagged subset; net negative beyond noise on the rest) — otherwise every regression review becomes a negotiation the deadline wins.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A prompt update fails release if citation precision drops by more than two percentage points on the golden set.</p>
+    <p>A team upgrades to a new model version. Aggregate golden-set score: +2. Per-example diff: 6 improvements, 4 regressions — all 4 in multi-condition policy questions where the new model answers confidently instead of asking a clarifying question. Three re-runs confirm the flip is stable. Policy says the &#39;policy-critical&#39; tag blocks: the upgrade ships with a prompt adjustment restoring clarифying behavior, verified by re-diff. Total process: one afternoon. The alternative was discovering it via a customer&#39;s compliance team.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Strict regression gates protect users but can slow experimentation.</li></ul>
+    <ul><li><strong>The core tension:</strong> Rigor versus release velocity — full regression discipline on every tiny edit is heavy, so teams tier it: fast unit evals on every edit, full regression runs on model changes, prompt-meaning changes, and anything touching tagged-critical behavior.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Define a regression gate for changing a RAG prompt in production.</p>
+    <p><strong>Task:</strong> Design the regression gate for one AI feature: the fixed dataset and settings, the per-example diff format, the noise-handling rule (how many re-runs make a flip real), the tagged-critical subset, and the written policy for what blocks a ship.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: a repeatable baseline-vs-candidate runner producing a per-example diff, a tagged critical subset with block authority, and a written ship policy — exercised at least once on a real model upgrade.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not compare only average scores; inspect critical failures and long-tail cases.</li></ul>
+    <ul><li>A better average is not a safe change; means hide bimodal damage, and the per-example flip list is the actual regression report.</li><li>Regression evals are not only for model swaps; one-line prompt edits move refusal rates and formats — behavioral size and diff size are unrelated in AI systems.</li><li>A red regression eval is not always a blocker; the world changes and some &#39;regressions&#39; are corrections — but that call gets made by a human reading the example, never by rounding the aggregate.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-evaluation-regression-evals-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Regression evals?</strong></p>
     <button data-answer="wrong">Once Regression evals is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
-    <button data-answer="right">Do not compare only average scores; inspect critical failures and long-tail cases.</button>
+    <button data-answer="right">A better average is not a safe change; means hide bimodal damage, and the per-example flip list is the actual regression report.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-evaluation-regression-evals-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Regression evals into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="right">A production-shaped slice: a repeatable baseline-vs-candidate runner producing a per-example diff, a tagged critical subset with block authority, and a written ship policy — exercised at least once on a real model upgrade.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

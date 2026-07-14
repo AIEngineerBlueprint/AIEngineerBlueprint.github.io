@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A golden dataset is a curated set of representative inputs with expected outputs or judgments used to evaluate regressions.">
+  <meta name="description" content="A golden dataset is a curated, versioned set of inputs with known-correct or preferred outputs — the fixed measuring stick that makes every model, prompt, and">
   <meta name="theme-color" content="#0f172a">
   <title>Golden datasets | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 2</p>
         <h1>Golden datasets</h1>
-        <p class="lede">A golden dataset is a curated set of representative inputs with expected outputs or judgments used to evaluate regressions.</p>
+        <p class="lede">A golden dataset is a curated, versioned set of inputs with known-correct or preferred outputs — the fixed measuring stick that makes every model, prompt, and pipeline change comparable to the last one.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-golden-datasets">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The team argued for an hour about whether the new prompt was better, trading screenshots of cherry-picked answers. They had no fixed set of questions with agreed answers — so &#39;better&#39; had no referee, and the loudest opinion shipped.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Golden datasets matter because they are the difference between &#39;it seems better&#39; and &#39;it is better on the 80 cases we&#39;ve agreed define better&#39; — every other eval technique stands on this foundation.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like a product&#39;s exam paper that every model or prompt change must pass.</p>
+    <p>It is like the standard kilogram in a vault: not interesting in itself, but every scale in the country is honest only because a reference exists that doesn&#39;t drift with opinion.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to sampling, labels, edge cases, expected sources, rubrics, versioning, and holdout discipline.</p>
-    
+    <p>The lifecycle: seed from production traffic → adjudicate expected outputs with named owners → version and store like code → run against every change → grow from new production failures → audit quarterly for staleness.</p>
+    <ul><li>Golden means decided: each example carries the expected output or source, who decided it, and why — ambiguous cases get adjudicated once during curation, not re-argued every eval run. The deciding is the expensive, valuable part.</li><li>Composition beats size: 60 examples covering the real distribution — common cases, hard cases, edge cases, and deliberately unanswerable ones — outperform 600 scraped happy-path examples; every failure class from production earns a representative.</li><li>Provenance from production keeps it honest: seed from real (sanitized) traffic, not from what the team imagines users ask — imagination produces datasets your system aces while users suffer.</li><li>Golden sets are versioned artifacts: examples get added from new failures, corrected when the world changes (that policy was updated), and never silently edited — a score only means something against a named dataset version.</li><li>Leakage discipline: the golden set must stay out of prompts, few-shot examples, and fine-tuning data — a measuring stick the system has memorized measures memory, not capability.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A RAG assistant keeps 200 real customer questions with expected document IDs and acceptable answer criteria.</p>
+    <p>A support assistant&#39;s golden set v7: 80 questions — 40 common (from top production intents), 20 hard (multi-policy, ambiguous phrasing), 12 edge (weird formatting, mixed languages), 8 unanswerable (correct behavior: abstain). Each row: input, expected answer, expected source IDs, decider, date. When legal changes the refund policy, three rows get updated in a reviewed PR — and the changelog is why last quarter&#39;s 91% and this quarter&#39;s 89% are known to be a real regression, not dataset drift.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Small golden sets are fast but may miss rare failures.</li></ul>
+    <ul><li><strong>The core tension:</strong> Small sets are cheap to maintain but statistically noisy; large sets are trustworthy but expensive to adjudicate and keep current — most teams do best with a small, fiercely-curated core plus a larger, lightly-labeled extended set.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Create ten golden examples for an AI support bot with normal, edge, and unanswerable cases.</p>
+    <p><strong>Task:</strong> Build a 20-row golden set for any AI feature you know: 10 common cases from realistic traffic, 5 hard, 3 edge, 2 unanswerable. For each, record expected output, expected sources if applicable, and who would adjudicate disagreements — then name the production signal that should add row 21.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: 50+ examples with provenance and owners, stored versioned next to the code, including at least five unanswerable cases, wired into CI so no prompt or model change ships without a run.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not tune prompts on the same examples you claim as unbiased evaluation.</li></ul>
+    <ul><li>A golden dataset is not a benchmark you download; public benchmarks measure general capability, while your golden set measures your product&#39;s definition of correct — only one of those pays your bills.</li><li>It is not static; a set that never grows from production failures measures last year&#39;s problems, and its scores inflate as the system overfits to a frozen target.</li><li>High scores on it are not the goal; catching regressions is — a set everyone passes forever has stopped doing its job and needs harder examples.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-evaluation-golden-datasets-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Golden datasets?</strong></p>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
-    <button data-answer="right">Do not tune prompts on the same examples you claim as unbiased evaluation.</button>
+    <button data-answer="right">A golden dataset is not a benchmark you download; public benchmarks measure general capability, while your golden set measures your product&#39;s definition of correct — only one of those pays your bills.</button>
     <button data-answer="wrong">Once Golden datasets is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-evaluation-golden-datasets-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Golden datasets into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="right">A production-shaped slice: 50+ examples with provenance and owners, stored versioned next to the code, including at least five unanswerable cases, wired into CI so no prompt or model change ships without a run.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

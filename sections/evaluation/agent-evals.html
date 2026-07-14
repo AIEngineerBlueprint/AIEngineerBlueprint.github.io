@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Agent evals measure whether an agent chooses good actions, uses tools correctly, stops safely, and completes tasks within budget.">
+  <meta name="description" content="Agent evals measure multi-step behavior — did the agent reach the goal, via a sane and safe path, at acceptable cost — where the unit of evaluation is a whole">
   <meta name="theme-color" content="#0f172a">
   <title>Agent evals | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 8</p>
         <h1>Agent evals</h1>
-        <p class="lede">Agent evals measure whether an agent chooses good actions, uses tools correctly, stops safely, and completes tasks within budget.</p>
+        <p class="lede">Agent evals measure multi-step behavior — did the agent reach the goal, via a sane and safe path, at acceptable cost — where the unit of evaluation is a whole trajectory of decisions, tool calls, and recoveries rather than a single response.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-agent-evals">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The agent passed every single-response eval, then looped forty tool calls in production and refunded the same order twice. Nothing in a question-answer eval exercises the loop — trajectories fail in ways answers can&#39;t.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Agent evals matter because agents fail in trajectory-shaped ways — loops, wrong-tool cascades, unsafe recoveries — that no single-turn eval can see, and that only show up in production incidents if not rehearsed in sandboxes.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>They are like driving tests for autonomous workflows.</p>
+    <p>It is like examining a student driver on a real route instead of a written quiz: the interesting questions are not &#39;do you know what a stop sign means&#39; but did they check mirrors, recover from the missed turn, and arrive without incident — competence lives in the trajectory.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to task suites, tool-call traces, success criteria, budgets, safety violations, and human grading.</p>
-    
+    <p>The flow: build the sandbox (mock tools, fixtures, recorded side effects) → write scenarios with success criteria and path rubrics, including adversarial and unachievable ones → run each N times → score completion, trajectory quality, safety events, and cost → gate releases on the suite exactly like regression evals.</p>
+    <ul><li>Outcome and process are scored separately: task completion (did the ticket get correctly triaged?) and trajectory quality (reasonable tool choices, no flailing loops, safe handling of side effects) — agents routinely succeed via terrible paths and fail via reasonable ones, and both signals matter.</li><li>The eval environment is half the work: agents act, so evals need sandboxes — mocked tools, seeded fixture data, reversible or fake side effects — where a &#39;send refund&#39; call is recorded instead of executed; environment fidelity determines how much the eval predicts production.</li><li>Task suites replace question lists: each eval case is a scenario (initial state, goal, available tools, success criteria, and rubric for path quality) — including deliberately hostile cases: a broken tool, an unachievable goal (correct behavior: stop and escalate), and an injection attempt inside tool output.</li><li>Determinism is gone, so statistics arrive: the same agent on the same task takes different paths run-to-run — agent evals run each scenario N times and report completion rates and cost distributions, not single pass/fail bits.</li><li>Cost and step budgets are eval metrics: completion at $4.20 and 40 steps versus $0.60 and 8 steps is a different product — trajectory efficiency belongs on the scorecard, because agents that succeed expensively fail economically.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A coding agent eval scores whether tests pass, no unrelated files changed, and the agent stopped after success.</p>
+    <p>A ticket-triage agent&#39;s eval suite: 25 scenarios in a sandboxed clone with fixture tickets — 15 standard, 4 with a flaky search tool (expect retry-then-alternate), 3 unachievable (expect escalation, not invention), 2 with prompt injection embedded in ticket text, 1 requiring approval-gated bulk action. Each runs 5 times. The new model version scores 92% completion (up from 88%) but the injection scenarios regress: it follows embedded instructions in 2 of 10 runs. Ship blocked; harness hardening added; re-run clean. The single-response eval this suite replaced would have seen only the +4%.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> High task success can hide unsafe intermediate actions.</li></ul>
+    <ul><li><strong>The core tension:</strong> Environment fidelity versus eval cost — a rich sandbox predicts production but is expensive to build and slow to run; the working compromise is a small high-fidelity suite for release gates plus cheap smoke scenarios for the inner loop.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Define an eval for an agent that files bug reports from logs.</p>
+    <p><strong>Task:</strong> Design six eval scenarios for an agent you can imagine concretely: initial state, goal, mocked tools, success criteria, and path rubric — making one tool-failure, one unachievable, and one injection scenario — plus the N-runs and cost budget you&#39;d score against.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: ten sandboxed scenarios (two adversarial, one unachievable), five runs each, scoring completion, safety, and cost, with results diffed per scenario across agent versions and wired into the release gate.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not evaluate only final output; inspect the action trace.</li></ul>
+    <ul><li>Evaluating an agent&#39;s final answer is not an agent eval; the side effects along the way — what it did, not just what it said — are the primary risk surface.</li><li>One run per scenario is not measurement; trajectory variance is high, and a 3-of-5 completion rate is real information a single pass/fail hides.</li><li>A 100% completion rate is not the goal if unachievable tasks are in the suite; on those, &#39;completing&#39; is the failure and stopping to escalate is the pass.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-evaluation-agent-evals-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Agent evals?</strong></p>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
     <button data-answer="wrong">Once Agent evals is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
-    <button data-answer="right">Do not evaluate only final output; inspect the action trace.</button>
+    <button data-answer="right">Evaluating an agent&#39;s final answer is not an agent eval; the side effects along the way — what it did, not just what it said — are the primary risk surface.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-evaluation-agent-evals-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Agent evals into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production-shaped slice: ten sandboxed scenarios (two adversarial, one unachievable), five runs each, scoring completion, safety, and cost, with results diffed per scenario across agent versions and wired into the release gate.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

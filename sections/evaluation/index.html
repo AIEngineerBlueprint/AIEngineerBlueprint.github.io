@@ -54,7 +54,10 @@
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> Evaluation is like a driving test for an AI system. One good trip around the block is not enough; you need repeatable routes, edge cases, and scoring. Evals tell you whether a prompt, model, retrieval change, or guardrail made the product better or worse.</p>
   </section>
-  
+  <section class="panel hook-card">
+    <h2>The running example</h2>
+    <p>Throughout this track, imagine you own quality for &#39;Reply&#39;, a support assistant answering from your company&#39;s help center. Every chapter builds the measurement system around it — golden sets, gates, judges, dashboards — until &#39;is Reply getting better or worse?&#39; has an answer that isn&#39;t an opinion.</p>
+  </section>
   
   
   <section class="chapter-grid"><a class="chapter-card" href="/sections/evaluation/eval-strategy.html">
@@ -64,15 +67,15 @@
     </a><a class="chapter-card" href="/sections/evaluation/golden-datasets.html">
       <span>Chapter 2</span>
       <strong>Golden datasets</strong>
-      <small>A golden dataset is a curated set of representative inputs with expected outputs or judgments used to evaluate regressions.</small>
+      <small>A golden dataset is a curated, versioned set of inputs with known-correct or preferred outputs — the fixed measuring stick that makes every model, prompt, and pipeline change comparable to the last one.</small>
     </a><a class="chapter-card" href="/sections/evaluation/unit-evals.html">
       <span>Chapter 3</span>
       <strong>Unit evals</strong>
-      <small>Unit evals are small targeted tests that check one behavior of an AI system, prompt, tool, or guardrail.</small>
+      <small>Unit evals are small, fast, targeted checks that verify one specific behavior of an AI component — one prompt&#39;s format compliance, one extraction field, one refusal rule — the AI analogue of unit tests, run in seconds and wired into the developer loop.</small>
     </a><a class="chapter-card" href="/sections/evaluation/regression-evals.html">
       <span>Chapter 4</span>
       <strong>Regression evals</strong>
-      <small>Regression evals compare new AI system behavior against a previous baseline to catch quality, safety, cost, or latency regressions before release.</small>
+      <small>Regression evals compare a candidate change against the current baseline on the same fixed dataset — prompt edits, model upgrades, retrieval changes — to answer the only pre-ship question that matters: did anything that used to work stop working?</small>
     </a><a class="chapter-card" href="/sections/evaluation/llm-as-judge.html">
       <span>Chapter 5</span>
       <strong>LLM-as-judge</strong>
@@ -80,35 +83,35 @@
     </a><a class="chapter-card" href="/sections/evaluation/human-review.html">
       <span>Chapter 6</span>
       <strong>Human review</strong>
-      <small>Human review brings trained people into AI evaluation or operation for cases where judgment, risk, or ambiguity exceeds automation limits.</small>
+      <small>Human review is structured human judgment inside the eval loop — rubric-scored samples, side-by-side comparisons, and adjudication of disputed cases — the ground truth that calibrates every automated metric and catches what they can&#39;t see.</small>
     </a><a class="chapter-card" href="/sections/evaluation/rag-evals.html">
       <span>Chapter 7</span>
       <strong>RAG evals</strong>
-      <small>RAG evals test retrieval, grounding, citations, and answer faithfulness together for retrieval-augmented systems.</small>
+      <small>RAG evals measure the pipeline in its separately-failing stages — did retrieval find the right evidence (recall, precision), and did generation use it honestly (faithfulness, citation accuracy) — because an end-to-end score can&#39;t tell you which half to fix.</small>
     </a><a class="chapter-card" href="/sections/evaluation/agent-evals.html">
       <span>Chapter 8</span>
       <strong>Agent evals</strong>
-      <small>Agent evals measure whether an agent chooses good actions, uses tools correctly, stops safely, and completes tasks within budget.</small>
+      <small>Agent evals measure multi-step behavior — did the agent reach the goal, via a sane and safe path, at acceptable cost — where the unit of evaluation is a whole trajectory of decisions, tool calls, and recoveries rather than a single response.</small>
     </a><a class="chapter-card" href="/sections/evaluation/safety-evals.html">
       <span>Chapter 9</span>
       <strong>Safety evals</strong>
-      <small>Safety evals test whether an AI system avoids harmful, private, policy-violating, or unauthorized behavior under normal and adversarial inputs.</small>
+      <small>Safety evals systematically probe an AI system&#39;s failure modes with adversarial and sensitive inputs — injection, jailbreaks, harmful-content requests, PII handling, bias probes — measuring not whether the system is polite on average but whether it holds at the edges where harm lives.</small>
     </a><a class="chapter-card" href="/sections/evaluation/cost-and-latency.html">
       <span>Chapter 10</span>
       <strong>Cost and latency</strong>
-      <small>Cost and latency evaluation measures the operational expense and response time of an AI system alongside its quality metrics, since a system that is accurate but too slow or too expensive to run at real usage volume isn&#39;t actually production-viable.</small>
+      <small>Cost and latency evals treat speed and spend as first-class quality metrics measured alongside accuracy — per-request and per-outcome, as distributions not averages — because a change that improves answers while doubling cost or p95 latency is not an improvement.</small>
     </a><a class="chapter-card" href="/sections/evaluation/dashboards.html">
       <span>Chapter 11</span>
       <strong>Dashboards</strong>
-      <small>Dashboards for AI evaluation surface quality, cost, and latency metrics in an ongoing, visible way, so degradation or improvement is apparent to the team at a glance rather than requiring someone to run a manual evaluation script.</small>
+      <small>Eval dashboards turn scattered eval runs and production quality signals into one continuously visible surface — trends over time, per-slice breakdowns, release annotations — so quality is monitored like uptime instead of rediscovered before each launch.</small>
     </a><a class="chapter-card" href="/sections/evaluation/ci-integration.html">
       <span>Chapter 12</span>
       <strong>CI integration</strong>
-      <small>CI integration for evaluation runs a defined set of eval cases automatically on every relevant code, prompt, or model change, blocking or flagging changes that regress quality below an accepted threshold, the same way unit tests gate a traditional software change.</small>
+      <small>CI integration wires evals into the same pipeline that gates code: prompt edits, model version bumps, and retrieval changes trigger eval runs automatically, and failures block merges — making quality regression as hard to ship accidentally as a failing unit test.</small>
     </a><a class="chapter-card" href="/sections/evaluation/continuous-eval.html">
       <span>Chapter 13</span>
       <strong>Continuous eval</strong>
-      <small>Continuous eval means re-running evaluation regularly against live or recent production data, not just once before launch, since model behavior, user query patterns, and underlying source content can all drift after deployment in ways a one-time evaluation would never catch.</small>
+      <small>Continuous evaluation extends measurement past release into live traffic: sampled production scoring, drift detection against baselines, and feedback loops that recruit real failures into the eval suite — because the world keeps changing after your last deploy.</small>
     </a><a class="chapter-card" href="/sections/evaluation/eval-lab.html">
       <span>Chapter 14</span>
       <strong>Eval lab</strong>

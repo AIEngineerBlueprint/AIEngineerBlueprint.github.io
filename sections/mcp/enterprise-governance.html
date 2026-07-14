@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Enterprise governance for MCP defines how organizations approve servers, manage versions, enforce policies, monitor usage, and respond to incidents.">
+  <meta name="description" content="Enterprise governance for MCP is how an organization decides which servers are allowed, who approves them, how versions are pinned and updated, what usage get">
   <meta name="theme-color" content="#0f172a">
   <title>Enterprise governance | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">MCP · Chapter 10</p>
         <h1>Enterprise governance</h1>
-        <p class="lede">Enterprise governance for MCP defines how organizations approve servers, manage versions, enforce policies, monitor usage, and respond to incidents.</p>
+        <p class="lede">Enterprise governance for MCP is how an organization decides which servers are allowed, who approves them, how versions are pinned and updated, what usage gets logged, and who responds when a connector misbehaves — an internal app store plus audit program for AI capability.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="mcp-enterprise-governance">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>A contractor&#39;s laptop runs nine MCP servers nobody approved, one holding a production API key. There&#39;s no inventory, so the security team finds out the way security teams always find out. Governance is cheaper before that email.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Governance matters because MCP scales connectivity faster than security review scales by default: one protocol makes it easy for every employee to wire models into every system, and only deliberate process decides whether that&#39;s a capability or an exposure.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like an internal app store plus audit program for AI tool connectors.</p>
+    <p>It is like corporate procurement for software, but for AI hands and eyes: any employee can find a vendor, yet the company still decides who gets contracts, what they&#39;re allowed to touch, and keeps the receipts — because &#39;a developer installed it&#39; is not an answer auditors accept.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to server registry, approval workflow, version pinning, policy enforcement, telemetry, incident response, and owner assignment.</p>
-    
+    <p>The flow: developer requests a server → intake and security review (source, scopes, descriptions) → registry entry with owner, pinned version, allowed scopes → distribution via managed host config → telemetry and audit in operation → re-review on updates → kill switch on incident.</p>
+    <ul><li>The default without governance is shadow MCP: developers connect community servers to laptops holding production credentials, each one an unvetted process with real permissions — the policy vacuum, not any specific server, is the risk.</li><li>The core artifact is a server registry: an allowlisted catalog with owners, security-review status, permitted scopes, pinned versions and description hashes — hosts across the org connect to registry entries, not to arbitrary URLs and packages.</li><li>Approval is a workflow, not a gate someone forgets: intake (who wants it, for what), review (code/source provenance, credential scopes, tool descriptions read by a human), decision with an owner attached, and scheduled re-review — proportionate to what the server can reach.</li><li>Version pinning is the rug-pull defense at org scale: approved means this version with these descriptions; updates re-enter review, and capability diffs (new tools, changed descriptions) are treated like dependency CVEs — visible, triaged, decided.</li><li>Centralized telemetry closes the loop: which servers are used by whom, which tools get called with what approval rates, and where failures cluster — feeding both incident response (&#39;disable server X everywhere, now&#39;) and rationalization (&#39;these nine connectors, nobody used since March&#39;).</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A company allows only signed MCP servers from an internal registry and logs every tool call with user, repo, and ticket id.</p>
+    <p>A 400-engineer company after one near-miss (a community MCP server requesting home-directory access on a machine with prod kubeconfigs): they stand up an internal registry with 22 approved servers, each with an owner, scoped credentials, and pinned versions. Host configs are distributed via MDM so only registry servers connect. When a popular upstream server ships a tool-description change requesting broader file access, the registry diff flags it, review rejects the update, and the org stays on the pinned version — the whole event is two tickets, not an incident.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Central governance improves safety but can slow developer experimentation.</li></ul>
+    <ul><li><strong>The core tension:</strong> Central control versus developer velocity — heavyweight approval pushes people back to shadow usage, so healthy programs make the paved road fast (pre-approved catalog, self-service for read-only scopes) and reserve heavyweight review for consequential access.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Write an enterprise MCP approval checklist with security, privacy, owner, and rollback criteria.</p>
+    <p><strong>Task:</strong> Draft the MCP governance one-pager for an org you know: the registry&#39;s required fields per server, the two-tier approval workflow (read-only vs consequential scopes), the update/re-review trigger, and the exact mechanics of the org-wide kill switch.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: a registry with five reviewed servers, managed host configuration that only connects registry entries, one tested org-wide disable path, and a monthly usage report that names owners and orphans.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not let teams install arbitrary MCP servers that can access enterprise data.</li></ul>
+    <ul><li>Governance is not blocking MCP until &#39;security catches up&#39;; blanket bans produce shadow usage with zero visibility — the governed path has to exist and be faster than the workaround.</li><li>An approved-once server is not approved forever; description and capability changes after approval are exactly how supply-chain attacks arrive, so pinning and re-review are the substance of the control.</li><li>This is not only a big-company problem; the first contractor laptop with a community MCP server and a production API key makes it a small-company problem too.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-mcp-enterprise-governance-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Enterprise governance?</strong></p>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
-    <button data-answer="right">Do not let teams install arbitrary MCP servers that can access enterprise data.</button>
+    <button data-answer="right">Governance is not blocking MCP until &#39;security catches up&#39;; blanket bans produce shadow usage with zero visibility — the governed path has to exist and be faster than the workaround.</button>
     <button data-answer="wrong">Once Enterprise governance is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-mcp-enterprise-governance-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Enterprise governance into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="right">A production-shaped slice: a registry with five reviewed servers, managed host configuration that only connects registry entries, one tested org-wide disable path, and a monthly usage report that names owners and orphans.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

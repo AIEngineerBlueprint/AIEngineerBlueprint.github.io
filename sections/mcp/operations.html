@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Operations for MCP means monitoring server uptime, tool call latency and error rate, and resource access patterns in production, so a connected agent&#39;s failur">
+  <meta name="description" content="MCP operations is running the connector layer day to day: deploying and updating servers, managing their credentials, watching health and usage, handling inci">
   <meta name="theme-color" content="#0f172a">
   <title>Operations | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,33 +47,39 @@
       <div>
         <p class="eyebrow">MCP · Chapter 13</p>
         <h1>Operations</h1>
-        <p class="lede">Operations for MCP means monitoring server uptime, tool call latency and error rate, and resource access patterns in production, so a connected agent&#39;s failures can be traced back to the specific MCP server or tool responsible.</p>
+        <p class="lede">MCP operations is running the connector layer day to day: deploying and updating servers, managing their credentials, watching health and usage, handling incidents where an AI-driven integration misbehaves, and retiring what nobody uses.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="mcp-operations">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The CRM connector had been failing auth for nine days. No alert — the process was &#39;up&#39;. Users just thought the assistant got dumber. Capability health and process health are different checks, and only one of them was wired.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Operations matter because the connector layer decays by default: credentials expire, versions drift, owners leave, usage moves on — and each decayed server is either a broken capability or an unattended one, both discovered by users or attackers unless ops finds them first.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like monitoring a utility provider&#39;s service, not just whether the lights are on, but the actual reliability and response time of the service being delivered.</p>
+    <p>It is like facilities management for a building full of specialized workshops: each workshop (server) has its own tools and keys, and someone has to handle maintenance schedules, key rotation, the alarm system, and the workshop nobody has entered since spring.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to tracking per-tool call latency and error rate, resource access frequency and failures, and overall server availability, with alerts when any of these shift from baseline, so a degraded MCP server can be identified quickly rather than being an unexplained source of agent failures.</p>
-    
+    <p>The loop: inventory with owners → deploy/update through the versioning process → rotate credentials on schedule → synthetic capability checks and usage telemetry → alert on health and anomalies → practiced incident paths (degrade, kill switch, forensics) → retire the unused.</p>
+    <ul><li>Servers are a fleet, not a feature: each has an owner, a deployment story (spawned locally vs hosted service), a credential set, a version, and consumers — the operational baseline is an inventory that answers &#39;what runs where, with access to what, used by whom&#39;.</li><li>Credential lifecycle is the recurring risk: servers hold tokens to real systems, so scoped issuance, rotation schedules, revocation drills, and secret storage apply to every server — the forgotten server with the eternal admin token is the classic finding.</li><li>Health means capability health: process-up is not enough — synthetic checks that actually invoke a representative tool and read a representative resource catch the auth-expired and schema-drift failures that liveness probes sail past.</li><li>MCP incidents have their own shapes: a server timing out degrades assistants org-wide (who notices first?), a compromised server needs the kill switch (disconnect everywhere, revoke credentials, replay its invocation logs), and a misbehaving integration needs traces to distinguish server bug from model misuse.</li><li>Lifecycle includes the exit: usage telemetry finds abandoned servers, deprecation runs with sunset windows, and retirement includes credential revocation and registry cleanup — connectors that outlive their owners are unowned attack surface.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A dashboard tracks that one specific MCP tool&#39;s error rate has spiked, letting the team quickly identify and fix that specific server-side issue rather than only seeing that connected agents have started behaving unreliably with no clear cause.</p>
+    <p>Quarterly ops review of a 19-server fleet: telemetry shows four servers unused in 90 days (retired: credentials revoked, registry entries archived), one server&#39;s synthetic check has been failing its resource read for a week (expired token nobody rotated — now on the rotation schedule), and the CRM server&#39;s p95 latency doubled after a vendor API change (capacity fix plus an alert threshold). The review takes an afternoon because inventory, telemetry, and synthetic checks already exist — without them, each item would have been a user-reported mystery.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Detailed per-tool operational monitoring makes it much easier to pinpoint the source of an agent&#39;s failures, but instrumenting every tool and resource call adds real engineering and storage overhead that should be scoped to the tools that actually matter most</li></ul>
+    <ul><li><strong>The core tension:</strong> Every server added is permanent operational surface accepted for a capability gain — the honest accounting happens at intake (&#39;who operates this?&#39;) rather than at the incident.</li></ul>
   </section>
     <section class="panel">
     <h2>Try it in code</h2>
@@ -87,28 +93,37 @@
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Choose two operational metrics for a real MCP server, such as per-tool error rate and latency, and define an alert threshold for each.</p>
+    <p><strong>Task:</strong> Build the ops runbook for a five-server MCP fleet: the inventory fields, the synthetic check per server, the credential rotation schedule, the kill-switch procedure with its verification step, and the criteria that retire a server at quarterly review.</p>
     <ol>
       <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: a fleet inventory with owners and credential ages, synthetic checks that exercise one tool and one resource per server, a tested kill switch, and a quarterly review that has actually retired something.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>An MCP server appearing to run without crashing is not the same as operating reliably; individual tool calls can silently degrade in latency or correctness without the server itself going down, which only per-tool monitoring would catch.</li></ul>
+    <ul><li>MCP servers are not install-and-forget; they are services holding credentials, and everything you believe about service operations applies to them.</li><li>A responding server is not a working capability; only invoking real tools and resources verifies the integration a model will actually use.</li><li>Low usage is not harmless; the unused-but-connected server is pure downside — all attack surface, no capability — and finding it is an operations job.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-mcp-operations-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Operations?</strong></p>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
-    <button data-answer="right">An MCP server appearing to run without crashing is not the same as operating reliably; individual tool calls can silently degrade in latency or correctness without the server itself going down, which only per-tool monitoring would catch.</button>
+    <button data-answer="right">MCP servers are not install-and-forget; they are services holding credentials, and everything you believe about service operations applies to them.</button>
     <button data-answer="wrong">Once Operations is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-mcp-operations-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Operations into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="right">A production-shaped slice: a fleet inventory with owners and credential ages, synthetic checks that exercise one tool and one resource per server, a tested kill switch, and a quarterly review that has actually retired something.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

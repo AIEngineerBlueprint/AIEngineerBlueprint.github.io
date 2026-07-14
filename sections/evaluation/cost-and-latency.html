@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Cost and latency evaluation measures the operational expense and response time of an AI system alongside its quality metrics, since a system that is accurate ">
+  <meta name="description" content="Cost and latency evals treat speed and spend as first-class quality metrics measured alongside accuracy — per-request and per-outcome, as distributions not av">
   <meta name="theme-color" content="#0f172a">
   <title>Cost and latency | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,33 +47,39 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 10</p>
         <h1>Cost and latency</h1>
-        <p class="lede">Cost and latency evaluation measures the operational expense and response time of an AI system alongside its quality metrics, since a system that is accurate but too slow or too expensive to run at real usage volume isn&#39;t actually production-viable.</p>
+        <p class="lede">Cost and latency evals treat speed and spend as first-class quality metrics measured alongside accuracy — per-request and per-outcome, as distributions not averages — because a change that improves answers while doubling cost or p95 latency is not an improvement.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-cost-and-latency">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The new model scored four points higher, so it shipped. Finance found the +65% cost on the invoice; users found the +2s latency themselves. Quality has three axes, and the eval measured one.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Cost and latency evals matter because the three quality axes trade against each other constantly, and any axis you don&#39;t measure is the one that silently degrades — usually discovered by finance or by user abandonment.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like judging a restaurant not just on food quality, but also on how long the kitchen takes and how much each dish costs to make; a perfect dish that takes an hour and costs triple the menu price fails as a business.</p>
+    <p>It is like judging a delivery service on more than whether packages arrive intact: arriving intact in nine days, or intact but costing more than the contents, fails the customer just as surely — quality has three axes, and measuring one is how the other two decay.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to measuring token cost, API call cost, and p50/p95 latency per request alongside quality metrics for the same evaluation set, so a proposed model or pipeline change can be judged on the full trade-off, not quality improvement in isolation.</p>
-    
+    <p>The flow: instrument the eval harness to emit quality, cost, and latency per example → report distributions and per-outcome aggregates → set per-axis budgets and regression policies → gate releases on the triple → track trends so drift (context creep, retry inflation) is visible between releases.</p>
+    <ul><li>Every eval run should emit three numbers, not one: quality score, cost (tokens × price, per request and per completed task), and latency (TTFT and completion, at p50 and p95) — the same golden-set run that scores answers can capture all three for free.</li><li>Distributions carry the truth: mean latency hides the p95 that users experience as &#39;sometimes it hangs&#39;, and mean cost hides the 2% of requests (long contexts, retry loops) that consume 30% of spend — percentiles and outlier inspection are where the actionable findings live.</li><li>Per-outcome beats per-request: an agent averaging $0.30 per call but 12 calls per completed task costs $3.60 per outcome — the business metric is cost per success, and it is invisible unless the eval harness tracks task-level completion.</li><li>Changes get judged on the full triple: a model upgrade scoring +3 quality, +40% cost, +800ms p95 is a decision, not a win — release gates that encode acceptable regressions per axis (&#39;quality may not drop; cost may rise ≤10% with justification&#39;) turn the trade into policy instead of surprise.</li><li>Budgets make the metrics operational: latency budgets per stage (retrieval 150ms, re-rank 200ms, generation 600ms) and cost budgets per feature localize regressions instantly — &#39;p95 blew the budget in the re-rank stage&#39; is a diagnosis; &#39;the app got slower&#39; is a mystery.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>An evaluation comparing two candidate models finds one scores 3 percent higher on quality but costs 4 times more per request and adds 200 milliseconds of latency, informing a decision that the quality gain isn&#39;t worth the cost and latency trade-off for this specific product.</p>
+    <p>A team evaluates a new model: quality +4 on the golden set — ship it? The full triple says: cost per request +65% (longer outputs), p95 completion +1.9s. Digging in: the model is verbose; capping max tokens and tightening the prompt recovers quality +3 at cost +8% and p95 +200ms — shippable under policy. Without cost/latency in the eval harness, the first version ships, and the discovery is a 40% invoice jump and a support thread titled &#39;is the bot slower for anyone else?&#39;</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Optimizing purely for quality metrics without considering cost and latency can produce a system that&#39;s accurate in evaluation but unusable or unaffordable at real production volume, while optimizing purely for cost and latency without quality tracking can silently degrade the user experience</li></ul>
+    <ul><li><strong>The core tension:</strong> The axes genuinely conflict — better models cost more, validation layers add latency, caching adds staleness risk — and the eval&#39;s job is to make each trade explicit and priced rather than to eliminate it.</li></ul>
   </section>
     <section class="panel">
     <h2>Try it in code</h2>
@@ -87,28 +93,37 @@
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> For one real AI feature, measure or estimate cost and p95 latency alongside its quality metric, and describe a specific change you&#39;d consider only if it doesn&#39;t regress either.</p>
+    <p><strong>Task:</strong> Extend one eval suite (real or specified) to emit the triple: define the cost formula, the two latency metrics with percentiles, the per-outcome aggregation, and write the release policy line for each axis — what movement is acceptable, and who signs off on exceptions.</p>
     <ol>
       <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: an eval harness reporting the triple with percentiles, per-stage latency budgets, a per-outcome cost metric for any multi-step feature, and a release policy that names acceptable movement on each axis.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>A model or pipeline change that improves a quality metric is not automatically the right choice; without cost and latency measured on the same evaluation set, a quality improvement can hide an unacceptable trade-off that only becomes visible once it&#39;s already in production.</li></ul>
+    <ul><li>Cost and latency are not ops concerns separate from evaluation; they are properties of every model and prompt choice, and the eval run is the cheapest place to catch their regressions.</li><li>Averages are not measurement here; the p95 user and the top-cost 2% of requests are where both complaints and invoices actually come from.</li><li>Cheaper-and-faster is not automatically better; the triple exists because quality regressions bought with cost savings show up later as repeat contacts and churn — all three axes need floors.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-evaluation-cost-and-latency-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Cost and latency?</strong></p>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
-    <button data-answer="right">A model or pipeline change that improves a quality metric is not automatically the right choice; without cost and latency measured on the same evaluation set, a quality improvement can hide an unacceptable trade-off that only becomes visible once it&#39;s already in production.</button>
+    <button data-answer="right">Cost and latency are not ops concerns separate from evaluation; they are properties of every model and prompt choice, and the eval run is the cheapest place to catch their regressions.</button>
     <button data-answer="wrong">Once Cost and latency is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-evaluation-cost-and-latency-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Cost and latency into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="right">A production-shaped slice: an eval harness reporting the triple with percentiles, per-stage latency budgets, a per-outcome cost metric for any multi-step feature, and a release policy that names acceptable movement on each axis.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

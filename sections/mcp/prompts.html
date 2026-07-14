@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Prompts in MCP are reusable, server-defined prompt templates that a client can discover and use, letting a server share proven prompting patterns for its spec">
+  <meta name="description" content="Prompts are MCP&#39;s user-controlled primitive: named, parameterized templates a server exposes — slash-command style workflows like /review-pr or /summarize-inc">
   <meta name="theme-color" content="#0f172a">
   <title>Prompts | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,33 +47,39 @@
       <div>
         <p class="eyebrow">MCP · Chapter 6</p>
         <h1>Prompts</h1>
-        <p class="lede">Prompts in MCP are reusable, server-defined prompt templates that a client can discover and use, letting a server share proven prompting patterns for its specific domain rather than every client having to write its own from scratch.</p>
+        <p class="lede">Prompts are MCP&#39;s user-controlled primitive: named, parameterized templates a server exposes — slash-command style workflows like /review-pr or /summarize-incident — that users explicitly invoke and hosts expand into structured messages.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="mcp-prompts">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>Every engineer on the team prompts the incident bot differently, and the postmortem channel reads like five different companies wrote it. The org&#39;s best incident summary exists — it&#39;s just trapped in one person&#39;s head instead of shipped as a /prompt.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Prompts matter because most users are bad at prompting and shouldn&#39;t have to be good: server-shipped templates move prompt quality from individual skill to organizational infrastructure.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like a specialized consultant handing you their best pre-written questionnaire for a specific job, instead of you having to write your own from a blank page every time.</p>
+    <p>It is like the laminated checklist cards in a cockpit: the pilot chooses which card to run, the card encodes the expert-written procedure, and the whole point is that a good procedure written once beats improvisation every time.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to a server exposing named prompt templates, often with parameters, that a client can list, select, and fill in, so domain-specific prompting expertise lives with the server that knows the domain rather than being duplicated across every client that connects to it.</p>
-    
+    <p>The flow: server registers templates with arguments → host lists them as commands/UI → user invokes with arguments → template expands (optionally embedding resources) into messages → conversation proceeds from a strong, consistent starting point.</p>
+    <ul><li>User-controlled completes the control triangle: tools are model-invoked, resources are application-loaded, prompts are human-chosen — the primitive for &#39;expert-designed workflows a person deliberately triggers&#39;.</li><li>A prompt is a template with typed arguments: name, description, argument list, and the message structure it expands into — /review-pr(repo, pr_number) might expand into instructions plus embedded resource references (the diff, the CI results) as one coherent context package.</li><li>Prompts can compose the other primitives: a well-designed prompt template pulls in specific resources and suggests specific tools, packaging a whole workflow — this is where a server author&#39;s domain expertise gets encoded, not just exposed.</li><li>Servers ship the prompt so everyone gets the good version: instead of each user improvising &#39;summarize this incident&#39; differently, the incident-management server ships /incident-summary with the postmortem structure the org actually wants — prompt quality becomes a shared, versioned asset.</li><li>Hosts surface prompts as UI: slash commands, menu entries, buttons — discoverability is the host&#39;s job, and a prompt nobody can find is a prompt that doesn&#39;t exist.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>An MCP server for a code review tool exposes a review_pull_request prompt template that&#39;s been tuned for that specific tool&#39;s conventions, so any connecting client gets a proven prompt without having to design one from scratch.</p>
+    <p>An incident-management server exposes /incident-summary(incident_id, audience). Invoked with audience=&#39;executive&#39;, it expands to: instructions for a three-paragraph business-impact summary, the incident timeline resource, and the customer-impact metrics resource. On-call engineers stop writing their own inconsistent summaries; the postmortem channel&#39;s quality jumps because the org&#39;s best incident-writer encoded their format once, in the server everyone already uses.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Server-provided prompts centralize domain expertise and keep quality consistent across clients, but they require the server maintainer to keep the prompts updated as the underlying domain or model behavior changes</li></ul>
+    <ul><li><strong>The core tension:</strong> Rigid templates guarantee consistency but frustrate power users who want to deviate — good prompt design parameterizes the genuinely variable parts and keeps the expert structure fixed.</li></ul>
   </section>
     <section class="panel">
     <h2>Try it in code</h2>
@@ -86,28 +92,37 @@
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> For one real domain-specific task, design one MCP prompt template with parameters that a server could expose for clients to reuse.</p>
+    <p><strong>Task:</strong> Identify the two workflows your team performs repeatedly with an AI assistant. Design each as an MCP prompt: name, arguments with types, the expanded message structure, and which resources it should embed — then write the one-line description users will see in the command palette.</p>
     <ol>
       <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: one server shipping two real workflow prompts with typed arguments, visible in a host&#39;s command palette, with usage logged — then compare output quality against freehand prompting for the same tasks.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>MCP prompts are not just static text snippets; they&#39;re structured, parameterized templates meant to be discovered and reused programmatically by a client, which is a different design than a one-off prompt string embedded in application code.</li></ul>
+    <ul><li>Prompts are not system prompts; they are user-invoked workflow templates, closer to slash commands than to model configuration.</li><li>They are not redundant with tools; a prompt shapes how the conversation starts and what context loads, while tools are what the model can do once it&#39;s running.</li><li>Templates are not training wheels to grow out of; encoding expert workflows is how organizations scale their best practitioners — the senior engineer&#39;s review checklist in template form outperforms most people&#39;s improvisation permanently.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-mcp-prompts-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Prompts?</strong></p>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
     <button data-answer="wrong">Once Prompts is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
-    <button data-answer="right">MCP prompts are not just static text snippets; they&#39;re structured, parameterized templates meant to be discovered and reused programmatically by a client, which is a different design than a one-off prompt string embedded in application code.</button>
+    <button data-answer="right">Prompts are not system prompts; they are user-invoked workflow templates, closer to slash commands than to model configuration.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-mcp-prompts-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Prompts into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production-shaped slice: one server shipping two real workflow prompts with typed arguments, visible in a host&#39;s command palette, with usage logged — then compare output quality against freehand prompting for the same tasks.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

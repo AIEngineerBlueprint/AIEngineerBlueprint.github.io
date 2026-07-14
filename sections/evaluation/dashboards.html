@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Dashboards for AI evaluation surface quality, cost, and latency metrics in an ongoing, visible way, so degradation or improvement is apparent to the team at a">
+  <meta name="description" content="Eval dashboards turn scattered eval runs and production quality signals into one continuously visible surface — trends over time, per-slice breakdowns, releas">
   <meta name="theme-color" content="#0f172a">
   <title>Dashboards | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,33 +47,39 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 11</p>
         <h1>Dashboards</h1>
-        <p class="lede">Dashboards for AI evaluation surface quality, cost, and latency metrics in an ongoing, visible way, so degradation or improvement is apparent to the team at a glance rather than requiring someone to run a manual evaluation script.</p>
+        <p class="lede">Eval dashboards turn scattered eval runs and production quality signals into one continuously visible surface — trends over time, per-slice breakdowns, release annotations — so quality is monitored like uptime instead of rediscovered before each launch.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-dashboards">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>Every eval run passed all quarter — each one compared against the run before it. Nobody looked at the 90-day trend: down nine points, one small &#39;acceptable&#39; regression at a time. No dashboard, no memory.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Dashboards matter because eval results without trend visibility answer only &#39;is this change safe?&#39; while the harder production question is &#39;are we drifting?&#39; — and drift is invisible in any single run.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like a car&#39;s dashboard showing speed and fuel level continuously, rather than requiring the driver to stop and manually check under the hood.</p>
+    <p>It is like a hospital&#39;s patient monitor versus a yearly physical: the same vitals, but continuous visibility with alarms is what catches the deterioration that happens between appointments — and AI quality deteriorates between releases, not during them.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to aggregating evaluation results, production quality signals like user feedback or automated checks, cost, and latency into a continuously updated view, typically segmented by time, feature, or model version, so trends and regressions are visible without manual investigation.</p>
-    
+    <p>The flow: pipe eval runs and production quality samples into one store → chart trends with release annotations → break out the slices that match how your product actually varies (intent, tenant, language, model) → wire alerts to thresholds → hold a weekly review that turns movements into actions.</p>
+    <ul><li>The dashboard unifies two time-scales: eval-run results (golden set scores, safety rates, regression diffs — event-driven, per change) and production quality signals (sampled judge scores, refusal rates, thumbs-down, cost/latency percentiles — continuous) — quality stories only make sense with both lanes visible.</li><li>Slices beat aggregates: overall score by day is a vanity line; score by intent, by tenant, by language, by model version is where problems localize — &#39;quality is fine except Spanish-language billing queries since Tuesday&#39; is a finding; &#39;91.2% overall&#39; is wallpaper.</li><li>Annotations make trends legible: every prompt change, model version adoption, index rebuild, and guardrail tune appears as a vertical line on the time axis — without them, every dip triggers an archaeology expedition through deploy logs and Slack.</li><li>Dashboards need owners and rituals: a weekly quality review that walks the dashboard (what moved, why, what&#39;s the action) is what separates a monitoring practice from a screensaver — unvisited dashboards converge to the same value as no dashboards.</li><li>Alerts belong on quality signals too: judge-score drops, refusal-rate spikes, faithfulness dips beyond thresholds page someone — the dashboard is for understanding; the alert is for noticing, and both run off the same data.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A dashboard shows a RAG system&#39;s citation-accuracy rate, average cost per query, and p95 latency updated daily, letting the team notice a quality dip the same day it happens rather than weeks later from a customer complaint.</p>
+    <p>A team&#39;s eval dashboard: top row — golden-set score, safety attack-success, cost per outcome, p95 latency, each as 90-day trends with release annotations. Second row — quality by intent and by tenant tier. Thursday&#39;s weekly review spots the enterprise-tenant slice drifting down 4 points over three weeks with no annotation nearby — investigation finds a tenant-specific prompt override nobody added to the release process. The aggregate line never moved; the slice caught what the average hid, in week three instead of at renewal time.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> A rich, well-maintained dashboard makes problems visible early, but building and maintaining meaningful dashboards, not just easy-to-collect vanity metrics, takes deliberate design effort and ongoing curation as the system evolves</li></ul>
+    <ul><li><strong>The core tension:</strong> Dashboards can grow into unread metric graveyards — the discipline is a small top row someone can own (five numbers with meaning) over comprehensive sprawl, adding slices when investigations demand them.</li></ul>
   </section>
     <section class="panel">
     <h2>Try it in code</h2>
@@ -87,28 +93,37 @@
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Design one dashboard view for a real AI feature that would show a specific quality regression within a day of it happening, not weeks.</p>
+    <p><strong>Task:</strong> Design the quality dashboard for one AI product: the five top-row metrics, the two slices that would catch your most plausible silent regression, where release annotations come from, the one alert threshold, and the agenda of the weekly review that keeps it alive.</p>
     <ol>
       <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: one dashboard with eval trends and production quality signals, release annotations, two risk-relevant slices, one alert on a quality signal, and a standing weekly review with a named owner.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>A dashboard full of metrics is not automatically useful; if it doesn&#39;t include the specific quality, cost, and latency signals that would actually reveal a real regression, it can create a false sense of visibility while missing exactly the problems that matter.</li></ul>
+    <ul><li>A dashboard is not the eval program; it is the display layer — without golden sets, judges, and sampling feeding it, it visualizes nothing trustworthy.</li><li>Overall averages are not monitoring; per-slice views are where real regressions localize, and the aggregate is routinely the last line to move.</li><li>More charts are not more insight; an owned five-metric top row that gets reviewed weekly beats forty panels nobody can interpret — the ritual matters more than the layout.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-evaluation-dashboards-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Dashboards?</strong></p>
     <button data-answer="wrong">Once Dashboards is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
-    <button data-answer="right">A dashboard full of metrics is not automatically useful; if it doesn&#39;t include the specific quality, cost, and latency signals that would actually reveal a real regression, it can create a false sense of visibility while missing exactly the problems that matter.</button>
+    <button data-answer="right">A dashboard is not the eval program; it is the display layer — without golden sets, judges, and sampling feeding it, it visualizes nothing trustworthy.</button>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-evaluation-dashboards-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Dashboards into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production-shaped slice: one dashboard with eval trends and production quality signals, release annotations, two risk-relevant slices, one alert on a quality signal, and a standing weekly review with a named owner.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

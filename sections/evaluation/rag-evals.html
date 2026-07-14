@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="RAG evals test retrieval, grounding, citations, and answer faithfulness together for retrieval-augmented systems.">
+  <meta name="description" content="RAG evals measure the pipeline in its separately-failing stages — did retrieval find the right evidence (recall, precision), and did generation use it honestl">
   <meta name="theme-color" content="#0f172a">
   <title>RAG evals | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 7</p>
         <h1>RAG evals</h1>
-        <p class="lede">RAG evals test retrieval, grounding, citations, and answer faithfulness together for retrieval-augmented systems.</p>
+        <p class="lede">RAG evals measure the pipeline in its separately-failing stages — did retrieval find the right evidence (recall, precision), and did generation use it honestly (faithfulness, citation accuracy) — because an end-to-end score can&#39;t tell you which half to fix.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-rag-evals">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The team spent two weeks tuning prompts because &#39;answer quality is bad&#39;. It was retrieval — recall@5 was 61% — and no prompt on earth fixes evidence that never arrived. One stage-level metric would have saved a sprint.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>RAG evals matter because the two halves fail independently and get fixed by different people with different tools — undifferentiated &#39;answer quality&#39; scores generate weeks of fixing the wrong stage.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>They are like checking both whether the student found the right textbook page and whether the answer quotes it correctly.</p>
+    <p>It is like evaluating a law firm&#39;s brief by checking two different things: did the paralegal pull the right cases from the library, and did the lawyer&#39;s argument actually follow from those cases — a brilliant argument citing the wrong cases and a bad argument from perfect research both lose, differently.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to source recall, answer faithfulness, citation precision, context relevance, and abstention behavior.</p>
-    
+    <p>The flow: golden questions with expected source IDs and reference answers → measure retrieval (recall@k, precision) → measure generation on retrieval-success cases (faithfulness, citation precision) → include abstention cases → attribute failures per stage → re-run on any pipeline or corpus change.</p>
+    <ul><li>Retrieval gets its own metrics: recall@k (was a known-relevant chunk in the top k?) and precision (how much of the top k was relevant?) against golden questions with labeled source IDs — if recall@5 is 60%, generation quality is capped and no prompt work moves it.</li><li>Generation gets faithfulness and citation checks: is each claim supported by the retrieved evidence, and do citations point at genuinely supporting passages — scored claim-by-claim (LLM judge or entailment), because answer-level scores let one fabricated sentence hide among four honest ones.</li><li>Abstention is a first-class behavior: the eval set includes questions the corpus can&#39;t answer, where the correct output is &#39;I don&#39;t know from the available sources&#39; — a RAG system that never abstains is failing silently on exactly the queries that matter.</li><li>Stage attribution is the payoff: a wrong answer decomposes into retrieval miss / ranking miss / generation drift / abstention failure — per-stage metrics tell you whether to fix chunking, the re-ranker, the prompt, or the threshold, which is the entire point of separating them.</li><li>The corpus is part of the system under test: index freshness, chunking changes, and document updates all shift results — RAG evals re-run on corpus changes too, not just on prompt and model changes.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>An eval passes only if the expected policy chunk is retrieved and the final answer does not add unsupported refund rules.</p>
+    <p>A docs assistant scores 74% end-to-end. Stage breakdown on the same 100 questions: retrieval recall@5 is 68% (the ceiling), and when retrieval succeeds, faithfulness is 96%. Diagnosis: retrieval, specifically table-heavy pages chunked mid-table. After section-aware chunking: recall@5 hits 87%, end-to-end hits 84% — with zero prompt changes. The team that only had the end-to-end number had spent two weeks tuning prompts against a retrieval problem.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Optimizing retrieval can hurt generation if too much noisy context is passed.</li></ul>
+    <ul><li><strong>The core tension:</strong> Stage-level evals need labeled sources per question (expensive to curate) versus end-to-end evals that are cheap but unattributable — the standard resolution is a smaller fully-labeled core set plus a larger answer-only set.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Build five RAG eval cases with expected source IDs and one unsupported question.</p>
+    <p><strong>Task:</strong> Take ten questions for a corpus you know: label expected source chunks for each, add two unanswerable ones, then run (or trace by hand) where each failure in the current system occurs — retrieval, ranking, generation, or abstention — and state which single stage fix would raise the score most.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: 50+ questions with expected sources, retrieval and generation metrics reported separately, five unanswerable questions with abstention scored, wired to run on chunking, embedding, prompt, and model changes alike.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not score only the final answer when the source evidence is wrong.</li></ul>
+    <ul><li>One answer-quality score is not a RAG eval; it is a symptom report with no diagnosis — recall and faithfulness fail independently and hide inside each other.</li><li>High faithfulness is not high quality; a system can faithfully summarize the wrong retrieved documents — both stages have to be measured to trust either.</li><li>RAG evals are not one-time setup; every corpus update, chunking tweak, and embedding swap shifts retrieval, and the eval set is what notices before users do.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-evaluation-rag-evals-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about RAG evals?</strong></p>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
     <button data-answer="wrong">Once RAG evals is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
-    <button data-answer="right">Do not score only the final answer when the source evidence is wrong.</button>
+    <button data-answer="right">One answer-quality score is not a RAG eval; it is a symptom report with no diagnosis — recall and faithfulness fail independently and hide inside each other.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-evaluation-rag-evals-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing RAG evals into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="right">A production-shaped slice: 50+ questions with expected sources, retrieval and generation metrics reported separately, five unanswerable questions with abstention scored, wired to run on chunking, embedding, prompt, and model changes alike.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Unit evals are small targeted tests that check one behavior of an AI system, prompt, tool, or guardrail.">
+  <meta name="description" content="Unit evals are small, fast, targeted checks that verify one specific behavior of an AI component — one prompt&#39;s format compliance, one extraction field, one r">
   <meta name="theme-color" content="#0f172a">
   <title>Unit evals | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 3</p>
         <h1>Unit evals</h1>
-        <p class="lede">Unit evals are small targeted tests that check one behavior of an AI system, prompt, tool, or guardrail.</p>
+        <p class="lede">Unit evals are small, fast, targeted checks that verify one specific behavior of an AI component — one prompt&#39;s format compliance, one extraction field, one refusal rule — the AI analogue of unit tests, run in seconds and wired into the developer loop.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-unit-evals">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>A one-word prompt tweak broke JSON output for 0.4% of requests. It reached production because checking meant manually pasting five test cases into a playground — and under deadline, nobody did. A 90-second suite would have caught it at the diff.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Unit evals matter because they move quality feedback from &#39;after deploy, via users&#39; to &#39;before merge, in minutes&#39; — they are what make prompt engineering feel like engineering.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>They are like unit tests for probabilistic software: narrow, repeatable, and tied to one contract.</p>
+    <p>It is like unit tests versus a full QA pass: you don&#39;t re-certify the whole product to check that one function still rounds correctly — you keep a fast, specific test that fails loudly the moment that one behavior breaks.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to fixed inputs, expected fields, rubric checks, deterministic validators, and CI integration.</p>
-    
+    <p>The flow: define one behavior → write targeted inputs including the known failure modes → assert deterministically (or thresholded over N runs) → wire into the pre-merge loop → add a new eval every time production teaches you a new failure.</p>
+    <ul><li>The unit is a behavior, not a component: &#39;returns valid JSON matching the schema&#39;, &#39;extracts the invoice date as ISO-8601&#39;, &#39;refuses medical dosage questions&#39;, &#39;includes a citation when sources are provided&#39; — each eval checks one assertable property on a handful of targeted inputs.</li><li>Assertions should be deterministic wherever possible: schema validation, regex and substring checks, enum membership, numeric bounds — cheap, unambiguous, and CI-friendly; save judge-based scoring for properties that genuinely resist deterministic checks.</li><li>Nondeterminism is managed, not ignored: run at temperature 0 where the task allows, and for genuinely sampled behaviors run N trials with a pass-threshold (e.g. 9/10) — a unit eval that flakes gets deleted or fixed, exactly like a flaky test.</li><li>Speed defines the loop they live in: a suite of 40 unit evals over cached or cheap-model calls should run in a couple of minutes, cheap enough that engineers run it on every prompt edit — the moment it&#39;s too slow for the inner loop, it silently stops being run.</li><li>Each production incident should leave a unit eval behind: the model that once emitted apology-prose into a JSON field gets a permanent &#39;no prose in JSON&#39; eval — the suite becomes the accumulated scar tissue of everything that has ever gone wrong.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A unit eval checks that the refund tool is never called when order status is &#39;delivered over 90 days ago&#39;.</p>
+    <p>An invoice-extraction pipeline has 14 unit evals: schema validity on 5 synthetic invoices, date normalization on 3 formats (US, EU, written-out), currency handling on 2, a two-page invoice, an invoice with a missing total (expected: null, not a guess), and — added after an incident — a scanned invoice whose vendor name contains &#39;Total GmbH&#39; (the model once returned it as the total). The suite runs in 90 seconds on every prompt change; the &#39;Total GmbH&#39; eval has failed twice since, each time catching a regression before merge.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Unit evals are cheap but cannot prove overall product quality.</li></ul>
+    <ul><li><strong>The core tension:</strong> Coverage versus speed — the suite must stay fast enough to run constantly, so unit evals stay small and surgical while broad quality measurement lives in the full golden-set run.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Write three unit evals for one prompt: format, refusal, and citation behavior.</p>
+    <p><strong>Task:</strong> For one AI component you know, write six unit evals: the behavior asserted, the 2–3 targeted inputs, the deterministic assertion (or N-trial threshold), and which of the six encodes a failure you have actually seen happen.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: a suite of 10–20 behavior-specific evals with deterministic assertions, running in under two minutes on every prompt or model change, with at least three evals traceable to real past incidents.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not replace human review and scenario evals with only unit evals.</li></ul>
+    <ul><li>Unit evals are not small golden-dataset runs; the golden set measures overall quality, while a unit eval asserts one behavior — different granularity, different failure meaning, different fix.</li><li>LLM outputs being nondeterministic does not make assertion impossible; most product-critical properties (format, fields, refusals, citations) are deterministic claims even when wording varies.</li><li>Passing unit evals does not mean the system is good; it means the specific behaviors you&#39;ve encoded still hold — which is exactly enough to ship a prompt change without fear, and nothing more.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-evaluation-unit-evals-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Unit evals?</strong></p>
-    <button data-answer="right">Do not replace human review and scenario evals with only unit evals.</button>
+    <button data-answer="right">Unit evals are not small golden-dataset runs; the golden set measures overall quality, while a unit eval asserts one behavior — different granularity, different failure meaning, different fix.</button>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
     <button data-answer="wrong">Once Unit evals is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-evaluation-unit-evals-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Unit evals into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production-shaped slice: a suite of 10–20 behavior-specific evals with deterministic assertions, running in under two minutes on every prompt or model change, with at least three evals traceable to real past incidents.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

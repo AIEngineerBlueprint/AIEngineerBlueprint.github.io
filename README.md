@@ -60,11 +60,13 @@ Generated pages are committed as plain static HTML so the platform can be hosted
 
 ## Project status
 
-The current generated platform includes 577 chapters across 33 tracks, ~569 chapter-specific concept entries, production-failure hooks for the priority tracks (RAG, LLM Fundamentals, AI Agents, Guardrails, Production AI Systems), running-example products for those tracks, topic diagrams for ~28 key lessons, setup-and-smoke-test guidance for cloud/local AI environments, and AWS/Azure deployment variants for major product labs.
+The current generated platform includes 577 chapters across 33 tracks and ~626 chapter-specific concept entries, with topic diagrams for ~28 key lessons, setup-and-smoke-test guidance for cloud/local AI environments, and AWS/Azure deployment variants for major product labs.
+
+Seven tracks are fully deepened with hand-authored deep-dive entries, production-failure hooks on every concept chapter, and a per-track running-example product: RAG, LLM Fundamentals, AI Agents, Guardrails, Production AI Systems, MCP, and Evaluation (95 hooked chapters, 76 deep-dive entries).
 
 Chapter pages follow a single narrative arc: failure hook → why it matters → plain-terms analogy → how it works → concrete example → trade-offs → code → lab → common mistakes → quiz → going deeper. Project chapters (labs, mini projects, capstones) use a build-brief layout instead, and the interview track has its own shape.
 
-Useful next content pushes: hooks for the remaining tracks, hand-authored `quiz` entries for priority chapters, more topic diagrams, and richer fundamentals for seeded entries.
+Useful next content pushes, in rough priority order: deep-dive entries and hooks for the next tier of tracks (Tool Calling, Structured Output, Memory, Grounding, Agentic AI, Vector Databases, Embeddings, Prompt Engineering — ~98 seeded concept chapters), then the remaining long tail (cloud stacks, coding tools, foundations — ~200 chapters), plus hand-authored `quiz` entries for deepened chapters and more topic diagrams.
 
 ## Author
 

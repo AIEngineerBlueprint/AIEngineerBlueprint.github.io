@@ -142,7 +142,8 @@ const sectionProfiles = {
     why: "A protocol boundary keeps tool access governable. Teams can add capabilities without hard-wiring every integration into every assistant.",
     example: "An IDE assistant can connect to a GitHub MCP server for issues, a docs MCP server for internal guides, and a database MCP server for read-only schema context.",
     flow: ["Client", "MCP transport", "Server", "Resources", "Tools", "Audited result"],
-    diagramTitle: "MCP client-server boundary"
+    diagramTitle: "MCP client-server boundary",
+    runningExample: "Throughout this track, imagine you own 'tickets-mcp': your company's internal ticket-system server, used by the IDE assistant, the support bot, and the agent platform. Every chapter is a decision you'll make taking it from a laptop demo to a governed, versioned, observable piece of company infrastructure."
   },
   "ai-agents": {
     analogy: "An agent is like a junior engineer with a checklist, tools, and a supervisor. It can plan and act, but production systems still need budgets, permissions, review points, and logs.",
@@ -185,7 +186,8 @@ const sectionProfiles = {
     why: "Evals tell you whether a prompt, model, retrieval change, or guardrail made the product better or worse.",
     example: "A RAG assistant can be tested on 100 known questions with expected source documents, answer quality ratings, citation checks, and latency budgets.",
     flow: ["Dataset", "Run system", "Score", "Compare", "Review", "Gate release"],
-    diagramTitle: "AI evaluation loop"
+    diagramTitle: "AI evaluation loop",
+    runningExample: "Throughout this track, imagine you own quality for 'Reply', a support assistant answering from your company's help center. Every chapter builds the measurement system around it — golden sets, gates, judges, dashboards — until 'is Reply getting better or worse?' has an answer that isn't an opinion."
   },
   guardrails: {
     analogy: "Guardrails are the airport security of an AI product. They do not fly the plane, but they decide what is allowed through each checkpoint.",

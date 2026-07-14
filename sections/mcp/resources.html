@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Resources in MCP are a way for a server to expose readable data, such as files or database records, to a client in a structured, addressable way, distinct fro">
+  <meta name="description" content="Resources are MCP&#39;s read-side primitive: URI-addressed data — files, records, schemas, documents — that a server exposes for the host to read into model conte">
   <meta name="theme-color" content="#0f172a">
   <title>Resources | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,33 +47,39 @@
       <div>
         <p class="eyebrow">MCP · Chapter 4</p>
         <h1>Resources</h1>
-        <p class="lede">Resources in MCP are a way for a server to expose readable data, such as files or database records, to a client in a structured, addressable way, distinct from tools which perform actions.</p>
+        <p class="lede">Resources are MCP&#39;s read-side primitive: URI-addressed data — files, records, schemas, documents — that a server exposes for the host to read into model context, with the application (not the model) deciding what gets loaded.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="mcp-resources">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The assistant answered from a README that was rewritten three weeks ago — because someone exposed the file as a one-time tool result instead of a subscribable resource, and nothing ever told the session it changed.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Resources matter because most of an assistant&#39;s quality comes from what&#39;s in context, and resources are the protocol&#39;s mechanism for getting curated, fresh, attributable data there — with the app in control instead of hoping the model asks.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like a library&#39;s card catalog that lets you look up and read a specific book, as opposed to a librarian who performs a task for you like reserving or ordering one.</p>
+    <p>It is like a library&#39;s reference shelf versus asking the librarian to run errands: tools do things; resources are the materials laid out for consultation — and the reader&#39;s librarian (the host) chooses which volumes come to the reading table.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to a server exposing a list of available resources with unique identifiers, letting a client request the content of a specific resource by that identifier, so a model or application can read relevant data without the server needing to guess what&#39;s relevant in advance.</p>
-    
+    <p>The flow: server registers resources (or templates) with URIs → host lists and selects per its workflow → read returns content with MIME type → host injects labeled content into context → subscriptions push updates when the underlying data changes.</p>
+    <ul><li>Resources are application-controlled by design: the host decides which resources to read and inject into context, unlike tools which the model chooses to invoke — this makes resources the right primitive for &#39;context the app curates&#39; rather than &#39;actions the model takes&#39;.</li><li>Every resource has a URI (file:///project/readme, db://schema/orders, ticket://12345) and a MIME type; URI templates allow parameterized families of resources (ticket://{id}) that hosts can resolve on demand.</li><li>Discovery and subscription: hosts list available resources, read the ones they want, and can subscribe to change notifications — which is how &#39;the file changed on disk&#39; propagates into a live assistant session without re-reading everything.</li><li>The tools-vs-resources decision is about control and side effects: read-only data the app should curate → resource; anything with parameters chosen by the model, side effects, or computation → tool. Exposing a database as query-tool vs schema-resources changes who drives and what can go wrong.</li><li>Resources carry the same trust obligations as any context: contents from a server enter the prompt, so hostile or compromised resource content is an injection vector — hosts should treat resource text as data, label its origin, and apply size limits before it eats the context window.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>An MCP server for a documentation site exposes each page as a resource with a unique URI, letting a client fetch the exact page content it needs rather than requiring a specialized tool call to search or retrieve it.</p>
+    <p>A code-review assistant connects to a repo server exposing resources: file:///src/** (source files), git://diff/current (the pending diff), and ci://last-run/failures. The host loads the diff resource and the two failing-test resources into context automatically when a review starts — the model never &#39;decides&#39; to fetch them, the application&#39;s review workflow does. When the developer pushes a new commit, a resource-updated notification refreshes the diff without restarting the session.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Exposing data as resources is simpler and more direct for read access than building a custom tool for every retrieval need, but resources alone don&#39;t support complex actions or side effects, which is what tools are for</li></ul>
+    <ul><li><strong>The core tension:</strong> Injecting more resources makes answers better-grounded and burns context tokens fast — hosts need selection logic (recency, relevance, size caps) rather than &#39;load everything the server offers&#39;.</li></ul>
   </section>
     <section class="panel">
     <h2>Try it in code</h2>
@@ -87,28 +93,37 @@
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> For one real MCP server you might build, list one piece of data that should be exposed as a resource and one action that should instead be a tool.</p>
+    <p><strong>Task:</strong> For an assistant that helps with on-call, design six resources across two servers (runbooks, recent alerts, service dashboards): write each URI, MIME type, and one line on when the host should load it — then mark which one is the injection risk and why.</p>
     <ol>
       <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: one server exposing a handful of real resources with correct MIME types and one URI template, plus host logic that picks at most N tokens&#39; worth per session and logs which resources actually entered context.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Resources are not the same as tools; resources are for reading structured, addressable data, while tools are for performing actions or operations, and conflating the two leads to a poorly designed MCP server.</li></ul>
+    <ul><li>Resources are not tools with no arguments; the difference is who controls loading — application-controlled context versus model-controlled invocation shapes the whole interaction.</li><li>Exposing a resource is not the same as it being used; if the host never selects it into context, it contributes nothing — resource design includes designing the host-side selection.</li><li>Resource content is not automatically trustworthy; it enters the prompt like any retrieved text, so provenance labels and injection awareness apply exactly as they do in RAG.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-mcp-resources-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Resources?</strong></p>
     <button data-answer="wrong">Once Resources is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
-    <button data-answer="right">Resources are not the same as tools; resources are for reading structured, addressable data, while tools are for performing actions or operations, and conflating the two leads to a poorly designed MCP server.</button>
+    <button data-answer="right">Resources are not tools with no arguments; the difference is who controls loading — application-controlled context versus model-controlled invocation shapes the whole interaction.</button>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-mcp-resources-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Resources into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="right">A production-shaped slice: one server exposing a handful of real resources with correct MIME types and one URI template, plus host logic that picks at most N tokens&#39; worth per session and logs which resources actually entered context.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

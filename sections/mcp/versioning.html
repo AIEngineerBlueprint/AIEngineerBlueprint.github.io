@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Versioning for MCP means managing changes to a server&#39;s exposed tools, resources, and prompts over time so that connected clients aren&#39;t unexpectedly broken b">
+  <meta name="description" content="Versioning in MCP spans three layers that drift independently — the protocol revision clients and servers negotiate, each server&#39;s capability surface (tools, ">
   <meta name="theme-color" content="#0f172a">
   <title>Versioning | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,33 +47,39 @@
       <div>
         <p class="eyebrow">MCP · Chapter 12</p>
         <h1>Versioning</h1>
-        <p class="lede">Versioning for MCP means managing changes to a server&#39;s exposed tools, resources, and prompts over time so that connected clients aren&#39;t unexpectedly broken by a change to the server&#39;s interface.</p>
+        <p class="lede">Versioning in MCP spans three layers that drift independently — the protocol revision clients and servers negotiate, each server&#39;s capability surface (tools, schemas, descriptions), and the host&#39;s pinned expectations — and unmanaged drift at any layer breaks integrations or security assumptions silently.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="mcp-versioning">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The vendor&#39;s server update renamed one tool and added a required argument. Every host in the company discovered this independently, in production, over one confusing Tuesday. Pinning would have made it a diff review instead.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Versioning matters because MCP creates many-to-many coupling: one server update fans out to every host and workflow that depends on it, and the protocol&#39;s dynamism (runtime discovery) makes drift easy to ship and hard to notice.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like a public API that can&#39;t just silently change its contract; existing integrations depend on the interface staying stable or being changed in a clearly communicated, backward-compatible way.</p>
+    <p>It is like maintaining electrical standards across a city: the plug shape (protocol), each building&#39;s wiring (server capabilities), and every appliance&#39;s assumptions (hosts) — the blackouts happen when one layer changes assuming the others noticed.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to tracking the server&#39;s protocol and capability versions, communicating breaking changes to tool schemas or resource formats explicitly, and where possible supporting older client expectations for a transition period rather than breaking every connected client the moment a change ships.</p>
-    
+    <p>The flow: negotiate protocol revision at initialize → pin server capability snapshots at approval → on update, diff schemas and descriptions → run compatibility checks (host policy, evals) → roll with deprecation windows → notify via list-changed rather than silent swaps.</p>
+    <ul><li>Protocol versions are date-based and negotiated at initialize: client and server agree on a revision during the handshake, and spec evolution (like the transport change from HTTP+SSE to streamable HTTP) means real deployments straddle revisions — graceful negotiation and clear failure on true incompatibility are baseline hygiene.</li><li>Server capability versioning is the layer that bites weekly: tool schemas gain required arguments, descriptions get rewritten, tools appear and vanish — each is a breaking change for some host&#39;s approval policy or the model&#39;s learned usage, whether or not anyone bumped a version string.</li><li>Description changes are security-relevant changes: because hosts approve servers partly on tool descriptions, a description rewrite is not a docs tweak — pinning by capability hash and diffing on update is how rug-pull-style changes become visible events instead of silent ones.</li><li>Hosts should pin and roll deliberately: pin server versions (package version, image digest, or capability hash), test updates against a checklist (schemas still valid? approval tiers still correct? evals still pass?), then roll — &#39;latest&#39; in an MCP config is an unattended trust decision.</li><li>Deprecation is a conversation with models and humans: servers retiring a tool should mark it deprecated in the description (models read it), keep it functional through a sunset window, and emit list-changed notifications — hard-removing a tool mid-session strands active workflows.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>An MCP server changes a tool&#39;s required parameter, and rather than silently breaking every existing client, it introduces the change as a new tool version while keeping the old version available during a deprecation window.</p>
+    <p>The internal tickets server ships v2: create_ticket gains a required &#39;priority&#39; argument and search_tickets is renamed. Because hosts pin capability hashes, the update lands as a diff review, not a surprise: one host&#39;s approval policy references the old tool name (fixed), the agent platform&#39;s evals catch the new required argument (prompt updated), and the old name ships as a deprecated alias for 30 days. The alternative timeline — auto-updating configs — was every host discovering the break independently in production.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Maintaining backward compatibility during a transition period reduces the risk of breaking connected clients, but it means the server has to support multiple versions of a tool or resource simultaneously for a time, adding real maintenance overhead</li></ul>
+    <ul><li><strong>The core tension:</strong> Dynamic discovery is the feature (servers can evolve without redeploying hosts) and the risk (evolution outruns review) — pinning plus diff-on-change keeps the dynamism while making every change a visible decision.</li></ul>
   </section>
     <section class="panel">
     <h2>Try it in code</h2>
@@ -85,28 +91,37 @@ server.tool(&quot;create_task&quot;, { parameters: { title, assignee, dueDate },
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> For one real MCP tool, describe a schema change you might need to make, and how you would roll it out without breaking existing connected clients.</p>
+    <p><strong>Task:</strong> Take one MCP server you use or can imagine concretely and design its v2 rollout: the capability diff, which changes are breaking for hosts versus for models, the deprecation plan for one renamed tool, and the checklist a host runs before accepting the update.</p>
     <ol>
       <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: capability-hash pinning in one host, a server-update checklist that includes description diffs and eval reruns, and one practiced deprecation (alias, sunset window, notification) for a renamed tool.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Changing a tool&#39;s schema or a resource&#39;s format is not a purely internal concern; any client that has integrated with the previous version can break immediately if a breaking change ships without versioning or a transition period.</li></ul>
+    <ul><li>Protocol-version compatibility is not the whole story; most real breakage is capability-surface drift on servers that never touched the protocol revision.</li><li>A tool-description rewrite is not a non-functional change; it alters model behavior and may invalidate the basis on which the server was approved.</li><li>Pinning is not stagnation; it converts updates from ambient drift into reviewed events — the goal is deliberate rolling, not freezing.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-mcp-versioning-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Versioning?</strong></p>
-    <button data-answer="right">Changing a tool&#39;s schema or a resource&#39;s format is not a purely internal concern; any client that has integrated with the previous version can break immediately if a breaking change ships without versioning or a transition period.</button>
+    <button data-answer="right">Protocol-version compatibility is not the whole story; most real breakage is capability-surface drift on servers that never touched the protocol revision.</button>
     <button data-answer="wrong">Once Versioning is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-mcp-versioning-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Versioning into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="right">A production-shaped slice: capability-hash pinning in one host, a server-update checklist that includes description diffs and eval reruns, and one practiced deprecation (alias, sunset window, notification) for a renamed tool.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

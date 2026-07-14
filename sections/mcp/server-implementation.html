@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="MCP server implementation exposes tools, resources, and prompts through a protocol contract that clients can discover and call.">
+  <meta name="description" content="Server implementation is building the program that speaks MCP: registering capabilities with schemas, handling tool and resource requests with validation and ">
   <meta name="theme-color" content="#0f172a">
   <title>Server implementation | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">MCP · Chapter 7</p>
         <h1>Server implementation</h1>
-        <p class="lede">MCP server implementation exposes tools, resources, and prompts through a protocol contract that clients can discover and call.</p>
+        <p class="lede">Server implementation is building the program that speaks MCP: registering capabilities with schemas, handling tool and resource requests with validation and honest errors, and behaving like the production service it is — because hosts and models will exercise every path you didn&#39;t test.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="mcp-server-implementation">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The server returned &#39;Error 500&#39; and the model, told nothing useful, retried the same call eleven times. Your error messages have a new audience now — one that acts on them literally and instantly.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Server implementation is where MCP&#39;s promises become real: the protocol guarantees interoperability, but reliability, security, and model-usability are earned entirely in your handlers.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like writing a small API server whose endpoints are designed for AI tools rather than browsers.</p>
+    <p>It is like building a vending machine rather than staffing a shop counter: nobody is present to interpret confused requests, so the slots, labels, error messages, and coin-return path must be engineered for every customer you&#39;ll never meet.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to capability registration, schema definitions, resource handlers, tool handlers, validation, errors, and logging.</p>
-    
+    <p>The flow: initialize and register capabilities → receive request → authenticate/authorize → validate inputs beyond the schema → execute with timeouts and caps → return structured results or instructive errors → log the invocation.</p>
+    <ul><li>SDKs handle the protocol so you handle the domain: official SDKs (TypeScript, Python, and others) manage JSON-RPC, initialization, and capability negotiation — your code is capability registration and handlers, which is where all the real decisions live.</li><li>Validate like a web service, because you are one: every tool argument gets server-side validation regardless of schema; every resource URI gets authorization checks; path traversal, injection through arguments, and oversized requests are your problems to reject.</li><li>Error messages are model-facing UX: the model reads your errors and decides what to do next — &#39;file not found: /src/app.ts; did you mean /src/App.tsx?&#39; produces a smart retry, while &#39;Error 500&#39; produces a confused loop. Design errors as feedback.</li><li>Statelessness pays: handlers that don&#39;t accumulate in-process session state scale horizontally on remote transports and restart cleanly on stdio — put durable state in real storage, not in the server process.</li><li>Log every invocation with arguments (redacted), caller identity, latency, and outcome: MCP servers sit between models and real systems, and when something weird happens, your logs are the only account of what the model actually asked for.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A GitHub MCP server might expose list_issues as a tool and repository README files as resources.</p>
+    <p>A team ships a read-only database server: two tools (run_query with a SELECT-only validator and 1,000-row cap, get_schema) and table-schema resources. Server-side, run_query rejects non-SELECT statements, parameterizes everything, enforces a 5-second timeout, and returns over-limit errors as &#39;query returned 48,201 rows; cap is 1,000 — add a WHERE or LIMIT clause&#39;, which models act on correctly. Week one logs show a host retry-looping on a malformed URI — visible, diagnosable, fixed in an hour because every request was logged.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> More exposed tools increase usefulness but expand the security review surface.</li></ul>
+    <ul><li><strong>The core tension:</strong> Every additional tool multiplies usefulness and review surface — the craft is exposing the minimum capability set that serves the use case, each hardened, rather than mirroring your whole internal API.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Implement one read-only MCP tool contract with JSON schema, success response, and error response.</p>
+    <p><strong>Task:</strong> Implement (or fully specify) a read-only MCP server for one system you know: two tools with server-side validation rules, one resource with authorization, three model-actionable error messages for the most likely failures, and the log line format per invocation.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice: one server with two tools and one resource, server-side validation with tests for hostile inputs, error messages a model can act on, and structured logs — deployed to one real host before any catalog expansion.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not implement tool handlers without input validation and clear error messages.</li></ul>
+    <ul><li>An MCP server is not a thin wrapper to generate from your OpenAPI spec and ship; tool selection, descriptions, and model-facing errors need design, and auto-mirrored APIs produce bloated, confusing toolsets.</li><li>The JSON schema is not your input validation; it documents the contract for the model, while your handler enforces it for reality.</li><li>A demo server that works in one host is not done; version pinning, logging, timeouts, and hostile-input handling are what make it shippable — models are the most creative fuzzers your API has ever met.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-mcp-server-implementation-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about Server implementation?</strong></p>
-    <button data-answer="right">Do not implement tool handlers without input validation and clear error messages.</button>
+    <button data-answer="right">An MCP server is not a thin wrapper to generate from your OpenAPI spec and ship; tool selection, descriptions, and model-facing errors need design, and auto-mirrored APIs produce bloated, confusing toolsets.</button>
     <button data-answer="wrong">Once Server implementation is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-mcp-server-implementation-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Server implementation into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production-shaped slice: one server with two tools and one resource, server-side validation with tests for hostile inputs, error messages a model can act on, and structured logs — deployed to one real host before any catalog expansion.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 

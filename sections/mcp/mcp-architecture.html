@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="MCP architecture defines where the host app, client, server, tools, resources, prompts, permissions, and transport boundaries sit.">
+  <meta name="description" content="MCP architecture defines where responsibilities sit — host application, per-server clients, servers, and transports — and how capability discovery, invocation">
   <meta name="theme-color" content="#0f172a">
   <title>MCP architecture | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,60 +47,75 @@
       <div>
         <p class="eyebrow">MCP · Chapter 2</p>
         <h1>MCP architecture</h1>
-        <p class="lede">MCP architecture defines where the host app, client, server, tools, resources, prompts, permissions, and transport boundaries sit.</p>
+        <p class="lede">MCP architecture defines where responsibilities sit — host application, per-server clients, servers, and transports — and how capability discovery, invocation, and permission boundaries flow between them.</p>
         <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="mcp-mcp-architecture">Bookmark</button>
     </div>
 
-    
-    
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The assistant suddenly &#39;lost&#39; its file tools mid-session and nobody could say whether the host, the client, or the server was at fault — because nobody could say which was which. Architecture is the difference between a diagnosis and a shrug.</p>
+  </section>
+    <section class="panel">
+    <h2>Why this matters</h2>
+    <p>Getting the architecture straight tells you where every production question lives: consent in the host, contract in the protocol, execution in the server — most MCP confusion is misplacing one of these.</p>
+  </section>
     <section class="panel explain-card">
     <h2>In plain terms</h2>
-    <p>It is like a hub-and-spoke integration model where the AI host delegates context access through controlled connectors.</p>
+    <p>It is like a hotel concierge desk: the guest (model) asks the concierge (host) for things; the concierge holds a directory of vetted providers (servers), phones the right one on a dedicated line (client connection), and decides what the guest is allowed to book on the hotel&#39;s account.</p>
   </section>
     
     <section class="panel">
     <h2>How it works</h2>
-    <p>In practice it comes down to host application, MCP client, MCP server, transports, capability discovery, tool execution, resource reads, and audit logs.</p>
-    
+    <p>The flow: host spawns/connects clients → initialize negotiates version + capabilities per server → discovery lists what each server offers → host filters what the model sees → invocation routes through the owning client → results return for host-mediated context assembly.</p>
+    <ul><li>The host owns everything user-facing: which servers to connect, what the user consented to, which tools the model may see, and how results enter context. Servers never talk to the model directly — the host mediates every exchange.</li><li>One client per server, by design: each connection is an isolated stateful session with its own capability negotiation and permissions — so one misbehaving server can be disconnected without disturbing the rest.</li><li>Capability discovery is dynamic: after the initialize handshake, the client lists the server&#39;s tools/resources/prompts at runtime — servers can add capabilities and send list-changed notifications, which is powerful and exactly why hosts must gate what reaches the model.</li><li>The boundary of trust is the server process: local stdio servers run with your machine&#39;s permissions; remote HTTP servers run with whatever credentials they hold. The architecture makes each server a blast-radius compartment — treat it that way.</li><li>Context assembly is a host decision: which server results, resources, and tool outputs get into the model&#39;s window (and labeled how) is the host&#39;s composition job — MCP moves data; the host curates meaning.</li></ul>
   </section>
     
     <section class="panel">
     <h2>A concrete example</h2>
-    <p>A desktop assistant runs an MCP client that connects to a local filesystem server and a remote issue-tracker server with different permissions.</p>
+    <p>A desktop coding assistant connects three servers: a local filesystem server (stdio, scoped to the project directory), a local git server, and the company&#39;s remote issue-tracker server (streamable HTTP, OAuth). Three clients, three permission scopes. When the issue tracker has an incident and starts timing out, its client degrades alone — file and git tools keep working — and the host&#39;s consent screen is why the filesystem server can read ./src but not ~/.ssh.</p>
   </section>
     
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>The core tension:</strong> Local servers improve private access but can expose sensitive files; remote servers centralize governance but add network trust.</li></ul>
+    <ul><li><strong>The core tension:</strong> More connected servers make the host more capable and enlarge the tool list the model must reason over (and you must secure) — mature hosts curate per-task toolsets rather than connecting everything always.</li></ul>
   </section>
     
     
     <section class="panel practice-card">
     <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Design an MCP architecture for a docs assistant with one local and one remote server.</p>
+    <p><strong>Task:</strong> Draw the architecture for an assistant with three servers (filesystem, database, external SaaS): mark the host boundary, each client, each transport, where consent is enforced, and which single component you would disconnect if the SaaS server started behaving suspiciously.</p>
     <ol>
       <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
       <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice is a host configuration with two servers of different trust levels (one local, one remote), explicit per-server permission scopes, and logs showing which server handled each call.</p>
     <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
     
     
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not give every MCP server the same broad permissions.</li></ul>
+    <ul><li>Servers do not talk to each other or to the model; all routing and mediation happens through the host — MCP is a hub-and-spoke, not a mesh.</li><li>A server is not a plugin running inside your app; it is a separate process or service with its own permissions, which is precisely what makes isolation real.</li><li>Dynamic discovery does not mean the model should see everything discovered; the host filtering the tool list is a feature, not a missing optimization.</li></ul>
   </section>
 
     <section class="panel quiz" data-quiz="quiz-mcp-mcp-architecture-0">
-    <h2>Check yourself</h2>
+    <h2>Check yourself 1 of 2</h2>
     <p><strong>Which of these is sound guidance about MCP architecture?</strong></p>
     <button data-answer="wrong">Once MCP architecture is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
     <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
-    <button data-answer="right">Do not give every MCP server the same broad permissions.</button>
+    <button data-answer="right">Servers do not talk to each other or to the model; all routing and mediation happens through the host — MCP is a hub-and-spoke, not a mesh.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
+
+    <section class="panel quiz" data-quiz="quiz-mcp-mcp-architecture-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing MCP architecture into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production-shaped slice is a host configuration with two servers of different trust levels (one local, one remote), explicit per-server permission scopes, and logs showing which server handled each call.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
