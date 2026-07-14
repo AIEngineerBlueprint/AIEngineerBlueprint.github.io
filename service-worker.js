@@ -1,4 +1,4 @@
-const CACHE = "aieb-v1";
+const CACHE = "aieb-81dac41fd0";
 const CORE = [
   "/",
   "/index.html",

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const conceptLibrary = require("./concepts.js");
 
 const root = path.resolve(__dirname, "..");
@@ -4594,7 +4595,12 @@ write(out("manifest.webmanifest"), JSON.stringify({
 }, null, 2));
 
 const offlineUrls = ["/", "/index.html", "/assets/css/styles.css", "/assets/js/app.js", "/assets/svg/hero.svg", "/assets/svg/favicon.svg", "/search-index.json", "/manifest.webmanifest", ...pages.map((page) => page.url)];
-write(out("service-worker.js"), `const CACHE = "aieb-v1";
+const assetFingerprint = crypto.createHash("sha256")
+  .update(fs.readFileSync(out("assets", "css", "styles.css")))
+  .update(fs.readFileSync(out("assets", "js", "app.js")))
+  .digest("hex")
+  .slice(0, 10);
+write(out("service-worker.js"), `const CACHE = "aieb-${assetFingerprint}";
 const CORE = ${JSON.stringify(offlineUrls, null, 2)};
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
