@@ -306,6 +306,15 @@ h3 { margin: 0 0 .5rem; font-size: 1.25rem; }
     var(--card);
   border: 1px solid color-mix(in srgb, var(--ok) 30%, var(--line));
 }
+.hook-card {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--danger) 10%, transparent), color-mix(in srgb, var(--brand-2) 7%, transparent)),
+    var(--card);
+  border: 1px solid color-mix(in srgb, var(--danger) 26%, var(--line));
+}
+.hook-card p {
+  font-size: 1.02rem;
+}
 .track-grid {
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }

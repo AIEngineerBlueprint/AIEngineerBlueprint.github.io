@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Observability lesson in the Production AI Systems track.">
+  <meta name="description" content="AI observability extends metrics, logs, and traces with the signals that actually indicate AI health — answer quality, grounding, refusal rates, token cost, a">
   <meta name="theme-color" content="#0f172a">
   <title>Observability | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,181 +47,83 @@
       <div>
         <p class="eyebrow">Production AI Systems · Chapter 8</p>
         <h1>Observability</h1>
-        <p class="lede">Observability gives engineers enough traces, metrics, logs, and examples to understand AI system behavior in production. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">AI observability extends metrics, logs, and traces with the signals that actually indicate AI health — answer quality, grounding, refusal rates, token cost, and user feedback — because an AI feature can be completely broken while every infrastructure dashboard stays green.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="production-ai-systems-observability">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Observability is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Observability matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on trace IDs, prompt/version metadata, token cost, latency, retrieval hits, tool calls, scores, and user feedback, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is More observability helps debugging but raises privacy and storage concerns.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Observability on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>&#39;The AI feels worse this week.&#39; The latency dashboards say everything is fine. Without quality signals — thumbs-down rates, eval samples, inspectable traces — vibes are your only metric.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Observability gives engineers enough traces, metrics, logs, and examples to understand AI system behavior in production.</p>
-      <p>The internal flow centers on trace IDs, prompt/version metadata, token cost, latency, retrieval hits, tool calls, scores, and user feedback, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Observability gives engineers enough traces, metrics, logs, and examples to understand AI system behavior in production.</p>
-    <p><strong>Analogy:</strong> It is like adding gauges and a flight recorder to a complex machine.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Observability gives engineers enough traces, metrics, logs, and examples to understand AI system behavior in production.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: trace IDs, prompt/version metadata, token cost, latency, retrieval hits, tool calls, scores, and user feedback.</li><li>Inputs and outputs: identify what enters Observability, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Observability with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Observability worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Do not log sensitive prompts without retention and redaction rules.</li><li>Observability is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Observability inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <h2>Why this matters</h2>
+    <p>AI systems fail statistically, not mechanically — the failure is a shifted distribution, not an exception — so observability must measure what the system says, not just whether it responds.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Observability matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Do not log sensitive prompts without retention and redaction rules.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
-  </section>
-    <section class="panel">
-    <h2>Worked example</h2>
-    <p>A bad answer can be traced to the exact prompt version, retrieved chunks, model, and validation results.</p>
-    <ol><li><strong>API:</strong> Observability gives engineers enough traces, metrics, logs, and examples to understand AI system behavior in production.</li><li><strong>Orchestrator:</strong> The internal flow centers on trace IDs, prompt/version metadata, token cost, latency, retrieval hits, tool calls, scores, and user feedback, then hands a validated result to the next step in the product workflow.</li><li><strong>Model/retrieval:</strong> A bad answer can be traced to the exact prompt version, retrieved chunks, model, and validation results.</li><li><strong>Policy:</strong> The main trade-off is More observability helps debugging but raises privacy and storage concerns.</li><li><strong>Telemetry:</strong> A production-shaped slice should implement Observability on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Release loop:</strong> Define five fields needed to debug a hallucinated answer.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="Production AI platform loop for Observability">
-    <article>
-      <span>Step 1</span>
-      <strong>API</strong>
-      <p>Observability gives engineers enough traces, metrics, logs, and examples to understand AI system behavior in production.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Orchestrator</strong>
-      <p>The internal flow centers on trace IDs, prompt/version metadata, token cost, latency, retrieval hits, tool calls, scores, and user feedback, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Model/retrieval</strong>
-      <p>A bad answer can be traced to the exact prompt version, retrieved chunks, model, and validation results.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Policy</strong>
-      <p>The main trade-off is More observability helps debugging but raises privacy and storage concerns.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Telemetry</strong>
-      <p>A production-shaped slice should implement Observability on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Release loop</strong>
-      <p>Define five fields needed to debug a hallucinated answer.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>In plain terms</h2>
+    <p>It is like monitoring a restaurant by kitchen uptime alone: the ovens can run flawlessly all week while the food quietly gets worse — you need someone tasting the dishes, reading the reviews, and watching what comes back uneaten.</p>
   </section>
     
-    
-    
-    
-
     <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on trace IDs, prompt/version metadata, token cost, latency, retrieval hits, tool calls, scores, and user feedback, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
+    <h2>How it works</h2>
+    <p>The flow: full-fidelity traces per request → cheap quality proxies on all traffic → judge-scored samples and eval runs as anchors → distribution and drift monitoring week-over-week → alerts on quality signals, not just errors → weekly human review of outlier traces.</p>
+    <ul><li>The green-dashboard failure is the defining problem: 200 OK, normal latency, and answers that became subtly worse after a provider model update — quality is a first-class signal or it is invisible.</li><li>The AI trace is the atomic unit: request, full prompt (redacted), retrieved context, model + version, parameters, response, validation verdicts, token counts, cost, latency per stage, and user feedback — one ID linking all of it, or debugging reverts to anecdote.</li><li>Quality signals come in layers: cheap proxies on everything (refusal rate, response length distributions, format-failure rate, thumbs-down rate), sampled LLM-judge scoring on a slice, and scheduled eval-set runs as the calibrated anchor.</li><li>Distributions beat averages: p50 hides the p95 latency users complain about, and mean quality hides the 5% of answers that are confidently wrong — percentiles and outlier sampling are where AI problems live.</li><li>Drift detection watches inputs and outputs over time: query mix shifts, provider updates change output style, indexes go stale — week-over-week distribution comparisons catch what no single-request check can.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
+    <p>&#39;The AI feels worse this week.&#39; Infra dashboards: green. The AI dashboard: refusal rate up from 4% to 11% starting Tuesday, correlated with a provider model update; judge-scored sample confirms helpfulness dropped on how-to queries; traces show the new model version misreading a system-prompt instruction. Fix: one prompt line, validated on the eval set, shipped Thursday. Without AI-shaped signals, this is a quarter of vibes and churn; with them it was a two-day incident with a root cause.</p>
+  </section>
+    
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is More observability helps debugging but raises privacy and storage concerns.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Observability, shorten the API to Release loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Observability, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Observability, guard against do not log sensitive prompts without retention and redaction rules.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Observability, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Observability on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <ul><li><strong>The core tension:</strong> Quality measurement itself costs money and judgment (judge calls, human review) and full traces raise privacy stakes — tiered sampling and write-time redaction are the standard resolution, not measuring less.</li></ul>
   </section>
     
-    <section class="panel">
-    <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Define five fields needed to debug a hallucinated answer.</p>
-    <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
-      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not log sensitive prompts without retention and redaction rules.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
-    </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
-  </section>
-
+    
     <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Define five fields needed to debug a hallucinated answer.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+    <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Design the AI dashboard for one feature: the five quality signals beside the infra metrics, the sampling plan for judge scoring, the drift comparison you&#39;d run weekly, and the single quality alert that would have caught your last silent regression.</p>
+    <ol>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
+    </ol>
+    <p><strong>To make it production-shaped:</strong> A production AI observability stack: complete traces with one-ID lookup, a quality dashboard beside the infra one, at least one alert wired to a quality signal, and a standing habit of reading traces — the teams that read traces find the problems that dashboards can&#39;t.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a Production AI Systems workbench that demonstrates Observability with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not log sensitive prompts without retention and redaction rules.</li><li>Observability is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Observability inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>APM is not AI observability; latency and error rates cannot see a model that started giving worse answers politely and quickly.</li><li>User thumbs are not sufficient quality signal; response rates are low and biased — they&#39;re one layer, calibrated against judges and eval sets.</li><li>Observability is not only for incidents; the same traces are your eval-set source, your cost-optimization map, and your audit evidence — it&#39;s the data layer everything else stands on.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-production-ai-systems-observability-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Observability?</strong></p>
+    <button data-answer="wrong">Once Observability is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="right">APM is not AI observability; latency and error rates cannot see a model that started giving worse answers politely and quickly.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-production-ai-systems-observability">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Observability?</p>
-    <button data-answer="wrong">Do not log sensitive prompts without retention and redaction rules.</button>
-    <button data-answer="right">A production-shaped slice should implement Observability on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Observability is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-production-ai-systems-observability-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Observability into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="right">A production AI observability stack: complete traces with one-ID lookup, a quality dashboard beside the infra one, at least one alert wired to a quality signal, and a standing habit of reading traces — the teams that read traces find the problems that dashboards can&#39;t.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Observability to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Observability in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

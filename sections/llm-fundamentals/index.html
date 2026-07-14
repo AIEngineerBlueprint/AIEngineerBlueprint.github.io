@@ -54,6 +54,10 @@
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> Think of an LLM as a very fast technical editor. It reads the words already on the page, predicts what should come next, and keeps revising that prediction as more context appears. This matters because every AI product eventually pays for tokens, latency, context quality, and model behavior. If you understand the inference path, you can debug bad answers instead of guessing.</p>
   </section>
+  <section class="panel hook-card">
+    <h2>The running example</h2>
+    <p>Throughout this track, imagine you own the model gateway for a product team: every complaint about cost, latency, weird answers, or flaky behavior lands on your desk. Each chapter is one of the dials you&#39;ll be asked to explain or turn.</p>
+  </section>
   <section class="panel deep-dive">
         <h2>Production build path</h2>
         <p>Use this track to contribute to one of the platform projects below. These projects are intentionally track-level because they combine multiple chapters into a complete product slice.</p>
@@ -63,95 +67,95 @@
   <section class="chapter-grid"><a class="chapter-card" href="/sections/llm-fundamentals/llm-mental-model.html">
       <span>Chapter 1</span>
       <strong>LLM mental model</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A large language model is a neural network trained to predict the next token given all previous tokens.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/pretraining.html">
       <span>Chapter 2</span>
       <strong>Pretraining</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Pretraining is the first and largest phase of LLM training, where the model learns to predict the next token across hundreds of billions of tokens of text from the internet, books, and code — with no human-provided labels.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/instruction-tuning.html">
       <span>Chapter 3</span>
       <strong>Instruction tuning</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Instruction tuning is the training phase that turns a raw text-completion model into one that answers questions and follows directions — by fine-tuning on curated instruction-response pairs until &#39;continue the text&#39; becomes &#39;do what was asked&#39;.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/rlhf.html">
       <span>Chapter 4</span>
       <strong>RLHF</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Reinforcement Learning from Human Feedback (RLHF) is a technique that fine-tunes a language model using human preferences.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/fine-tuning.html">
       <span>Chapter 5</span>
       <strong>Fine tuning</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Fine-tuning takes a pretrained model and continues training it on a smaller, task-specific dataset, adjusting weights to make the model better at a particular behaviour or domain.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/fine-tuning-vs-training.html">
       <span>Chapter 6</span>
       <strong>Fine-tuning vs training</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Fine-tuning adapts an existing model to a narrower behavior or task, while training or pretraining builds broad model capability from large-scale data.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/lora.html">
       <span>Chapter 7</span>
       <strong>LoRA</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>LoRA (Low-Rank Adaptation) is a parameter-efficient fine-tuning method that adds small trainable rank-decomposition matrices to each transformer layer instead of updating all model weights.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/moe.html">
       <span>Chapter 8</span>
       <strong>MoE</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Mixture of Experts is an architecture where each token activates only a few specialized sub-networks (experts) out of many, letting a model carry enormous total parameters while spending only a fraction of them per token.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/context-windows.html">
       <span>Chapter 9</span>
       <strong>Context windows</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The context window is the maximum number of tokens a model can process in a single forward pass — both prompt and response combined.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/inference-pipeline.html">
       <span>Chapter 10</span>
       <strong>Inference pipeline</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The inference pipeline is the sequence every request travels — tokenize, prefill the prompt, decode token-by-token, detokenize and stream — and naming its stages is what turns vague latency complaints into locatable problems.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/gpu-memory.html">
       <span>Chapter 11</span>
       <strong>GPU memory</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>GPU memory budgeting is the capacity math of LLM serving: weights, KV cache, and activations compete for fixed VRAM, and the KV cache — growing with every concurrent user and every token of context — is the term that ends up deciding how many users fit on a card.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/model-loading.html">
       <span>Chapter 12</span>
       <strong>Model loading</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Model loading is the sequence that takes weights from artifact to accepting traffic — fetch, verify, place onto GPUs, warm up — and getting it wrong shows up as ninety-second &#39;ready&#39; lies, silent version drift, and autoscaling that arrives after the traffic spike leaves.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/distributed-inference.html">
       <span>Chapter 13</span>
       <strong>Distributed inference</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Distributed inference serves models too large or too popular for one GPU by splitting the work — tensor parallelism within layers, pipeline parallelism across layers, and replication across the fleet — where the topology chosen decides latency, throughput, and what breaks when a node dies.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/context-compression.html">
       <span>Chapter 14</span>
       <strong>Context compression</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Context compression shrinks what goes into the window — summarizing history, pruning and deduplicating retrieved chunks, trimming boilerplate — to cut cost and latency while keeping the evidence the answer actually needs; done carelessly, it deletes exactly that evidence.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/prompt-caching.html">
       <span>Chapter 15</span>
       <strong>Prompt caching</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Prompt caching lets providers reuse the computed state of a repeated prompt prefix — the system prompt, tool schemas, and shared examples — so you stop paying full prefill cost and latency to reprocess the same tokens on every request.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/sampling.html">
       <span>Chapter 16</span>
       <strong>Sampling</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Sampling is the process of choosing the next token during generation.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/temperature.html">
       <span>Chapter 17</span>
       <strong>Temperature</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Temperature is a scalar applied to the model&#39;s output probabilities before sampling.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/top-k-and-top-p.html">
       <span>Chapter 18</span>
       <strong>Top-K and Top-P</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Top-K and Top-P are the sampling filters that decide which candidate tokens survive before the random draw — Top-K keeps a fixed number of the most likely tokens, Top-P keeps the smallest set whose probabilities sum past a threshold — and together with temperature they define your model&#39;s randomness contract.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/reasoning-models.html">
       <span>Chapter 19</span>
       <strong>Reasoning models</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Reasoning models (like o1, o3, DeepSeek-R1) are LLMs trained with extended chain-of-thought that produces a hidden or visible &#39;thinking&#39; trace before generating a final answer.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/llm-lab.html">
       <span>Chapter 20</span>
       <strong>LLM lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The LLM lab is a hands-on exercise to send the same prompt to a model at different temperature and sampling settings, and observe concretely how the output&#39;s consistency and creativity change.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/mini-project.html">
       <span>Chapter 21</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete LLM-powered feature for one real task, with a documented model and sampling choice, and an explanation of one inference-level trade-off, like context length or caching, that shaped the design.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/capstone.html">
       <span>Chapter 22</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete LLM-powered system for a real use case: model selection justified by task fit, an inference architecture accounting for context and caching, sampling strategy, and a plan for the trade-offs between latency, cost, and quality.</small>
     </a><a class="chapter-card" href="/sections/llm-fundamentals/interview-pack.html">
       <span>Chapter 23</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The LLM fundamentals interview pack prepares you to explain pretraining, fine-tuning, sampling, and inference mechanics with concrete, mechanistic reasoning, backed by the ability to reason through a described model-selection or performance scenario.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/transformers/index.html">← Transformers</a>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="RAG shield lesson in the AI Governance Strategy track.">
+  <meta name="description" content="RAG shield enforces safe retrieval by checking document classification, user access, sensitive data, citation support, poisoning signals, embedding security, ">
   <meta name="theme-color" content="#0f172a">
   <title>RAG shield | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,120 +47,39 @@
       <div>
         <p class="eyebrow">AI Governance Strategy · Chapter 5</p>
         <h1>RAG shield</h1>
-        <p class="lede">RAG shield enforces safe retrieval by checking document classification, user access, sensitive data, citation support, poisoning signals, embedding security, and vector database access. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">RAG shield enforces safe retrieval by checking document classification, user access, sensitive data, citation support, poisoning signals, embedding security, and vector database access.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="ai-governance-strategy-rag-shield">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why RAG shield is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
     
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>RAG shield matters because enterprise AI fails when controls are scattered across prompts, tools, teams, and dashboards with no shared enforcement model.</p></article><article><span>Objective 2</span><p>The internal flow is classify the use case, verify identity, apply policy, enforce the shield, collect evidence, monitor behavior, and report status to owners.</p></article><article><span>Objective 3</span><p>The main trade-off is recall vs trust; retrieving more context may improve answers but can import unauthorized or poisoned content.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement one policy-as-code rule, one runtime enforcement point, one audit event, one owner approval path, and one dashboard metric for RAG shield.</p></article>
-    </div>
-  </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>RAG shield enforces safe retrieval by checking document classification, user access, sensitive data, citation support, poisoning signals, embedding security, and vector database access.</p>
-      <p>The internal flow is classify the use case, verify identity, apply policy, enforce the shield, collect evidence, monitor behavior, and report status to owners.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: RAG shield enforces safe retrieval by checking document classification, user access, sensitive data, citation support, poisoning signals, embedding security, and vector database access.</p>
-    <p><strong>Analogy:</strong> Think of this layer as part of a zero-trust AI control plane: every request, model, tool, document, agent, and user action must be policy-aware, identity-aware, observable, and auditable.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>RAG shield enforces safe retrieval by checking document classification, user access, sensitive data, citation support, poisoning signals, embedding security, and vector database access.</p>
-    <h3>What to learn</h3>
-    <ul><li>retrieval access control: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>document classification enforcement: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>sensitive data filtering: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>citation validation: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>retrieval poisoning detection: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>embedding security: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>secure vector database access: define the policy, owner, enforcement point, evidence record, and failure response.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Governance is not a PDF policy; it must become executable controls, defaults, evidence, and dashboards.</li><li>Security, compliance, cost, and adoption cannot be managed separately once AI systems connect to data and tools.</li><li>Do not wait until after deployment to define ownership, evidence, and rollback.</li></ul>
+    <h2>Why this matters</h2>
+    <p>RAG shield matters because enterprise AI fails when controls are scattered across prompts, tools, teams, and dashboards with no shared enforcement model.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> RAG shield matters because enterprise AI fails when controls are scattered across prompts, tools, teams, and dashboards with no shared enforcement model.</p>
-    <p><strong>When it breaks:</strong> Governance is not a PDF policy; it must become executable controls, defaults, evidence, and dashboards.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+    <h2>In plain terms</h2>
+    <p>Think of this layer as part of a zero-trust AI control plane: every request, model, tool, document, agent, and user action must be policy-aware, identity-aware, observable, and auditable.</p>
   </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
+    <h2>How it works</h2>
+    <p>The internal flow is classify the use case, verify identity, apply policy, enforce the shield, collect evidence, monitor behavior, and report status to owners.</p>
+    <ul><li>retrieval access control: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>document classification enforcement: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>sensitive data filtering: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>citation validation: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>retrieval poisoning detection: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>embedding security: define the policy, owner, enforcement point, evidence record, and failure response.</li><li>secure vector database access: define the policy, owner, enforcement point, evidence record, and failure response.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
     <p>A support assistant retrieves only documents the user may access, filters secret-bearing chunks, validates that citations support claims, and flags suspicious newly added documents.</p>
-    <ol><li><strong>Classify:</strong> Identify use case, data class, model/tool risk, user, tenant, and regulatory scope.</li><li><strong>Authorize:</strong> Verify identity, role, attributes, policy version, and approval status.</li><li><strong>Enforce:</strong> Apply prompt, RAG, MCP, model, agent, API, data, or runtime shield controls.</li><li><strong>Observe:</strong> Record prompt, retrieval, model, tool, decision, cost, and policy events.</li><li><strong>Evidence:</strong> Write immutable audit records that support incident response and compliance reporting.</li><li><strong>Improve:</strong> Use violations, cost, adoption, and effectiveness metrics to tune policy and controls.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="AI governance control plane for RAG shield">
-    <article>
-      <span>Step 1</span>
-      <strong>Classify</strong>
-      <p>Identify use case, data class, model/tool risk, user, tenant, and regulatory scope.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Authorize</strong>
-      <p>Verify identity, role, attributes, policy version, and approval status.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Enforce</strong>
-      <p>Apply prompt, RAG, MCP, model, agent, API, data, or runtime shield controls.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Observe</strong>
-      <p>Record prompt, retrieval, model, tool, decision, cost, and policy events.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Evidence</strong>
-      <p>Write immutable audit records that support incident response and compliance reporting.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Improve</strong>
-      <p>Use violations, cost, adoption, and effectiveness metrics to tune policy and controls.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
   </section>
     
-    
-    
-    
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow is classify the use case, verify identity, apply policy, enforce the shield, collect evidence, monitor behavior, and report status to owners.</p>
-    </section>
-
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is recall vs trust; retrieving more context may improve answers but can import unauthorized or poisoned content.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>The core tension:</strong> Recall vs trust; retrieving more context may improve answers but can import unauthorized or poisoned content.</li></ul>
   </section>
-
     <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For RAG shield, shorten the Classify to Improve path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For RAG shield, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For RAG shield, guard against governance is not a pdf policy; it must become executable controls, defaults, evidence, and dashboards.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For RAG shield, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
+    <h2>Try it in code</h2>
     <pre><code>const aiGovernancePolicy = {
   control: &quot;RAG shield&quot;,
   defaultDecision: &quot;deny&quot;,
@@ -172,58 +91,50 @@
       request.auditEventWritten === true;
   }
 };</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement one policy-as-code rule, one runtime enforcement point, one audit event, one owner approval path, and one dashboard metric for RAG shield.</p>
+    <p>Change the inputs and watch which assumption breaks first. The gap between what you expected and what you got is where the learning is.</p>
   </section>
     
-    <section class="panel">
+    <section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> Design a RAG shield with ACL filtering, data classification, citation validation, and poisoning detection for an internal docs assistant.</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Governance is not a PDF policy; it must become executable controls, defaults, evidence, and dashboards.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    <p><strong>To make it production-shaped:</strong> A production-shaped slice should implement one policy-as-code rule, one runtime enforcement point, one audit event, one owner approval path, and one dashboard metric for RAG shield.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Design a RAG shield with ACL filtering, data classification, citation validation, and poisoning detection for an internal docs assistant.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a AI Governance Strategy workbench that demonstrates RAG shield with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
     <ul><li>Governance is not a PDF policy; it must become executable controls, defaults, evidence, and dashboards.</li><li>Security, compliance, cost, and adoption cannot be managed separately once AI systems connect to data and tools.</li><li>Do not wait until after deployment to define ownership, evidence, and rollback.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-ai-governance-strategy-rag-shield-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about RAG shield?</strong></p>
+    <button data-answer="right">Governance is not a PDF policy; it must become executable controls, defaults, evidence, and dashboards.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="wrong">Once RAG shield is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-ai-governance-strategy-rag-shield">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of RAG shield?</p>
-    <button data-answer="wrong">Governance is not a PDF policy; it must become executable controls, defaults, evidence, and dashboards.</button>
+    <section class="panel quiz" data-quiz="quiz-ai-governance-strategy-rag-shield-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing RAG shield into their product. Which approach shows production judgment?</strong></p>
     <button data-answer="right">A production-shaped slice should implement one policy-as-code rule, one runtime enforcement point, one audit event, one owner approval path, and one dashboard metric for RAG shield.</button>
-    <button data-answer="wrong">Security, compliance, cost, and adoption cannot be managed separately once AI systems connect to data and tools.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain RAG shield to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain RAG shield in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://www.nist.gov/itl/ai-risk-management-framework" rel="noopener noreferrer">NIST AI Risk Management Framework</a></li><li><a href="https://www.iso.org/standard/81230.html" rel="noopener noreferrer">ISO/IEC 42001 AI management system</a></li><li><a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" rel="noopener noreferrer">EU AI Act overview</a></li></ul>
   </section>
 

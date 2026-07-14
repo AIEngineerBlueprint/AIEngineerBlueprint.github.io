@@ -54,6 +54,10 @@
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> RAG is like asking a skilled analyst to answer with a stack of source documents open on the desk. The analyst is still doing the writing, but the answer must be grounded in the documents that were retrieved. RAG helps when the model needs private, fresh, or domain-specific knowledge that was not reliable in pretraining.</p>
   </section>
+  <section class="panel hook-card">
+    <h2>The running example</h2>
+    <p>Throughout this track, imagine you own HelpDesk: an internal assistant that answers employee questions from the company wiki, HR policies, and engineering runbooks. Every chapter is a decision you will make — and a way HelpDesk can fail — on the road to shipping it.</p>
+  </section>
   <section class="panel deep-dive">
         <h2>Production build path</h2>
         <p>Use this track to contribute to one of the platform projects below. These projects are intentionally track-level because they combine multiple chapters into a complete product slice.</p>
@@ -63,71 +67,71 @@
   <section class="chapter-grid"><a class="chapter-card" href="/sections/rag/rag-overview.html">
       <span>Chapter 1</span>
       <strong>RAG overview</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>RAG, or Retrieval-Augmented Generation, is a production pattern that retrieves trusted context at request time, gives that context to a model, and requires the answer to stay grounded in the retrieved evidence.</small>
     </a><a class="chapter-card" href="/sections/rag/document-ingestion.html">
       <span>Chapter 2</span>
       <strong>Document ingestion</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Document ingestion turns source files into clean, traceable records that a RAG system can chunk, index, retrieve, and cite — and keeps them current as sources change.</small>
     </a><a class="chapter-card" href="/sections/rag/chunking.html">
       <span>Chapter 3</span>
       <strong>Chunking</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Chunking is the process of splitting documents into smaller segments before embedding and storing them, so relevant pieces can be retrieved individually rather than retrieving entire documents.</small>
     </a><a class="chapter-card" href="/sections/rag/embedding.html">
       <span>Chapter 4</span>
       <strong>Embedding</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Embedding in a RAG pipeline converts each chunk and each query into vectors so retrieval can match meaning rather than exact words.</small>
     </a><a class="chapter-card" href="/sections/rag/indexing.html">
       <span>Chapter 5</span>
       <strong>Indexing</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Indexing organizes chunks, vectors, lexical terms, and metadata so retrieval can answer queries in milliseconds, stay current as content changes, and respect permissions.</small>
     </a><a class="chapter-card" href="/sections/rag/retrieval.html">
       <span>Chapter 6</span>
       <strong>Retrieval</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Retrieval is the step in RAG that finds the most relevant chunks for a given query by comparing the query&#39;s embedding to stored chunk embeddings and returning the top K nearest neighbours.</small>
     </a><a class="chapter-card" href="/sections/rag/hybrid-search.html">
       <span>Chapter 7</span>
       <strong>Hybrid search</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Hybrid search runs lexical matching (BM25) and vector similarity together and fuses the results, so retrieval handles both exact terms and semantic intent.</small>
     </a><a class="chapter-card" href="/sections/rag/re-ranking.html">
       <span>Chapter 8</span>
       <strong>Re-ranking</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Re-ranking is a second-stage retrieval step that takes the top K retrieved chunks and re-scores them with a more expensive, more accurate relevance model before passing the top N to the LLM.</small>
     </a><a class="chapter-card" href="/sections/rag/grounding.html">
       <span>Chapter 9</span>
       <strong>Grounding</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Grounding constrains an AI answer to explicit evidence — retrieved documents, tool results, database rows, or policy rules — so every claim can be traced to a source.</small>
     </a><a class="chapter-card" href="/sections/rag/citation-ux.html">
       <span>Chapter 10</span>
       <strong>Citation UX</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Citation UX designs how users see, inspect, and trust the sources behind AI-generated claims — and what the product shows when evidence is weak or missing.</small>
     </a><a class="chapter-card" href="/sections/rag/rag-evaluation.html">
       <span>Chapter 11</span>
       <strong>RAG evaluation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>RAG evaluation measures the pipeline in two separately-failing halves: did retrieval find the right evidence, and did generation use that evidence faithfully?</small>
     </a><a class="chapter-card" href="/sections/rag/production-architecture.html">
       <span>Chapter 12</span>
       <strong>Production architecture</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Production architecture for RAG connects ingestion, chunking, embedding, indexing, retrieval, re-ranking, generation, and citation rendering into one deployable system with a latency budget, cost model, and failure behavior defined at every stage.</small>
     </a><a class="chapter-card" href="/sections/rag/failure-recovery.html">
       <span>Chapter 13</span>
       <strong>Failure recovery</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Failure recovery defines what a RAG system does when retrieval, model calls, validation, or dependencies fail — detecting the problem, degrading safely, and telling the user the truth.</small>
     </a><a class="chapter-card" href="/sections/rag/rag-lab.html">
       <span>Chapter 14</span>
       <strong>RAG lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The RAG lab is a hands-on exercise to build a small end-to-end RAG pipeline over a handful of real documents, and evaluate it on both retrieval recall and answer faithfulness to the retrieved evidence.</small>
     </a><a class="chapter-card" href="/sections/rag/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete RAG feature for one real document set, with a documented pipeline, citations, and a basic evaluation set, that another engineer could extend to a different document set.</small>
     </a><a class="chapter-card" href="/sections/rag/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete RAG architecture for a real product: ingestion and chunking strategy, retrieval and re-ranking design, generation and citation approach, evaluation plan, and production monitoring, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/rag/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The RAG interview pack prepares you to discuss retrieval-augmented generation system design credibly: chunking and retrieval trade-offs, citation and grounding design, and evaluation methodology, backed by a concrete story rather than a general description of what RAG is.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/vector-databases/index.html">← Vector Databases</a>

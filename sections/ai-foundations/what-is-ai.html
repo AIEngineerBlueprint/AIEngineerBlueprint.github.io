@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="What is AI? lesson in the AI Foundations track.">
+  <meta name="description" content="Artificial Intelligence is software that learns patterns from data and uses those patterns to make decisions, rather than following a fixed set of hand-writte">
   <meta name="theme-color" content="#0f172a">
   <title>What is AI? | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,184 +47,83 @@
       <div>
         <p class="eyebrow">AI Foundations · Chapter 1</p>
         <h1>What is AI?</h1>
-        <p class="lede">Artificial Intelligence is software that learns patterns from data and uses those patterns to make decisions, rather than following a fixed set of hand-written rules. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Artificial Intelligence is software that learns patterns from data and uses those patterns to make decisions, rather than following a fixed set of hand-written rules.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="ai-foundations-what-is-ai">Bookmark</button>
     </div>
 
+    
     <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why What is AI? is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
+    <h2>Why this matters</h2>
+    <p>AI matters for product engineers because it unlocks capabilities that are impossible to program explicitly: understanding natural language, recognising images, generating coherent text, and predicting outcomes from messy data.</p>
+  </section>
+    <section class="panel explain-card">
+    <h2>In plain terms</h2>
+    <p>Traditional software is like a recipe: you write every step. AI is like hiring someone who has cooked a thousand meals and can adapt to whatever ingredients are in front of them.</p>
+  </section>
     <section class="panel business-card">
     <h2>For non-technical readers</h2>
     <p>If you&#39;re not technical, the one distinction worth keeping is this: normal software does exactly what it&#39;s told, every time; AI software makes an educated guess based on examples it has seen before, and can be wrong in ways a traditional program never would be. That&#39;s not a flaw to fear, it&#39;s the trade you&#39;re making for handling tasks too fuzzy or too varied to write exact rules for, like reading a customer&#39;s email or judging whether a photo is appropriate. When evaluating any &#39;AI-powered&#39; pitch, the useful question is what examples the system learned from, not whether it sounds impressive in a demo.</p>
   </section>
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>AI matters for product engineers because it unlocks capabilities that are impossible to program explicitly: understanding natural language, recognising images, generating coherent text, and predicting outcomes from messy data.</p></article><article><span>Objective 2</span><p>The internal flow of any AI system is: input → feature representation → model prediction → post-processing → output. Understanding each handoff helps you diagnose failures.</p></article><article><span>Objective 3</span><p>Key architectural trade-off: rule-based systems are predictable and auditable but brittle. Learned systems are flexible but require data, evaluation, and monitoring to stay reliable.</p></article><article><span>Objective 4</span><p>A production AI feature needs: a clear definition of success, a labelled evaluation set, monitoring for distribution shift, and a fallback for low-confidence predictions.</p></article>
-    </div>
-  </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Artificial Intelligence is software that learns patterns from data and uses those patterns to make decisions, rather than following a fixed set of hand-written rules.</p>
-      <p>The internal flow of any AI system is: input → feature representation → model prediction → post-processing → output. Understanding each handoff helps you diagnose failures.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Artificial Intelligence is software that learns patterns from data and uses those patterns to make decisions, rather than following a fixed set of hand-written rules.</p>
-    <p><strong>Analogy:</strong> Traditional software is like a recipe: you write every step. AI is like hiring someone who has cooked a thousand meals and can adapt to whatever ingredients are in front of them.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Artificial Intelligence is software that learns patterns from data and uses those patterns to make decisions, rather than following a fixed set of hand-written rules.</p>
-    <h3>What to learn</h3>
+    <h2>How it works</h2>
+    <p>The internal flow of any AI system is: input → feature representation → model prediction → post-processing → output. Understanding each handoff helps you diagnose failures.</p>
     <ul><li>Rule-based systems break when inputs fall outside the rules. AI systems generalise from examples to handle inputs they have never seen exactly before.</li><li>AI learns a function that maps inputs to outputs. The function is discovered from data, not programmed by hand.</li><li>There are three broad paradigms: supervised learning (labelled examples), unsupervised learning (finding structure in unlabelled data), and reinforcement learning (learning from reward signals).</li><li>Modern AI products are not magic — they are statistical pattern matchers. Understanding that makes debugging, evaluation, and trust much easier.</li><li>AI is most useful when: rules are too complex to write, enough labelled examples exist, and the task has a measurable definition of success.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>AI does not &#39;understand&#39; in the human sense. It finds statistical patterns. This is why it can be confidently wrong.</li><li>More data is not always better. Low-quality, biased, or mislabelled data makes models worse.</li><li>AI is not a replacement for product thinking. You still need to define the problem, the users, and the success criteria.</li></ul>
   </section>
-    <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> AI matters for product engineers because it unlocks capabilities that are impossible to program explicitly: understanding natural language, recognising images, generating coherent text, and predicting outcomes from messy data.</p>
-    <p><strong>When it breaks:</strong> AI does not &#39;understand&#39; in the human sense. It finds statistical patterns. This is why it can be confidently wrong.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
-  </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
+    <h2>A concrete example</h2>
     <p>A traditional spam filter uses rules: &#39;block emails with the word FREE in capitals&#39;. An AI spam filter learns from millions of labelled spam and non-spam emails, discovering hundreds of subtle signals — sender reputation, link patterns, writing style — without any rule being explicitly written.</p>
-    <ol><li><strong>Problem:</strong> Artificial Intelligence is software that learns patterns from data and uses those patterns to make decisions, rather than following a fixed set of hand-written rules.</li><li><strong>Examples:</strong> The internal flow of any AI system is: input → feature representation → model prediction → post-processing → output. Understanding each handoff helps you diagnose failures.</li><li><strong>Pattern:</strong> A traditional spam filter uses rules: &#39;block emails with the word FREE in capitals&#39;. An AI spam filter learns from millions of labelled spam and non-spam emails, discovering hundreds of subtle signals — sender reputation, link patterns, writing style — without any rule being explicitly written.</li><li><strong>Prediction:</strong> Key architectural trade-off: rule-based systems are predictable and auditable but brittle. Learned systems are flexible but require data, evaluation, and monitoring to stay reliable.</li><li><strong>Feedback:</strong> A production AI feature needs: a clear definition of success, a labelled evaluation set, monitoring for distribution shift, and a fallback for low-confidence predictions.</li><li><strong>Improve:</strong> Pick any repetitive decision in a product you know — categorising support tickets, flagging reviews, routing requests. Write down: what the input is, what the output should be, what &#39;correct&#39; means, and what bad data would look like.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="AI from examples to decisions for What is AI?">
-    <article>
-      <span>Step 1</span>
-      <strong>Problem</strong>
-      <p>Artificial Intelligence is software that learns patterns from data and uses those patterns to make decisions, rather than following a fixed set of hand-written rules.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Examples</strong>
-      <p>The internal flow of any AI system is: input → feature representation → model prediction → post-processing → output. Understanding each handoff helps you diagnose failures.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Pattern</strong>
-      <p>A traditional spam filter uses rules: &#39;block emails with the word FREE in capitals&#39;. An AI spam filter learns from millions of labelled spam and non-spam emails, discovering hundreds of subtle signals — sender reputation, link patterns, writing style — without any rule being explicitly written.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Prediction</strong>
-      <p>Key architectural trade-off: rule-based systems are predictable and auditable but brittle. Learned systems are flexible but require data, evaluation, and monitoring to stay reliable.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Feedback</strong>
-      <p>A production AI feature needs: a clear definition of success, a labelled evaluation set, monitoring for distribution shift, and a fallback for low-confidence predictions.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Improve</strong>
-      <p>Pick any repetitive decision in a product you know — categorising support tickets, flagging reviews, routing requests. Write down: what the input is, what the output should be, what &#39;correct&#39; means, and what bad data would look like.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
   </section>
     
-    
-    
-    
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow of any AI system is: input → feature representation → model prediction → post-processing → output. Understanding each handoff helps you diagnose failures.</p>
-    </section>
-
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> Key architectural trade-off: rule-based systems are predictable and auditable but brittle. Learned systems are flexible but require data, evaluation, and monitoring to stay reliable.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For What is AI?, shorten the Problem to Improve path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For What is AI?, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For What is AI?, guard against ai does not &#39;understand&#39; in the human sense. it finds statistical patterns. this is why it can be confidently wrong.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For What is AI?, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> A production AI feature needs: a clear definition of success, a labelled evaluation set, monitoring for distribution shift, and a fallback for low-confidence predictions.</p>
+    <ul><li><strong>The core tension:</strong> Key architectural trade-off: rule-based systems are predictable and auditable but brittle. Learned systems are flexible but require data, evaluation, and monitoring to stay reliable.</li></ul>
   </section>
     
-    <section class="panel">
+    
+    <section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> Pick any repetitive decision in a product you know — categorising support tickets, flagging reviews, routing requests. Write down: what the input is, what the output should be, what &#39;correct&#39; means, and what bad data would look like.</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: AI does not &#39;understand&#39; in the human sense. It finds statistical patterns. This is why it can be confidently wrong.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    <p><strong>To make it production-shaped:</strong> A production AI feature needs: a clear definition of success, a labelled evaluation set, monitoring for distribution shift, and a fallback for low-confidence predictions.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Pick any repetitive decision in a product you know — categorising support tickets, flagging reviews, routing requests. Write down: what the input is, what the output should be, what &#39;correct&#39; means, and what bad data would look like.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a AI Foundations workbench that demonstrates What is AI? with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
     <ul><li>AI does not &#39;understand&#39; in the human sense. It finds statistical patterns. This is why it can be confidently wrong.</li><li>More data is not always better. Low-quality, biased, or mislabelled data makes models worse.</li><li>AI is not a replacement for product thinking. You still need to define the problem, the users, and the success criteria.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-ai-foundations-what-is-ai-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about AI Foundations?</strong></p>
+    <button data-answer="wrong">Once AI Foundations is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="right">AI does not &#39;understand&#39; in the human sense. It finds statistical patterns. This is why it can be confidently wrong.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-ai-foundations-what-is-ai">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of What is AI??</p>
-    <button data-answer="wrong">AI does not &#39;understand&#39; in the human sense. It finds statistical patterns. This is why it can be confidently wrong.</button>
+    <section class="panel quiz" data-quiz="quiz-ai-foundations-what-is-ai-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing AI Foundations into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <button data-answer="right">A production AI feature needs: a clear definition of success, a labelled evaluation set, monitoring for distribution shift, and a fallback for low-confidence predictions.</button>
-    <button data-answer="wrong">More data is not always better. Low-quality, biased, or mislabelled data makes models worse.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain What is AI? to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain AI Foundations in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

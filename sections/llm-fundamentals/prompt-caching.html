@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Prompt caching lesson in the LLM Fundamentals track.">
+  <meta name="description" content="Prompt caching lets providers reuse the computed state of a repeated prompt prefix — the system prompt, tool schemas, and shared examples — so you stop paying">
   <meta name="theme-color" content="#0f172a">
   <title>Prompt caching | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,87 +47,29 @@
       <div>
         <p class="eyebrow">LLM Fundamentals · Chapter 15</p>
         <h1>Prompt caching</h1>
-        <p class="lede">Prompt caching reuses the computation for stable prompt prefixes so repeated requests with the same system instructions, tools, or context can start faster and cheaper. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Prompt caching lets providers reuse the computed state of a repeated prompt prefix — the system prompt, tool schemas, and shared examples — so you stop paying full prefill cost and latency to reprocess the same tokens on every request.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="llm-fundamentals-prompt-caching">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Prompt caching is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Prompt caching matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on stable prefix detection, cache keys, prompt versioning, corpus versioning, tenant boundaries, invalidation, and latency measurement, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is Caching reduces latency and cost but can leak or stale context if keys ignore user permissions or prompt versions.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Prompt caching on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>Your bill shows you&#39;re paying full price to reprocess the same 3,000-token system prompt on every single request. Prompt caching cuts that dramatically — if your prefix is actually stable.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Prompt caching reuses the computation for stable prompt prefixes so repeated requests with the same system instructions, tools, or context can start faster and cheaper.</p>
-      <p>The internal flow centers on stable prefix detection, cache keys, prompt versioning, corpus versioning, tenant boundaries, invalidation, and latency measurement, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Prompt caching reuses the computation for stable prompt prefixes so repeated requests with the same system instructions, tools, or context can start faster and cheaper.</p>
-    <p><strong>Analogy:</strong> It is like prepping common ingredients before dinner service: each order still differs, but the shared base is already ready.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Prompt caching reuses the computation for stable prompt prefixes so repeated requests with the same system instructions, tools, or context can start faster and cheaper.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: stable prefix detection, cache keys, prompt versioning, corpus versioning, tenant boundaries, invalidation, and latency measurement.</li><li>Inputs and outputs: identify what enters Prompt caching, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Prompt caching with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Prompt caching worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Do not cache prefixes that include user-private context unless the cache key includes the correct tenant and permission boundary.</li><li>Prompt caching is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Prompt caching inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <h2>Why this matters</h2>
+    <p>Prompt caching is the cheapest large saving in most LLM systems: no quality trade, no architecture change — just prefix discipline — which is exactly why leaving it unclaimed is the most common silent waste on AI invoices.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Prompt caching matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Do not cache prefixes that include user-private context unless the cache key includes the correct tenant and permission boundary.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+    <h2>In plain terms</h2>
+    <p>It is like a barista who already knows your regular order: the saving only works if you order the same opening every time — walk in and change your greeting daily, and you&#39;re a stranger paying full attention every visit.</p>
   </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
-    <p>A support assistant caches the system prompt, tool definitions, and stable policy prefix, then appends each user&#39;s live question as the dynamic tail.</p>
-    <ol><li><strong>Find prefix:</strong> Identify stable prompt parts such as system instructions, tool schemas, and shared policy text.</li><li><strong>Build key:</strong> Include prompt version, tool version, corpus version, tenant, and permission boundary.</li><li><strong>Prefill once:</strong> Let the serving layer compute the stable prefix once and store reusable cache state.</li><li><strong>Append tail:</strong> Add the user-specific question and fresh context after the cached prefix.</li><li><strong>Measure:</strong> Track time-to-first-token, hit rate, cost, and cache memory pressure.</li><li><strong>Invalidate:</strong> Expire cache entries when policy, tools, prompts, corpus, or permissions change.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="LLM request flow for Prompt caching">
-    <article>
-      <span>Step 1</span>
-      <strong>Find prefix</strong>
-      <p>Identify stable prompt parts such as system instructions, tool schemas, and shared policy text.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Build key</strong>
-      <p>Include prompt version, tool version, corpus version, tenant, and permission boundary.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Prefill once</strong>
-      <p>Let the serving layer compute the stable prefix once and store reusable cache state.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Append tail</strong>
-      <p>Add the user-specific question and fresh context after the cached prefix.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Measure</strong>
-      <p>Track time-to-first-token, hit rate, cost, and cache memory pressure.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Invalidate</strong>
-      <p>Expire cache entries when policy, tools, prompts, corpus, or permissions change.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>How it works</h2>
+    <p>The flow: structure prompts stable-first → enable or mark caching per provider mechanics → requests with identical prefixes reuse prefill state → monitor cached-token metrics per endpoint → guard prefix stability in code review, because one early variable byte breaks the chain.</p>
+    <ul><li>The mechanism is prefill reuse: the KV-cache state of an identical prompt prefix is kept and reused, skipping recomputation — which is why caching cuts both cost (cached input tokens are discounted, often 50–90%) and time-to-first-token on long prefixes.</li><li>Byte-stability is the whole game: caching matches exact prefixes, so one variable byte early in the prompt — a timestamp, a request ID, the user&#39;s name in the system prompt — invalidates everything after it; structure prompts as [stable system + tools + examples] first, [variable user content] last.</li><li>Providers differ in mechanics, same principle: some cache automatically on repeated prefixes, others use explicit cache-control markers with TTLs (e.g. ~5-minute windows, refreshed on hit) — but all of them reward the same design: big stable prefix, high request rate, variability at the tail.</li><li>The economics concentrate in prefix-heavy workloads: agents (system prompt + tool schemas resent every loop iteration), high-traffic assistants with multi-thousand-token system prompts, and evals replaying the same context — these routinely see 40–80% input-cost reductions from caching alone.</li><li>Verify, don&#39;t assume: providers report cached-token counts per response — instrument the hit rate, because silent cache misses (from an innocent-looking prompt edit that moved a variable earlier) look identical to working caching except on the invoice.</li></ul>
   </section>
     <section class="panel">
     <h2>Topic diagram</h2>
@@ -171,37 +113,17 @@
   </svg>
     <p>Use this diagram as the mental model for the chapter. The arrows show the order of responsibility; the labels show what must be validated or measured at each handoff.</p>
   </section>
-    
-    
-    
-
     <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on stable prefix detection, cache keys, prompt versioning, corpus versioning, tenant boundaries, invalidation, and latency measurement, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
+    <h2>A concrete example</h2>
+    <p>An agent platform resends a 3,200-token prefix — system prompt plus tool schemas — on every loop iteration, ~9 iterations per run, thousands of runs daily. Before caching discipline: full price, every time. After restructuring (stable prefix first, per-task context last) and enabling caching: 92% of prefix tokens hit cache, input spend drops 55%, and TTFT per iteration falls ~400ms. The follow-up incident writes the lesson: someone added a run-ID line at the top of the system prompt &#39;for debugging&#39; — hit rate fell to zero for three days before the cached-token metric caught it.</p>
+  </section>
+    
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is Caching reduces latency and cost but can leak or stale context if keys ignore user permissions or prompt versions.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>The core tension:</strong> Caching rewards standardization (one shared prefix) while products want personalization (per-user context in the system prompt) — the resolution is layering: shared stable core first, personalization after the cache boundary, variability last.</li></ul>
   </section>
-
     <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Prompt caching, shorten the Find prefix to Invalidate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Prompt caching, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Prompt caching, guard against do not cache prefixes that include user-private context unless the cache key includes the correct tenant and permission boundary.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Prompt caching, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
+    <h2>Try it in code</h2>
     <pre><code>const cacheKey = hash({
   systemPromptVersion: &quot;support-v7&quot;,
   policyCorpusVersion: &quot;2026-07-13&quot;,
@@ -210,58 +132,50 @@
 });
 
 const cachedPrefix = await promptCache.get(cacheKey);</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Prompt caching on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <p>Change the inputs and watch which assumption breaks first. The gap between what you expected and what you got is where the learning is.</p>
   </section>
     
-    <section class="panel">
-    <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Design a prompt-cache key for a RAG assistant and list three events that must invalidate it.</p>
-    <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
-      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not cache prefixes that include user-private context unless the cache key includes the correct tenant and permission boundary.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
-    </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
-  </section>
-
     <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Design a prompt-cache key for a RAG assistant and list three events that must invalidate it.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+    <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Audit one real prompt template: mark every byte as stable or variable, compute the longest stable prefix, and restructure so variability moves last. Then estimate the monthly saving at your request volume — and name the metric you&#39;d watch to catch a future prefix-breaking edit within a day.</p>
+    <ol>
+      <li>Build or configure it, using the code example above as your starting point.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
+    </ol>
+    <p><strong>To make it production-shaped:</strong> Production judgment: treat the prompt prefix as a cached artifact with an owner — versioned, stability-reviewed, hit-rate-monitored — and check the cached-token metric after every prompt change, not just after incidents.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a LLM Fundamentals workbench that demonstrates Prompt caching with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not cache prefixes that include user-private context unless the cache key includes the correct tenant and permission boundary.</li><li>Prompt caching is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Prompt caching inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>Prompt caching is not automatic savings; one unstable byte at the top of the prompt silently forfeits it while everything continues to work at full price.</li><li>It is not semantic caching; only exact prefix matches count — &#39;similar&#39; prompts share nothing, which is why this is a prompt-structure discipline rather than a lookup trick.</li><li>Caching does not change model behavior; the reused computation is identical to recomputing — the trade is purely cost and latency, which is what makes it the rare free lunch worth auditing for.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-prompt-caching-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Prompt caching?</strong></p>
+    <button data-answer="wrong">Once Prompt caching is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="right">Prompt caching is not automatic savings; one unstable byte at the top of the prompt silently forfeits it while everything continues to work at full price.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-prompt-caching">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Prompt caching?</p>
-    <button data-answer="wrong">Do not cache prefixes that include user-private context unless the cache key includes the correct tenant and permission boundary.</button>
-    <button data-answer="right">A production-shaped slice should implement Prompt caching on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Prompt caching is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-prompt-caching-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Prompt caching into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="right">Production judgment: treat the prompt prefix as a cached artifact with an owner — versioned, stability-reviewed, hit-rate-monitored — and check the cached-token metric after every prompt change, not just after incidents.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Prompt caching to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Prompt caching in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" rel="noopener noreferrer">Anthropic prompt caching</a></li><li><a href="https://platform.openai.com/docs/guides/prompt-caching" rel="noopener noreferrer">OpenAI prompt caching</a></li></ul>
   </section>
 

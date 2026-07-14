@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/prompt-engineering/prompt-anatomy.html">
       <span>Chapter 1</span>
       <strong>Prompt anatomy</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A prompt is the complete input sent to a language model.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/instructions.html">
       <span>Chapter 2</span>
       <strong>Instructions</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Instructions are the explicit directives in a prompt that tell a model what task to perform, in what format, and under what constraints, distinct from the context or data the model is meant to act on.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/context.html">
       <span>Chapter 3</span>
       <strong>Context</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Context is the background information included in a prompt, such as retrieved documents, prior conversation, or relevant data, that the model needs to complete the task correctly, distinct from the instruction telling it what to do with that information.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/few-shot-examples.html">
       <span>Chapter 4</span>
       <strong>Few-shot examples</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Few-shot prompting provides the model with 2–10 examples of the desired input-output behaviour directly in the prompt.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/chain-of-thought-alternatives.html">
       <span>Chapter 5</span>
       <strong>Chain-of-thought alternatives</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Chain-of-thought alternatives are prompting or architectural techniques other than asking a model to write out step-by-step reasoning, such as structured decomposition into separate calls or using a model already trained to reason internally, used when explicit reasoning text isn&#39;t the right fit.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/system-prompts.html">
       <span>Chapter 6</span>
       <strong>System prompts</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A system prompt is a special instruction placed at the start of a conversation that shapes the model&#39;s behaviour, persona, constraints, and output style for the entire session.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/prompt-libraries.html">
       <span>Chapter 7</span>
       <strong>Prompt libraries</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A prompt library is a shared, versioned collection of reusable prompt templates with defined variables, owners, and evaluation results, so effective prompts are reused and improved consistently rather than rewritten ad hoc by each developer.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/prompt-testing.html">
       <span>Chapter 8</span>
       <strong>Prompt testing</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Prompt testing means running a prompt against a labeled set of representative and edge-case inputs to verify it produces correct, well-formatted output consistently, rather than trusting that it worked because it looked right on one example.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/prompt-injection-defense.html">
       <span>Chapter 9</span>
       <strong>Prompt injection defense</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Prompt injection defense protects an AI system from being manipulated by instructions hidden inside content it processes, such as a document or email, that attempt to override its intended behavior.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/structured-prompting.html">
       <span>Chapter 10</span>
       <strong>Structured prompting</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Structured prompting means organizing a prompt&#39;s instructions, context, and expected output format using explicit structure, such as labeled sections or a schema, rather than a single unstructured block of text, so the model can reliably distinguish different parts of the input and produce a parseable result.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/prompt-versioning.html">
       <span>Chapter 11</span>
       <strong>Prompt versioning</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Prompt versioning treats a production prompt as a tracked, versioned asset, with each change reviewed and evaluated against a test set before it replaces the previous version, the same discipline applied to any other piece of production logic.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/ux-patterns.html">
       <span>Chapter 12</span>
       <strong>UX patterns</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>UX patterns for prompt-driven features are the interface designs that help users give an AI system the specific information it needs to respond well, and that set accurate expectations for what the AI can and cannot do.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/operational-prompts.html">
       <span>Chapter 13</span>
       <strong>Operational prompts</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Operational prompts are the production-grade prompt templates a business actually relies on, version-controlled, tested, and monitored, distinct from an ad hoc prompt someone typed once in a chat window that happened to work.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/prompt-lab.html">
       <span>Chapter 14</span>
       <strong>Prompt lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The prompt lab is a hands-on exercise to write one prompt, test it against five labeled examples including one edge case, then revise it based on where it failed and re-test.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete prompt system for one real task, with a versioned template, a labeled test set, and documented structure, that another engineer could reuse and extend.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete prompt engineering system for a real product: a prompt library with versioning, a structured prompting standard, a testing process, and an evaluation-gated promotion process, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/prompt-engineering/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The prompt engineering interview pack prepares you to discuss prompt design, testing, and versioning credibly: how you structure prompts, test them against edge cases, and manage changes safely in production, backed by a concrete story rather than general prompting tips.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/generative-ai/index.html">← Generative AI</a>

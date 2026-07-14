@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Platform teams lesson in the Production AI Systems track.">
+  <meta name="description" content="An AI platform team builds and runs the shared machinery — gateway, evals, guardrails, observability, cost controls — so product teams ship AI features on pav">
   <meta name="theme-color" content="#0f172a">
   <title>Platform teams | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,181 +47,83 @@
       <div>
         <p class="eyebrow">Production AI Systems · Chapter 13</p>
         <h1>Platform teams</h1>
-        <p class="lede">AI platform teams provide shared infrastructure, patterns, controls, and support so product teams can build AI features safely and faster. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">An AI platform team builds and runs the shared machinery — gateway, evals, guardrails, observability, cost controls — so product teams ship AI features on paved roads instead of each rebuilding (and re-breaking) the same infrastructure.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="production-ai-systems-platform-teams">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Platform teams is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Platform teams matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on model gateways, prompt registries, eval tooling, guardrails, observability, templates, and governance, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is Centralization improves consistency but can slow product-specific needs.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Platform teams on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>Six product teams, six prompt-injection defenses, six eval frameworks — five of them abandoned. A platform team turns AI safety and quality from six hobbies into one product.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>AI platform teams provide shared infrastructure, patterns, controls, and support so product teams can build AI features safely and faster.</p>
-      <p>The internal flow centers on model gateways, prompt registries, eval tooling, guardrails, observability, templates, and governance, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: AI platform teams provide shared infrastructure, patterns, controls, and support so product teams can build AI features safely and faster.</p>
-    <p><strong>Analogy:</strong> They are like internal cloud teams for AI capabilities.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>AI platform teams provide shared infrastructure, patterns, controls, and support so product teams can build AI features safely and faster.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: model gateways, prompt registries, eval tooling, guardrails, observability, templates, and governance.</li><li>Inputs and outputs: identify what enters Platform teams, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Platform teams with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Platform teams worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Do not make every product team reinvent safety and observability.</li><li>Platform teams is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Platform teams inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <h2>Why this matters</h2>
+    <p>AI capability at organization scale is a platform problem: without shared infrastructure, every team pays full tuition, safety converges to the weakest implementation, and nobody can answer &#39;what is our AI spend and risk?&#39;</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Platform teams matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Do not make every product team reinvent safety and observability.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
-  </section>
-    <section class="panel">
-    <h2>Worked example</h2>
-    <p>A platform team offers a standard RAG starter kit with auth, tracing, evals, and deployment defaults.</p>
-    <ol><li><strong>API:</strong> AI platform teams provide shared infrastructure, patterns, controls, and support so product teams can build AI features safely and faster.</li><li><strong>Orchestrator:</strong> The internal flow centers on model gateways, prompt registries, eval tooling, guardrails, observability, templates, and governance, then hands a validated result to the next step in the product workflow.</li><li><strong>Model/retrieval:</strong> A platform team offers a standard RAG starter kit with auth, tracing, evals, and deployment defaults.</li><li><strong>Policy:</strong> The main trade-off is Centralization improves consistency but can slow product-specific needs.</li><li><strong>Telemetry:</strong> A production-shaped slice should implement Platform teams on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Release loop:</strong> List the shared services an AI platform team should own for your organization.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="Production AI platform loop for Platform teams">
-    <article>
-      <span>Step 1</span>
-      <strong>API</strong>
-      <p>AI platform teams provide shared infrastructure, patterns, controls, and support so product teams can build AI features safely and faster.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Orchestrator</strong>
-      <p>The internal flow centers on model gateways, prompt registries, eval tooling, guardrails, observability, templates, and governance, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Model/retrieval</strong>
-      <p>A platform team offers a standard RAG starter kit with auth, tracing, evals, and deployment defaults.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Policy</strong>
-      <p>The main trade-off is Centralization improves consistency but can slow product-specific needs.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Telemetry</strong>
-      <p>A production-shaped slice should implement Platform teams on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Release loop</strong>
-      <p>List the shared services an AI platform team should own for your organization.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>In plain terms</h2>
+    <p>It is like a city utility versus every building running its own generator: generators multiply cost, noise, and failure modes — the grid makes power boring, and boring is the point.</p>
   </section>
     
-    
-    
-    
-
     <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on model gateways, prompt registries, eval tooling, guardrails, observability, templates, and governance, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
+    <h2>How it works</h2>
+    <p>The flow: extract the duplicated needs (access, evals, safety, observability, cost) → build the paved road as self-service → drive adoption with speed, not mandates → hold the platform/product boundary explicitly → report leverage metrics that justify the investment.</p>
+    <ul><li>The counterfactual is convergent duplication: six product teams independently build model access, retry logic, prompt storage, eval scripts, and injection defenses — five abandon maintaining them within a year, and the org&#39;s AI risk becomes the worst team&#39;s shortcuts.</li><li>The platform&#39;s product is leverage: gateway with budgets and routing, eval infrastructure teams can adopt in a day, guardrail defaults with product-specific tuning hooks, trace/observability schema, and a template that makes the paved road the fastest path — adoption is the KPI, mandates are the failure mode.</li><li>Platform teams run infrastructure, not review boards: if every AI feature needs the platform team&#39;s hands, the team is a bottleneck wearing a platform costume — self-service with defaults beats gatekeeping with meetings.</li><li>The boundary needs constant negotiation: model choice inside approved options is product-team territory; what&#39;s on the menu, spend policy, and security baselines are platform territory — drawn wrong in either direction it produces shadow AI or learned helplessness.</li><li>Platform earns its existence with evidence: time-to-ship for new AI features, incident rates on vs off the paved road, spend efficiency, audit readiness — measured and reported, because &#39;trust us, centralization is good&#39; loses to the first team that wants to go around.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
+    <p>Year one, no platform: six teams, six injection defenses (five abandoned), three surprise five-figure invoices, one incident where a team&#39;s homegrown logging stored raw PII prompts for 90 days. Year two, a four-person platform team: gateway with per-team budgets, shared eval harness, guardrail defaults, trace schema. New-feature time-to-ship drops from ~8 weeks to ~2; the next provider incident is one gateway failover instead of six team scrambles; the security review has one architecture to audit instead of six.</p>
+  </section>
+    
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is Centralization improves consistency but can slow product-specific needs.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Platform teams, shorten the API to Release loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Platform teams, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Platform teams, guard against do not make every product team reinvent safety and observability.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Platform teams, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Platform teams on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <ul><li><strong>The core tension:</strong> Centralization buys consistency, safety, and cost control at the price of team autonomy and platform-team bottleneck risk — the healthy resolution is paved roads with escape hatches and a platform team that measures adoption instead of enforcing it.</li></ul>
   </section>
     
-    <section class="panel">
-    <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> List the shared services an AI platform team should own for your organization.</p>
-    <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
-      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not make every product team reinvent safety and observability.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
-    </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
-  </section>
-
+    
     <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>List the shared services an AI platform team should own for your organization.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+    <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Inventory your organization&#39;s (or an imagined org&#39;s) duplicated AI infrastructure across teams. Propose the platform&#39;s first two quarters: the three components to build first, the adoption metric for each, and the boundary doc&#39;s answer to &#39;what do product teams still own?&#39;</p>
+    <ol>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
+    </ol>
+    <p><strong>To make it production-shaped:</strong> A production AI platform: a gateway most traffic actually flows through, eval and guardrail infrastructure with real adoption, published boundary docs, and a metrics page showing time-to-ship and incident deltas on vs off the road.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a Production AI Systems workbench that demonstrates Platform teams with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not make every product team reinvent safety and observability.</li><li>Platform teams is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Platform teams inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>A platform team is not an AI governance committee; its output is running infrastructure and templates, and its authority comes from being genuinely faster to build on.</li><li>Centralization is not the opposite of team speed; the fastest teams in mature orgs are the ones that didn&#39;t have to build retry logic, evals, and injection defense before writing their feature.</li><li>One platform engineer embedded per team is not a platform; without shared ownership the &#39;platform&#39; fragments back into six dialects with extra steps.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-production-ai-systems-platform-teams-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Platform teams?</strong></p>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="right">A platform team is not an AI governance committee; its output is running infrastructure and templates, and its authority comes from being genuinely faster to build on.</button>
+    <button data-answer="wrong">Once Platform teams is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-production-ai-systems-platform-teams">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Platform teams?</p>
-    <button data-answer="wrong">Do not make every product team reinvent safety and observability.</button>
-    <button data-answer="right">A production-shaped slice should implement Platform teams on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Platform teams is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-production-ai-systems-platform-teams-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Platform teams into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="right">A production AI platform: a gateway most traffic actually flows through, eval and guardrail infrastructure with real adoption, published boundary docs, and a metrics page showing time-to-ship and incident deltas on vs off the road.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Platform teams to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Platform teams in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

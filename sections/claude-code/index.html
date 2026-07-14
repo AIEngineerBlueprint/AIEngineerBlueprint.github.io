@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/claude-code/claude-code-overview.html">
       <span>Chapter 1</span>
       <strong>Claude Code overview</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Claude Code is Anthropic&#39;s agentic coding CLI that reads a repository, plans a change, edits files, runs commands, and iterates inside the developer&#39;s own terminal, IDE, or CI environment, instead of only answering questions in a chat window.</small>
     </a><a class="chapter-card" href="/sections/claude-code/command-reference.html">
       <span>Chapter 2</span>
       <strong>Command reference</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Claude Code&#39;s command surface includes slash commands typed inside a session, such as /clear, /compact, /model, and /agents, plus CLI flags used to launch or script it, such as -p for headless print mode.</small>
     </a><a class="chapter-card" href="/sections/claude-code/project-setup.html">
       <span>Chapter 3</span>
       <strong>Project setup</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Project setup for Claude Code means writing a CLAUDE.md memory file and a .claude/settings.json configuration so the agent starts every session already knowing how to build, test, and navigate the repository, instead of rediscovering it each time.</small>
     </a><a class="chapter-card" href="/sections/claude-code/agent-workflows.html">
       <span>Chapter 4</span>
       <strong>Agent workflows</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Agent workflows in Claude Code are patterns for structuring larger tasks: using the main session for direct work, spawning subagents for parallelizable or context-heavy research, and using plan mode to align on an approach before any file is touched.</small>
     </a><a class="chapter-card" href="/sections/claude-code/context-management.html">
       <span>Chapter 5</span>
       <strong>Context management</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Context management is the discipline of controlling what enters Claude Code&#39;s limited context window so the model reasons from relevant, current information instead of stale or irrelevant history.</small>
     </a><a class="chapter-card" href="/sections/claude-code/testing-workflows.html">
       <span>Chapter 6</span>
       <strong>Testing workflows</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Testing workflows use Claude Code&#39;s ability to actually execute a project&#39;s test suite, read the failure output, and revise its own edit, closing the loop between writing code and verifying it instead of leaving verification to the human.</small>
     </a><a class="chapter-card" href="/sections/claude-code/refactoring.html">
       <span>Chapter 7</span>
       <strong>Refactoring</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Refactoring with Claude Code means using it to restructure code without changing behavior, verified by running the existing test suite before and after the change, not just by reading the diff.</small>
     </a><a class="chapter-card" href="/sections/claude-code/code-review.html">
       <span>Chapter 8</span>
       <strong>Code review</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Code review with Claude Code means using the agent to read a diff and surface correctness bugs, missing edge cases, and security concerns before a human reviewer spends time on it, not to replace human sign-off.</small>
     </a><a class="chapter-card" href="/sections/claude-code/security-practices.html">
       <span>Chapter 9</span>
       <strong>Security practices</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Security practices for Claude Code configure what the agent is allowed to touch: which directories, which shell commands, and which secrets it can access, so agentic capability does not become an uncontrolled attack surface.</small>
     </a><a class="chapter-card" href="/sections/claude-code/enterprise-usage.html">
       <span>Chapter 10</span>
       <strong>Enterprise usage</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Enterprise usage of Claude Code involves organization-wide managed settings, centralized permission policy, and audit logging so security and platform teams can enforce consistent rules across every developer&#39;s agent, rather than relying on each developer configuring safety individually.</small>
     </a><a class="chapter-card" href="/sections/claude-code/team-standards.html">
       <span>Chapter 11</span>
       <strong>Team standards</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Team standards for Claude Code means committing a shared CLAUDE.md, custom slash commands, and settings to source control so agentic workflows are consistent, reviewable, and improve over time as a team artifact, not tribal knowledge held by one developer.</small>
     </a><a class="chapter-card" href="/sections/claude-code/automation.html">
       <span>Chapter 12</span>
       <strong>Automation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Automation with Claude Code means running it non-interactively, typically in CI or a script, to perform a scoped task like generating a summary, checking a diff against a policy, or drafting release notes, without a human present to approve each step in real time.</small>
     </a><a class="chapter-card" href="/sections/claude-code/troubleshooting.html">
       <span>Chapter 13</span>
       <strong>Troubleshooting</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Troubleshooting Claude Code sessions means diagnosing why an agent produced a bad result: was it missing context, blocked by a permission it needed, confused by stale conversation history, or simply wrong, and applying the fix that matches the actual cause.</small>
     </a><a class="chapter-card" href="/sections/claude-code/claude-lab.html">
       <span>Chapter 14</span>
       <strong>Claude lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The Claude Code lab is a hands-on exercise where you run one real, moderately complex task end to end through the agent, from planning to tests passing, then critique the workflow itself rather than just the code output.</small>
     </a><a class="chapter-card" href="/sections/claude-code/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project asks you to ship one complete, reusable Claude Code workflow artifact, such as a project CLAUDE.md, a custom command, or a CI automation, that a teammate could adopt immediately.</small>
     </a><a class="chapter-card" href="/sections/claude-code/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone project designs a full operating model for using Claude Code across a real engineering team: scope of allowed autonomous work, required review gates, shared configuration, and the metrics that prove it is actually improving delivery rather than just increasing AI usage.</small>
     </a><a class="chapter-card" href="/sections/claude-code/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The Claude Code interview pack prepares you to discuss agentic coding tools credibly in interviews: what you configured, what went wrong, how you scoped risk, and what technical trade-offs you understand deeply enough to defend under follow-up questions.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/local-ai/index.html">← Local AI</a>

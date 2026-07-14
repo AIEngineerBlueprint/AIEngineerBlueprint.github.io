@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/neural-networks/neuron-model.html">
       <span>Chapter 1</span>
       <strong>Neuron model</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A neuron in a neural network is a small computational unit that takes a weighted sum of its inputs, adds a bias term, and passes the result through a nonlinear activation function, producing one output value that feeds into the next layer.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/layers.html">
       <span>Chapter 2</span>
       <strong>Layers</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Layers are groups of neurons that process the same input in parallel and pass their combined output forward to the next layer, forming the depth and structure of a neural network.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/forward-pass.html">
       <span>Chapter 3</span>
       <strong>Forward pass</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A forward pass is the process of pushing an input through every layer of a neural network in sequence, from input to output, producing the network&#39;s prediction for that specific input.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/backpropagation-internals.html">
       <span>Chapter 4</span>
       <strong>Backpropagation internals</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Backpropagation internals describe how the chain rule from calculus is applied layer by layer, from the output back to the input, to compute exactly how much each individual weight contributed to the network&#39;s final prediction error.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/initialization.html">
       <span>Chapter 5</span>
       <strong>Initialization</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Initialization is the choice of starting values for a neural network&#39;s weights before training begins, which meaningfully affects whether training converges quickly, slowly, or fails entirely due to vanishing or exploding signals early on.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/normalization.html">
       <span>Chapter 6</span>
       <strong>Normalization</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Normalization in neural network training rescales the intermediate activations within a network, typically to have zero mean and unit variance per layer or per batch, which stabilizes and speeds up training of deep networks.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/residuals.html">
       <span>Chapter 7</span>
       <strong>Residuals</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Residual connections add a layer&#39;s input directly to its output, letting the network learn only the difference, or residual, between input and desired output, which makes very deep networks dramatically easier to train.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/architectures.html">
       <span>Chapter 8</span>
       <strong>Architectures</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Neural network architectures are specific, named patterns of how layers are structured and connected, such as convolutional networks for spatial data or transformers for sequential data, each designed with structural assumptions that fit particular kinds of problems.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/debugging-training.html">
       <span>Chapter 9</span>
       <strong>Debugging training</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Debugging training is the process of diagnosing why a neural network isn&#39;t learning well, distinguishing between problems in the data, the architecture, the optimization setup, and the evaluation itself, rather than randomly adjusting hyperparameters.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/interpretability.html">
       <span>Chapter 10</span>
       <strong>Interpretability</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Interpretability in neural networks is the practice of understanding what internal representations and features a trained network has learned and why it produces a specific output, rather than treating the network purely as an unexaminable black box.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/latency-trade-offs.html">
       <span>Chapter 11</span>
       <strong>Latency trade-offs</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Latency trade-offs in neural networks are the deliberate design decisions, model size, architecture choice, precision, that trade prediction accuracy for faster inference time, which matters directly whenever a model serves real-time user requests.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/production-serving.html">
       <span>Chapter 12</span>
       <strong>Production serving</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Production serving of neural networks is the infrastructure and practices for running a trained model reliably against live traffic, covering batching, hardware allocation, versioning, and fallback behavior when the model or its infrastructure fails.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/monitoring.html">
       <span>Chapter 13</span>
       <strong>Monitoring</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Monitoring tracks live AI behavior so teams notice quality, safety, latency, cost, and reliability changes after deployment.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/nn-lab.html">
       <span>Chapter 14</span>
       <strong>NN lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The neural network lab is a hands-on exercise to train a small network on a simple real dataset, deliberately diagnose one training problem, such as an unstable learning rate or overfitting, and fix it, connecting theory to observable behavior.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete trained neural network for one real task, with a documented architecture choice, a working training loop, and an evaluation showing it actually generalizes beyond the training data.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete neural network solution for a real problem: architecture choice with justification, a training and debugging plan, an evaluation methodology, and a production serving plan including latency budget and rollout strategy.</small>
     </a><a class="chapter-card" href="/sections/neural-networks/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The neural networks interview pack prepares you to explain how networks actually learn and fail: backpropagation mechanics, why initialization and normalization matter, and how you&#39;d debug a training run that isn&#39;t converging, backed by concrete reasoning rather than memorized definitions.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/deep-learning/index.html">← Deep Learning</a>

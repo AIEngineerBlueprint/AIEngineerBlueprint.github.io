@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/grounding/grounding-overview.html">
       <span>Chapter 1</span>
       <strong>Grounding overview</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Grounding is the practice of anchoring an AI system&#39;s output to specific, verifiable source material, so answers are traceable to real evidence rather than generated purely from the model&#39;s internal, unverifiable knowledge.</small>
     </a><a class="chapter-card" href="/sections/grounding/source-selection.html">
       <span>Chapter 2</span>
       <strong>Source selection</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Source selection is the process of deciding which documents or data sources are authoritative and eligible to ground an AI system&#39;s answers, since retrieval quality is capped by the quality and trustworthiness of the underlying source corpus.</small>
     </a><a class="chapter-card" href="/sections/grounding/citations.html">
       <span>Chapter 3</span>
       <strong>Citations</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Citations are the visible references an AI system attaches to its output, pointing back to the specific source passage that supports each claim, letting a user verify the answer independently instead of trusting it blindly.</small>
     </a><a class="chapter-card" href="/sections/grounding/evidence-ranking.html">
       <span>Chapter 4</span>
       <strong>Evidence ranking</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Evidence ranking is the process of ordering retrieved sources by relevance and reliability before generation, so the most trustworthy and directly relevant evidence has the strongest influence on the model&#39;s answer rather than being buried beneath weaker matches.</small>
     </a><a class="chapter-card" href="/sections/grounding/knowledge-freshness.html">
       <span>Chapter 5</span>
       <strong>Knowledge freshness</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Knowledge freshness is how current the sources grounding an AI system&#39;s answers are relative to when the underlying facts might have changed, since a grounded answer is only as reliable as how up to date its evidence is.</small>
     </a><a class="chapter-card" href="/sections/grounding/conflict-resolution.html">
       <span>Chapter 6</span>
       <strong>Conflict resolution</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Conflict resolution in grounding is the process of handling situations where multiple retrieved sources disagree, deciding whether to surface the disagreement, prefer one source by authority or recency, or abstain rather than silently pick one side.</small>
     </a><a class="chapter-card" href="/sections/grounding/abstention.html">
       <span>Chapter 7</span>
       <strong>Abstention</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Abstention is an AI system&#39;s ability to explicitly decline to answer, or to answer with an explicit statement of uncertainty, when no retrieved evidence adequately supports a confident response, rather than generating a plausible-sounding but ungrounded guess.</small>
     </a><a class="chapter-card" href="/sections/grounding/traceability.html">
       <span>Chapter 8</span>
       <strong>Traceability</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Traceability is the ability to reconstruct exactly which retrieved sources, model version, and processing steps produced a specific AI-generated answer, which is essential for debugging errors and for audit in regulated domains.</small>
     </a><a class="chapter-card" href="/sections/grounding/user-trust.html">
       <span>Chapter 9</span>
       <strong>User trust</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>User trust in a grounded AI system is built through consistent, verifiable behavior: visible citations, honest abstention when evidence is weak, and a track record of the system&#39;s confidence actually matching its accuracy over time.</small>
     </a><a class="chapter-card" href="/sections/grounding/monitoring.html">
       <span>Chapter 10</span>
       <strong>Monitoring</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Monitoring tracks live AI behavior so teams notice quality, safety, latency, cost, and reliability changes after deployment.</small>
     </a><a class="chapter-card" href="/sections/grounding/evaluation.html">
       <span>Chapter 11</span>
       <strong>Evaluation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Evaluation of grounding measures whether an AI system&#39;s answers are actually supported by the sources it cites, using metrics like citation accuracy and faithfulness, rather than judging answer quality by fluency alone.</small>
     </a><a class="chapter-card" href="/sections/grounding/governance.html">
       <span>Chapter 12</span>
       <strong>Governance</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Governance for grounding establishes organization-wide policy for what counts as an acceptable source, how conflicts and abstention should be handled, and who is accountable when a grounded answer turns out to be wrong.</small>
     </a><a class="chapter-card" href="/sections/grounding/operations.html">
       <span>Chapter 13</span>
       <strong>Operations</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Operations for grounding means monitoring live production behavior: citation accuracy rate, abstention rate, and source-conflict frequency, so degradation in grounding quality is caught quickly rather than discovered through user complaints.</small>
     </a><a class="chapter-card" href="/sections/grounding/grounding-lab.html">
       <span>Chapter 14</span>
       <strong>Grounding lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The grounding lab is a hands-on exercise to build a small answer-with-citation pipeline, verify that generated claims are actually supported by their cited sources, and test its abstention behavior on an unanswerable query.</small>
     </a><a class="chapter-card" href="/sections/grounding/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete grounded answering feature for one real document set, with citations, conflict handling, and abstention, that another engineer could extend to a different domain.</small>
     </a><a class="chapter-card" href="/sections/grounding/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete grounding architecture for a real product: source curation policy, citation and evidence-ranking design, conflict-resolution and abstention rules, and an evaluation and monitoring plan, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/grounding/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The grounding interview pack prepares you to discuss retrieval-grounded system design credibly: source curation trade-offs, how you&#39;d rank conflicting evidence, and when a system should abstain, backed by a concrete story rather than a definition of grounding.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/guardrails/index.html">← Guardrails</a>

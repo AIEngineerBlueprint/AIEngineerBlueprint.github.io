@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Failure recovery lesson in the RAG track.">
+  <meta name="description" content="Failure recovery defines what a RAG system does when retrieval, model calls, validation, or dependencies fail — detecting the problem, degrading safely, and t">
   <meta name="theme-color" content="#0f172a">
   <title>Failure recovery | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,120 +47,42 @@
       <div>
         <p class="eyebrow">RAG · Chapter 13</p>
         <h1>Failure recovery</h1>
-        <p class="lede">Failure recovery defines what a RAG or AI workflow does when retrieval, model calls, validation, tools, or dependencies fail. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Failure recovery defines what a RAG system does when retrieval, model calls, validation, or dependencies fail — detecting the problem, degrading safely, and telling the user the truth.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="rag-failure-recovery">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Failure recovery is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Failure recovery matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on timeouts, retries, circuit breakers, stale cache use, abstention, human escalation, and incident traces, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is Retries improve resilience but can amplify latency and cost during outages.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Failure recovery on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The vector database went down, and the bot answered every question from the model&#39;s stale memory — confidently, with no disclosure. What it should have done instead is a design decision, not an accident.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Failure recovery defines what a RAG or AI workflow does when retrieval, model calls, validation, tools, or dependencies fail.</p>
-      <p>The internal flow centers on timeouts, retries, circuit breakers, stale cache use, abstention, human escalation, and incident traces, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Failure recovery defines what a RAG or AI workflow does when retrieval, model calls, validation, tools, or dependencies fail.</p>
-    <p><strong>Analogy:</strong> It is like an emergency procedure: detect the problem, preserve safety, inform the user, and route to a fallback.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Failure recovery defines what a RAG or AI workflow does when retrieval, model calls, validation, tools, or dependencies fail.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: timeouts, retries, circuit breakers, stale cache use, abstention, human escalation, and incident traces.</li><li>Inputs and outputs: identify what enters Failure recovery, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Failure recovery with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Failure recovery worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Do not silently fall back from grounded answers to ungrounded model guesses.</li><li>Failure recovery is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Failure recovery inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <h2>Why this matters</h2>
+    <p>RAG has more moving dependencies than most features — vector store, embedding service, model API, document pipeline — so partial failure is the normal operating condition, not the exception.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Failure recovery matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Do not silently fall back from grounded answers to ungrounded model guesses.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
-  </section>
-    <section class="panel">
-    <h2>Worked example</h2>
-    <p>If vector search times out, the assistant can answer that source lookup is unavailable rather than hallucinating from memory.</p>
-    <ol><li><strong>Question:</strong> Failure recovery defines what a RAG or AI workflow does when retrieval, model calls, validation, tools, or dependencies fail.</li><li><strong>Rewrite/search query:</strong> The internal flow centers on timeouts, retries, circuit breakers, stale cache use, abstention, human escalation, and incident traces, then hands a validated result to the next step in the product workflow.</li><li><strong>Retrieve chunks:</strong> If vector search times out, the assistant can answer that source lookup is unavailable rather than hallucinating from memory.</li><li><strong>Re-rank evidence:</strong> The main trade-off is Retries improve resilience but can amplify latency and cost during outages.</li><li><strong>Generate answer:</strong> A production-shaped slice should implement Failure recovery on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Cite + evaluate:</strong> Write fallback behavior for retrieval timeout, empty results, invalid output, and unsafe tool response.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="RAG evidence pipeline for Failure recovery">
-    <article>
-      <span>Step 1</span>
-      <strong>Question</strong>
-      <p>Failure recovery defines what a RAG or AI workflow does when retrieval, model calls, validation, tools, or dependencies fail.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Rewrite/search query</strong>
-      <p>The internal flow centers on timeouts, retries, circuit breakers, stale cache use, abstention, human escalation, and incident traces, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Retrieve chunks</strong>
-      <p>If vector search times out, the assistant can answer that source lookup is unavailable rather than hallucinating from memory.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Re-rank evidence</strong>
-      <p>The main trade-off is Retries improve resilience but can amplify latency and cost during outages.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Generate answer</strong>
-      <p>A production-shaped slice should implement Failure recovery on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Cite + evaluate</strong>
-      <p>Write fallback behavior for retrieval timeout, empty results, invalid output, and unsafe tool response.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>In plain terms</h2>
+    <p>It is like an emergency procedure on an aircraft: the point is not to prevent every failure but to make sure a failure leads to a checklist, not a surprise.</p>
   </section>
     
-    
-    
-    
-
     <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on timeouts, retries, circuit breakers, stale cache use, abstention, human escalation, and incident traces, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
+    <h2>How it works</h2>
+    <p>The flow: detect (timeouts, error rates, empty-result rates) → contain (circuit breakers, retry budgets) → degrade along pre-decided paths → communicate honestly to the user → trace and alert so recovery is measured, not hoped for.</p>
+    <ul><li>Enumerate the failure modes first — vector store down or slow, empty retrieval, model API errors and rate limits, malformed model output, grounding-check failures — because each needs a different response, and &#39;retry everything&#39; handles none of them well.</li><li>The cardinal rule: never silently fall back from grounded answers to ungrounded model memory. An outage that makes the bot honest-but-limited is an incident; one that makes it confidently wrong is a trust event.</li><li>Retries need budgets and backoff: retrying a timing-out vector store amplifies the outage, and retrying a generation call doubles cost. Circuit breakers stop a failing dependency from being hammered by every request.</li><li>Degraded modes are product decisions made in advance: serve cached answers for popular questions (marked as possibly stale), skip the re-ranker with a logged flag, or abstain with escalation to a human channel.</li><li>Every degradation must be visible in traces and metrics; a fallback that fires silently for three weeks is a slow-motion incident nobody is watching.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
+    <p>The vector store starts timing out at 2am. The circuit breaker opens after 5 failures; the assistant switches to &#39;I can&#39;t search the knowledge base right now — here&#39;s the support contact&#39; for uncached questions and serves cached answers (labeled as such) for the top 50. The on-call gets paged by the fallback-rate alert, not by morning complaints. Total confidently-wrong answers served: zero.</p>
+  </section>
+    
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is Retries improve resilience but can amplify latency and cost during outages.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>The core tension:</strong> Retries and fallbacks improve availability but can amplify latency and cost during outages, and the safest fallback (abstention) has the worst user experience — these trades get made calmly in design or badly at 3am.</li></ul>
   </section>
-
     <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Failure recovery, shorten the Question to Cite + evaluate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Failure recovery, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Failure recovery, guard against do not silently fall back from grounded answers to ungrounded model guesses.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Failure recovery, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
+    <h2>Try it in code</h2>
     <pre><code>async function evaluateRetrieval(query, expectedSourceId) {
   const results = await retrieve(query, { topK: 5 });
   return {
@@ -169,58 +91,50 @@
     returnedSources: results.map((r) =&gt; r.sourceId)
   };
 }</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Failure recovery on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <p>Change the inputs and watch which assumption breaks first. The gap between what you expected and what you got is where the learning is.</p>
   </section>
     
-    <section class="panel">
-    <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Write fallback behavior for retrieval timeout, empty results, invalid output, and unsafe tool response.</p>
-    <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
-      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not silently fall back from grounded answers to ungrounded model guesses.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
-    </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
-  </section>
-
     <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Write fallback behavior for retrieval timeout, empty results, invalid output, and unsafe tool response.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+    <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> For a RAG assistant you can imagine concretely, write the exact user-facing behavior for four failures: retrieval timeout, empty results, model API rate-limit, and a grounding check that fails on the generated answer. Then name the metric that tells you each fallback is firing.</p>
+    <ol>
+      <li>Build or configure it, using the code example above as your starting point.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
+    </ol>
+    <p><strong>To make it production-shaped:</strong> A production failure-recovery setup has a written fallback per failure mode, circuit breakers on external dependencies, an alert on fallback-rate, and a chaos test that proves the degraded modes actually work.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a RAG workbench that demonstrates Failure recovery with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not silently fall back from grounded answers to ungrounded model guesses.</li><li>Failure recovery is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Failure recovery inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>Do not silently fall back from grounded answers to ungrounded model guesses; users cannot tell the difference, which is exactly the problem.</li><li>Retries are not resilience — without backoff, budgets, and circuit breakers they turn a dependency blip into a self-inflicted outage.</li><li>A fallback that has never been exercised in a test does not exist; outage day is the wrong time to discover the cached-answer path 404s.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-rag-failure-recovery-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Failure recovery?</strong></p>
+    <button data-answer="wrong">Once Failure recovery is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="right">Do not silently fall back from grounded answers to ungrounded model guesses; users cannot tell the difference, which is exactly the problem.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-rag-failure-recovery">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Failure recovery?</p>
-    <button data-answer="wrong">Do not silently fall back from grounded answers to ungrounded model guesses.</button>
-    <button data-answer="right">A production-shaped slice should implement Failure recovery on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Failure recovery is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-rag-failure-recovery-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Failure recovery into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production failure-recovery setup has a written fallback per failure mode, circuit breakers on external dependencies, an alert on fallback-rate, and a chaos test that proves the degraded modes actually work.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Failure recovery to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Failure recovery in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://arxiv.org/abs/2005.11401" rel="noopener noreferrer">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a></li></ul>
   </section>
 

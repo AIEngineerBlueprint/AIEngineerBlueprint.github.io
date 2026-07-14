@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Embedding lesson in the RAG track.">
+  <meta name="description" content="Embedding in a RAG pipeline converts each chunk and each query into vectors so retrieval can match meaning rather than exact words.">
   <meta name="theme-color" content="#0f172a">
   <title>Embedding | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,120 +47,42 @@
       <div>
         <p class="eyebrow">RAG · Chapter 4</p>
         <h1>Embedding</h1>
-        <p class="lede">Embedding in a RAG pipeline converts each chunk and query into vectors so semantic search can find meaning rather than exact words. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Embedding in a RAG pipeline converts each chunk and each query into vectors so retrieval can match meaning rather than exact words.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="rag-embedding">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Embedding is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Embedding matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on text normalization, embedding model choice, vector dimensionality, batching, storage, and re-embedding when content changes, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is Larger embeddings may improve nuance but increase storage and search cost.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Embedding on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>Searching &#39;PTO&#39; returns nothing, but &#39;paid time off&#39; returns the right document. Your embedding model treats them as unrelated strings — model choice quietly decides which synonyms your search understands.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Embedding in a RAG pipeline converts each chunk and query into vectors so semantic search can find meaning rather than exact words.</p>
-      <p>The internal flow centers on text normalization, embedding model choice, vector dimensionality, batching, storage, and re-embedding when content changes, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Embedding in a RAG pipeline converts each chunk and query into vectors so semantic search can find meaning rather than exact words.</p>
-    <p><strong>Analogy:</strong> It is like translating documents and questions into coordinates on the same map of meaning.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Embedding in a RAG pipeline converts each chunk and query into vectors so semantic search can find meaning rather than exact words.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: text normalization, embedding model choice, vector dimensionality, batching, storage, and re-embedding when content changes.</li><li>Inputs and outputs: identify what enters Embedding, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Embedding with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Embedding worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Do not mix embeddings from different models in the same index without migration.</li><li>Embedding is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Embedding inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <h2>Why this matters</h2>
+    <p>Embedding choice quietly decides which paraphrases, synonyms, and domain terms your search understands — it is the vocabulary of your retrieval system.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Embedding matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Do not mix embeddings from different models in the same index without migration.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
-  </section>
-    <section class="panel">
-    <h2>Worked example</h2>
-    <p>A query about PTO can retrieve a chunk titled &#39;annual leave&#39; because their vectors are close.</p>
-    <ol><li><strong>Question:</strong> Embedding in a RAG pipeline converts each chunk and query into vectors so semantic search can find meaning rather than exact words.</li><li><strong>Rewrite/search query:</strong> The internal flow centers on text normalization, embedding model choice, vector dimensionality, batching, storage, and re-embedding when content changes, then hands a validated result to the next step in the product workflow.</li><li><strong>Retrieve chunks:</strong> A query about PTO can retrieve a chunk titled &#39;annual leave&#39; because their vectors are close.</li><li><strong>Re-rank evidence:</strong> The main trade-off is Larger embeddings may improve nuance but increase storage and search cost.</li><li><strong>Generate answer:</strong> A production-shaped slice should implement Embedding on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Cite + evaluate:</strong> Embed ten support questions and inspect which ones cluster together unexpectedly.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="RAG evidence pipeline for Embedding">
-    <article>
-      <span>Step 1</span>
-      <strong>Question</strong>
-      <p>Embedding in a RAG pipeline converts each chunk and query into vectors so semantic search can find meaning rather than exact words.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Rewrite/search query</strong>
-      <p>The internal flow centers on text normalization, embedding model choice, vector dimensionality, batching, storage, and re-embedding when content changes, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Retrieve chunks</strong>
-      <p>A query about PTO can retrieve a chunk titled &#39;annual leave&#39; because their vectors are close.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Re-rank evidence</strong>
-      <p>The main trade-off is Larger embeddings may improve nuance but increase storage and search cost.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Generate answer</strong>
-      <p>A production-shaped slice should implement Embedding on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Cite + evaluate</strong>
-      <p>Embed ten support questions and inspect which ones cluster together unexpectedly.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>In plain terms</h2>
+    <p>It is like translating documents and questions into coordinates on the same map of meaning — questions land near the passages that answer them, even when they share no words.</p>
   </section>
     
-    
-    
-    
-
     <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on text normalization, embedding model choice, vector dimensionality, batching, storage, and re-embedding when content changes, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
+    <h2>How it works</h2>
+    <p>The flow: normalize text → batch chunks through the embedding model at index time → embed each query at request time → nearest-neighbor search compares the two in the same vector space.</p>
+    <ul><li>The embedding model defines what &#39;similar&#39; means. &#39;PTO&#39; and &#39;paid time off&#39; are close in a good model and unrelated in a bad one; domain jargon, product names, and error codes are where general-purpose models are weakest.</li><li>Query and document embeddings must come from the same model and version. Mixing models in one index silently breaks similarity — nothing errors, results are just quietly wrong.</li><li>Dimensionality is a cost dial: 1536-dim vectors cost roughly 4x the storage and search compute of 384-dim ones. Many products get identical answer quality from smaller, cheaper embeddings — measure before paying.</li><li>Embeddings are computed once per chunk but per query at runtime, so query embedding latency and cost sit on every request path.</li><li>Changing the embedding model means re-embedding the entire corpus. Version your index by model so you can run old and new side by side and cut over after evaluation.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
+    <p>A support corpus of 200k chunks embedded at 768 dimensions is ~600 MB of vectors. A query about &#39;annual leave carry-over&#39; retrieves the right policy chunk even though the document says &#39;vacation rollover&#39; — that is embeddings earning their keep. The same index misses &#39;error E-4012&#39; queries entirely, which is why hybrid search exists.</p>
+  </section>
+    
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is Larger embeddings may improve nuance but increase storage and search cost.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>The core tension:</strong> Larger, newer embedding models improve nuance but raise storage, latency, and re-embedding cost — and every model change is a full-corpus migration.</li></ul>
   </section>
-
     <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Embedding, shorten the Question to Cite + evaluate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Embedding, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Embedding, guard against do not mix embeddings from different models in the same index without migration.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Embedding, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
+    <h2>Try it in code</h2>
     <pre><code>async function evaluateRetrieval(query, expectedSourceId) {
   const results = await retrieve(query, { topK: 5 });
   return {
@@ -169,58 +91,50 @@
     returnedSources: results.map((r) =&gt; r.sourceId)
   };
 }</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Embedding on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <p>Change the inputs and watch which assumption breaks first. The gap between what you expected and what you got is where the learning is.</p>
   </section>
     
-    <section class="panel">
-    <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Embed ten support questions and inspect which ones cluster together unexpectedly.</p>
-    <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
-      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not mix embeddings from different models in the same index without migration.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
-    </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
-  </section>
-
     <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Embed ten support questions and inspect which ones cluster together unexpectedly.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+    <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Take ten real user questions and embed them alongside your corpus using two different embedding models. For each question, compare the top-3 retrieved chunks. Find one query where the models disagree and explain which vocabulary gap caused it.</p>
+    <ol>
+      <li>Build or configure it, using the code example above as your starting point.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
+    </ol>
+    <p><strong>To make it production-shaped:</strong> A production embedding setup pins the model version in index metadata, evaluates candidate models on your own queries (not just public benchmarks), and has a tested re-embedding migration path.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a RAG workbench that demonstrates Embedding with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not mix embeddings from different models in the same index without migration.</li><li>Embedding is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Embedding inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>Do not mix embeddings from different models or versions in the same index; similarity scores across them are meaningless.</li><li>The top embedding model on a public leaderboard is not automatically the best on your corpus — domain vocabulary dominates.</li><li>Embeddings do not understand negation or numbers well; &#39;refunds allowed&#39; and &#39;refunds not allowed&#39; can sit uncomfortably close together.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-rag-embedding-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Embedding?</strong></p>
+    <button data-answer="wrong">Once Embedding is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="right">Do not mix embeddings from different models or versions in the same index; similarity scores across them are meaningless.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-rag-embedding">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Embedding?</p>
-    <button data-answer="wrong">Do not mix embeddings from different models in the same index without migration.</button>
-    <button data-answer="right">A production-shaped slice should implement Embedding on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Embedding is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-rag-embedding-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Embedding into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production embedding setup pins the model version in index metadata, evaluates candidate models on your own queries (not just public benchmarks), and has a tested re-embedding migration path.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Embedding to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Embedding in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://arxiv.org/abs/2005.11401" rel="noopener noreferrer">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a></li></ul>
   </section>
 

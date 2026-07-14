@@ -54,6 +54,10 @@
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> A production AI system is a factory line. The model is one station, but queues, checks, logs, rollbacks, and operators make the whole line dependable. Customers experience the system, not the model. Reliability comes from platform engineering around the model.</p>
   </section>
+  <section class="panel hook-card">
+    <h2>The running example</h2>
+    <p>Throughout this track, imagine you run Draftline: an AI writing feature inside a busy SaaS product, with real traffic spikes, enterprise customers, and a monthly token budget someone actually reviews. Every chapter is a piece of the platform that keeps Draftline alive.</p>
+  </section>
   <section class="panel deep-dive">
         <h2>Production build path</h2>
         <p>Use this track to contribute to one of the platform projects below. These projects are intentionally track-level because they combine multiple chapters into a complete product slice.</p>
@@ -63,71 +67,71 @@
   <section class="chapter-grid"><a class="chapter-card" href="/sections/production-ai-systems/reference-architecture.html">
       <span>Chapter 1</span>
       <strong>Reference architecture</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A reference architecture is the standard blueprint for how AI features get built in your organization — the shared gateway, observability, evaluation, and safety layers every team uses, so the tenth AI feature inherits the lessons of the first nine.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/api-gateways.html">
       <span>Chapter 2</span>
       <strong>API gateways</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>An AI gateway is the single controlled door between your organization and model providers: authentication, routing, retries, rate limits, spend caps, logging, and key management in one place instead of scattered across every feature.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/queues.html">
       <span>Chapter 3</span>
       <strong>Queues</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Queues decouple accepting AI work from performing it: requests land in a buffer and workers drain it at the rate providers and budgets allow — turning traffic spikes into backlog instead of failures.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/streaming.html">
       <span>Chapter 4</span>
       <strong>Streaming</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Streaming delivers model output token-by-token as it generates, turning a nine-second wait into a response that visibly starts in a few hundred milliseconds — the same latency, experienced completely differently.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/caching.html">
       <span>Chapter 5</span>
       <strong>Caching</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Caching for AI systems reuses expensive work at three layers — provider-side prompt caching for shared prefixes, exact-response reuse for identical requests, and semantic caching for questions that mean the same thing.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/rate-limits.html">
       <span>Chapter 6</span>
       <strong>Rate limits</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Rate limiting bounds how fast each client, tenant, and feature can consume AI capacity — protecting shared provider quotas, budgets, and latency from any single consumer&#39;s enthusiasm, bug, or attack.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/resilience.html">
       <span>Chapter 7</span>
       <strong>Resilience</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Resilience is the engineering that keeps an AI product useful when its dependencies misbehave — provider outages, latency spikes, quota exhaustion — through timeouts, circuit breakers, fallbacks, and degraded modes that were tested before they were needed.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/observability.html">
       <span>Chapter 8</span>
       <strong>Observability</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>AI observability extends metrics, logs, and traces with the signals that actually indicate AI health — answer quality, grounding, refusal rates, token cost, and user feedback — because an AI feature can be completely broken while every infrastructure dashboard stays green.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/cost-optimization.html">
       <span>Chapter 9</span>
       <strong>Cost optimization</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Cost optimization makes AI unit economics deliberate: measuring cost per request and per outcome, then bending the curve with model routing, caching, prompt discipline, and batching — before the invoice forces it.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/slos.html">
       <span>Chapter 10</span>
       <strong>SLOs</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>SLOs for AI systems are explicit, measurable targets — for latency, availability, and crucially quality — with error budgets that convert &#39;the bot should be good&#39; into numbers a team can defend, alert on, and make trade-offs against.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/incident-response.html">
       <span>Chapter 11</span>
       <strong>Incident response</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>AI incident response extends on-call discipline to failures that don&#39;t look like outages: quality regressions, prompt injections, cost runaways, and upstream model changes — with runbooks, mitigations, and postmortems shaped for statistical systems.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/release-strategy.html">
       <span>Chapter 12</span>
       <strong>Release strategy</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Release strategy for AI systems governs how changes — prompts, models, indexes, guardrails, and code — reach users: eval gates before, staged rollouts during, and instant rollback after, because AI changes fail in ways diffs can&#39;t show.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/platform-teams.html">
       <span>Chapter 13</span>
       <strong>Platform teams</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>An AI platform team builds and runs the shared machinery — gateway, evals, guardrails, observability, cost controls — so product teams ship AI features on paved roads instead of each rebuilding (and re-breaking) the same infrastructure.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/production-lab.html">
       <span>Chapter 14</span>
       <strong>Production lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The production lab is a hands-on exercise to deploy a small AI service behind a gateway with rate limiting and basic observability, then load-test it and observe how it behaves under stress, connecting production-readiness theory to observed behavior.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete production-ready AI service, with an API gateway, rate limiting, observability, and a documented incident-response plan, that another engineer could operate.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete production AI system architecture for a real product: gateway and resilience design, observability and SLOs, cost optimization, release strategy, and incident response, as one coherent operating system.</small>
     </a><a class="chapter-card" href="/sections/production-ai-systems/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The production AI systems interview pack prepares you to discuss operating AI systems reliably at scale: resilience patterns, SLOs, cost optimization, and incident response, backed by a concrete story about a real production incident or design decision.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/ai-in-sdlc/index.html">← AI in SDLC</a>

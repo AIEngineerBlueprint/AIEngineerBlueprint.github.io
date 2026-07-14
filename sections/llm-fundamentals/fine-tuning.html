@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Fine tuning lesson in the LLM Fundamentals track.">
+  <meta name="description" content="Fine-tuning takes a pretrained model and continues training it on a smaller, task-specific dataset, adjusting weights to make the model better at a particular">
   <meta name="theme-color" content="#0f172a">
   <title>Fine tuning | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,181 +47,83 @@
       <div>
         <p class="eyebrow">LLM Fundamentals · Chapter 5</p>
         <h1>Fine tuning</h1>
-        <p class="lede">Fine-tuning takes a pretrained model and continues training it on a smaller, task-specific dataset, adjusting weights to make the model better at a particular behaviour or domain. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Fine-tuning takes a pretrained model and continues training it on a smaller, task-specific dataset, adjusting weights to make the model better at a particular behaviour or domain.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="llm-fundamentals-fine-tuning">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Fine tuning is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Fine-tuning matters when prompt engineering and RAG are insufficient — typically when you need consistent style, format, or specialised vocabulary.</p></article><article><span>Objective 2</span><p>Internal flow: pretrained model weights → load on training infrastructure → run gradient descent on task-specific dataset → save fine-tuned checkpoint → evaluate on held-out examples.</p></article><article><span>Objective 3</span><p>Trade-offs: full fine-tuning is expensive and may cause catastrophic forgetting. LoRA is cheaper but slightly less powerful. RAG is cheaper still and more updatable but adds retrieval latency.</p></article><article><span>Objective 4</span><p>Production checklist: always evaluate on a task-specific held-out set; compare to a prompted baseline before deciding fine-tuning is worth the cost; version your fine-tuned checkpoints.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>Three months of prompt engineering couldn&#39;t make the model write claim summaries in your exact regulated format. Two thousand labeled examples and one fine-tune did. Knowing which problems live in prompts and which live in weights saves quarters.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Fine-tuning takes a pretrained model and continues training it on a smaller, task-specific dataset, adjusting weights to make the model better at a particular behaviour or domain.</p>
-      <p>Internal flow: pretrained model weights → load on training infrastructure → run gradient descent on task-specific dataset → save fine-tuned checkpoint → evaluate on held-out examples.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Fine-tuning takes a pretrained model and continues training it on a smaller, task-specific dataset, adjusting weights to make the model better at a particular behaviour or domain.</p>
-    <p><strong>Analogy:</strong> Fine-tuning is like an experienced consultant spending two weeks embedded with a specific company. They already have deep general knowledge from years of work; the two-week immersion makes them far more effective at this specific client&#39;s problems without forgetting their general expertise.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Fine-tuning takes a pretrained model and continues training it on a smaller, task-specific dataset, adjusting weights to make the model better at a particular behaviour or domain.</p>
-    <h3>What to learn</h3>
-    <ul><li>Full fine-tuning updates all model parameters. This is expensive (same hardware as pretraining for a smaller model) but produces the best task-specific performance.</li><li>Parameter-efficient fine-tuning (PEFT) updates only a small subset of parameters — either LoRA adapters, prompt tuning, or prefix tuning. Much cheaper, often 90%+ of full fine-tuning quality.</li><li>Fine-tuning is most valuable for: style/format alignment, domain-specific vocabulary, specific instruction formats, and reducing verbosity or hallucination on known topics.</li><li>Fine-tuning is not retrieval. It bakes knowledge into weights. If knowledge changes frequently, RAG is a better choice than fine-tuning.</li><li>Catastrophic forgetting is a risk: fine-tuning on a narrow dataset can degrade general capabilities. Regularisation or mixed training with general data mitigates this.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Fine-tuning does not teach the model new knowledge reliably. It adjusts behaviour, not factual recall. Use RAG for fresh facts.</li><li>A small fine-tuning dataset (100 examples) can be useful for format and style, but for complex capabilities, thousands of high-quality examples are needed.</li><li>Fine-tuned models still hallucinate. Fine-tuning does not solve the fundamental statistical pattern-matching nature of LLMs.</li></ul>
+    <h2>Why this matters</h2>
+    <p>Fine-tuning matters when prompt engineering and RAG are insufficient — typically when you need consistent style, format, or specialised vocabulary.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Fine-tuning matters when prompt engineering and RAG are insufficient — typically when you need consistent style, format, or specialised vocabulary.</p>
-    <p><strong>When it breaks:</strong> Fine-tuning does not teach the model new knowledge reliably. It adjusts behaviour, not factual recall. Use RAG for fresh facts.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+    <h2>In plain terms</h2>
+    <p>Fine-tuning is like an experienced consultant spending two weeks embedded with a specific company. They already have deep general knowledge from years of work; the two-week immersion makes them far more effective at this specific client&#39;s problems without forgetting their general expertise.</p>
   </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
+    <h2>How it works</h2>
+    <p>Internal flow: pretrained model weights → load on training infrastructure → run gradient descent on task-specific dataset → save fine-tuned checkpoint → evaluate on held-out examples.</p>
+    <ul><li>Full fine-tuning updates all model parameters. This is expensive (same hardware as pretraining for a smaller model) but produces the best task-specific performance.</li><li>Parameter-efficient fine-tuning (PEFT) updates only a small subset of parameters — either LoRA adapters, prompt tuning, or prefix tuning. Much cheaper, often 90%+ of full fine-tuning quality.</li><li>Fine-tuning is most valuable for: style/format alignment, domain-specific vocabulary, specific instruction formats, and reducing verbosity or hallucination on known topics.</li><li>Fine-tuning is not retrieval. It bakes knowledge into weights. If knowledge changes frequently, RAG is a better choice than fine-tuning.</li><li>Catastrophic forgetting is a risk: fine-tuning on a narrow dataset can degrade general capabilities. Regularisation or mixed training with general data mitigates this.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
     <p>A general-purpose model might write medical notes in a conversational style. Fine-tuning on 50,000 real physician notes teaches it the specific format, terminology, and abbreviations of clinical documentation — without retraining the entire model from scratch.</p>
-    <ol><li><strong>User intent:</strong> Fine-tuning takes a pretrained model and continues training it on a smaller, task-specific dataset, adjusting weights to make the model better at a particular behaviour or domain.</li><li><strong>Prompt + context:</strong> Internal flow: pretrained model weights → load on training infrastructure → run gradient descent on task-specific dataset → save fine-tuned checkpoint → evaluate on held-out examples.</li><li><strong>Tokens:</strong> A general-purpose model might write medical notes in a conversational style. Fine-tuning on 50,000 real physician notes teaches it the specific format, terminology, and abbreviations of clinical documentation — without retraining the entire model from scratch.</li><li><strong>Transformer layers:</strong> Trade-offs: full fine-tuning is expensive and may cause catastrophic forgetting. LoRA is cheaper but slightly less powerful. RAG is cheaper still and more updatable but adds retrieval latency.</li><li><strong>Sampling:</strong> Production checklist: always evaluate on a task-specific held-out set; compare to a prompted baseline before deciding fine-tuning is worth the cost; version your fine-tuned checkpoints.</li><li><strong>Validated answer:</strong> You have a customer service chatbot that gives correct answers but in the wrong tone (too formal, too verbose). Decide: fine-tuning, few-shot prompting, or RAG? Justify your choice by listing what each approach would and would not fix.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="LLM request flow for Fine tuning">
-    <article>
-      <span>Step 1</span>
-      <strong>User intent</strong>
-      <p>Fine-tuning takes a pretrained model and continues training it on a smaller, task-specific dataset, adjusting weights to make the model better at a particular behaviour or domain.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Prompt + context</strong>
-      <p>Internal flow: pretrained model weights → load on training infrastructure → run gradient descent on task-specific dataset → save fine-tuned checkpoint → evaluate on held-out examples.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Tokens</strong>
-      <p>A general-purpose model might write medical notes in a conversational style. Fine-tuning on 50,000 real physician notes teaches it the specific format, terminology, and abbreviations of clinical documentation — without retraining the entire model from scratch.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Transformer layers</strong>
-      <p>Trade-offs: full fine-tuning is expensive and may cause catastrophic forgetting. LoRA is cheaper but slightly less powerful. RAG is cheaper still and more updatable but adds retrieval latency.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Sampling</strong>
-      <p>Production checklist: always evaluate on a task-specific held-out set; compare to a prompted baseline before deciding fine-tuning is worth the cost; version your fine-tuned checkpoints.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Validated answer</strong>
-      <p>You have a customer service chatbot that gives correct answers but in the wrong tone (too formal, too verbose). Decide: fine-tuning, few-shot prompting, or RAG? Justify your choice by listing what each approach would and would not fix.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
   </section>
     
-    
-    
-    
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>Internal flow: pretrained model weights → load on training infrastructure → run gradient descent on task-specific dataset → save fine-tuned checkpoint → evaluate on held-out examples.</p>
-    </section>
-
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> Trade-offs: full fine-tuning is expensive and may cause catastrophic forgetting. LoRA is cheaper but slightly less powerful. RAG is cheaper still and more updatable but adds retrieval latency.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Fine tuning, shorten the User intent to Validated answer path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Fine tuning, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Fine tuning, guard against fine-tuning does not teach the model new knowledge reliably. it adjusts behaviour, not factual recall. use rag for fresh facts.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Fine tuning, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> Production checklist: always evaluate on a task-specific held-out set; compare to a prompted baseline before deciding fine-tuning is worth the cost; version your fine-tuned checkpoints.</p>
+    <ul><li><strong>The core tension:</strong> Full fine-tuning is expensive and may cause catastrophic forgetting. LoRA is cheaper but slightly less powerful. RAG is cheaper still and more updatable but adds retrieval latency.</li></ul>
   </section>
     
-    <section class="panel">
+    
+    <section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> You have a customer service chatbot that gives correct answers but in the wrong tone (too formal, too verbose). Decide: fine-tuning, few-shot prompting, or RAG? Justify your choice by listing what each approach would and would not fix.</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Fine-tuning does not teach the model new knowledge reliably. It adjusts behaviour, not factual recall. Use RAG for fresh facts.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    <p><strong>To make it production-shaped:</strong> Production checklist: always evaluate on a task-specific held-out set; compare to a prompted baseline before deciding fine-tuning is worth the cost; version your fine-tuned checkpoints.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>You have a customer service chatbot that gives correct answers but in the wrong tone (too formal, too verbose). Decide: fine-tuning, few-shot prompting, or RAG? Justify your choice by listing what each approach would and would not fix.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a LLM Fundamentals workbench that demonstrates Fine tuning with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
     <ul><li>Fine-tuning does not teach the model new knowledge reliably. It adjusts behaviour, not factual recall. Use RAG for fresh facts.</li><li>A small fine-tuning dataset (100 examples) can be useful for format and style, but for complex capabilities, thousands of high-quality examples are needed.</li><li>Fine-tuned models still hallucinate. Fine-tuning does not solve the fundamental statistical pattern-matching nature of LLMs.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-fine-tuning-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Fine tuning?</strong></p>
+    <button data-answer="right">Fine-tuning does not teach the model new knowledge reliably. It adjusts behaviour, not factual recall. Use RAG for fresh facts.</button>
+    <button data-answer="wrong">Once Fine tuning is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-fine-tuning">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Fine tuning?</p>
-    <button data-answer="wrong">Fine-tuning does not teach the model new knowledge reliably. It adjusts behaviour, not factual recall. Use RAG for fresh facts.</button>
+    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-fine-tuning-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Fine tuning into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <button data-answer="right">Production checklist: always evaluate on a task-specific held-out set; compare to a prompted baseline before deciding fine-tuning is worth the cost; version your fine-tuned checkpoints.</button>
-    <button data-answer="wrong">A small fine-tuning dataset (100 examples) can be useful for format and style, but for complex capabilities, thousands of high-quality examples are needed.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Fine tuning to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Fine tuning in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

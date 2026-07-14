@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="GPU memory lesson in the LLM Fundamentals track.">
+  <meta name="description" content="GPU memory budgeting is the capacity math of LLM serving: weights, KV cache, and activations compete for fixed VRAM, and the KV cache — growing with every con">
   <meta name="theme-color" content="#0f172a">
   <title>GPU memory | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,87 +47,29 @@
       <div>
         <p class="eyebrow">LLM Fundamentals · Chapter 11</p>
         <h1>GPU memory</h1>
-        <p class="lede">GPU memory is the scarce serving resource that holds model weights, KV cache, activations, runtime buffers, and batching overhead during LLM inference. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">GPU memory budgeting is the capacity math of LLM serving: weights, KV cache, and activations compete for fixed VRAM, and the KV cache — growing with every concurrent user and every token of context — is the term that ends up deciding how many users fit on a card.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="llm-fundamentals-gpu-memory">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why GPU memory is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>GPU memory matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on weight memory, KV cache growth, activation buffers, batch size, context length, precision, fragmentation, and headroom, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is Longer context and bigger batches improve capability or throughput but consume GPU memory quickly.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement GPU memory on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The 13B model &#39;fits&#39; in 24GB — until ten concurrent users each carry a long conversation and the KV cache OOMs the card. GPU memory math is capacity planning, not trivia.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>GPU memory is the scarce serving resource that holds model weights, KV cache, activations, runtime buffers, and batching overhead during LLM inference.</p>
-      <p>The internal flow centers on weight memory, KV cache growth, activation buffers, batch size, context length, precision, fragmentation, and headroom, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: GPU memory is the scarce serving resource that holds model weights, KV cache, activations, runtime buffers, and batching overhead during LLM inference.</p>
-    <p><strong>Analogy:</strong> It is like warehouse space for a factory: weights are the machines, KV cache is work-in-progress inventory, and activations are temporary workbenches.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>GPU memory is the scarce serving resource that holds model weights, KV cache, activations, runtime buffers, and batching overhead during LLM inference.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: weight memory, KV cache growth, activation buffers, batch size, context length, precision, fragmentation, and headroom.</li><li>Inputs and outputs: identify what enters GPU memory, what state changes, and what the next system component receives.</li><li>Evaluation signal: test GPU memory with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether GPU memory worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Do not size GPUs only from model weight size; KV cache and runtime headroom often decide production capacity.</li><li>GPU memory is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide GPU memory inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <h2>Why this matters</h2>
+    <p>GPU memory math is capacity planning: it decides which models you can serve, at what context length, for how many users, on which hardware — guessing produces either OOM incidents or GPUs running at a third of possible utilization.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> GPU memory matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Do not size GPUs only from model weight size; KV cache and runtime headroom often decide production capacity.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+    <h2>In plain terms</h2>
+    <p>It is like a restaurant&#39;s floor space: the kitchen (weights) takes a fixed area, and every seated table (each conversation&#39;s KV cache) takes more — the menu fits fine; it&#39;s the diners who run you out of room.</p>
   </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
-    <p>A model can fit at batch size 1 but fail in production when four users each request 16k context because KV cache grows with tokens and batch.</p>
-    <ol><li><strong>Weights:</strong> Base model parameters occupy fixed memory before any user request arrives.</li><li><strong>Precision:</strong> FP16, BF16, INT8, or INT4 choices change the weight and cache footprint.</li><li><strong>Prefill:</strong> Long prompts allocate temporary activation memory during the initial forward pass.</li><li><strong>KV cache:</strong> Each generated token adds key/value tensors that grow with batch and context length.</li><li><strong>Scheduler:</strong> Batching policies trade throughput against memory spikes and p95 latency.</li><li><strong>Headroom:</strong> Production capacity needs fragmentation and runtime buffer headroom, not just theoretical fit.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="LLM request flow for GPU memory">
-    <article>
-      <span>Step 1</span>
-      <strong>Weights</strong>
-      <p>Base model parameters occupy fixed memory before any user request arrives.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Precision</strong>
-      <p>FP16, BF16, INT8, or INT4 choices change the weight and cache footprint.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Prefill</strong>
-      <p>Long prompts allocate temporary activation memory during the initial forward pass.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>KV cache</strong>
-      <p>Each generated token adds key/value tensors that grow with batch and context length.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Scheduler</strong>
-      <p>Batching policies trade throughput against memory spikes and p95 latency.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Headroom</strong>
-      <p>Production capacity needs fragmentation and runtime buffer headroom, not just theoretical fit.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>How it works</h2>
+    <p>The budget: VRAM = weights (params × bytes) + KV cache (per-token cost × tokens × concurrent sequences) + activations and runtime overhead — write it down per deployment, then set context and concurrency caps from the remainder, not from optimism.</p>
+    <ul><li>Weights are the fixed cost and quantization is its dial: parameters × bytes per parameter — a 13B model is ~26GB at FP16, ~13GB at 8-bit, ~7GB at 4-bit; that&#39;s the part everyone budgets and the part that&#39;s easiest to get right.</li><li>KV cache is the variable cost everyone under-budgets: per token, per layer, keys and values must persist for the whole conversation — roughly 2 × layers × kv-heads × head-dim × bytes per token; for a 13B-class model that&#39;s ~0.4–0.8MB per token, so one 8k-token conversation holds 3–6GB, and ten of them out-eat the weights.</li><li>Concurrency is the multiplier that surprises: total KV = per-token cost × context length × concurrent sequences — &#39;the model fits&#39; and &#39;the model serves 20 long-context users&#39; are different claims separated by tens of GB.</li><li>Serving systems fight fragmentation, not just size: naive per-request cache allocation wastes VRAM on reserved-but-unused space; PagedAttention (vLLM) allocates KV in blocks like virtual memory, which is why serving frameworks fit 2–4x the concurrency naive setups do.</li><li>The mitigation toolbox maps to the equation: quantize weights (and increasingly KV cache), cap max context and concurrency at admission, use models with grouped-query attention (fewer kv-heads = smaller cache), and treat OOM as an admission-control failure rather than a random crash.</li></ul>
   </section>
     <section class="panel">
     <h2>Topic diagram</h2>
@@ -171,37 +113,17 @@
   </svg>
     <p>Use this diagram as the mental model for the chapter. The arrows show the order of responsibility; the labels show what must be validated or measured at each handoff.</p>
   </section>
-    
-    
-    
-
     <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on weight memory, KV cache growth, activation buffers, batch size, context length, precision, fragmentation, and headroom, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
+    <h2>A concrete example</h2>
+    <p>A 13B model at 8-bit: 13GB weights on a 24GB card — &#39;plenty of room.&#39; Then ten concurrent users with ~6k-token conversations arrive: at ~0.5MB/token the KV cache wants ~30GB, and the card OOMs at peak. Same model, same card, with vLLM paging, a 4k context cap, and admission control at 12 concurrent sequences: stable serving. Nothing about the model changed — the tables were budgeted, not just the kitchen.</p>
+  </section>
+    
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is Longer context and bigger batches improve capability or throughput but consume GPU memory quickly.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>The core tension:</strong> Context length, concurrency, and model size trade against each other inside fixed VRAM — serving longer contexts means fewer users or a smaller/more-quantized model, and the right answer is a product decision made with the equation visible.</li></ul>
   </section>
-
     <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For GPU memory, shorten the Weights to Headroom path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For GPU memory, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For GPU memory, guard against do not size gpus only from model weight size; kv cache and runtime headroom often decide production capacity.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For GPU memory, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
+    <h2>Try it in code</h2>
     <pre><code>function estimateKvCacheGiB({ layers, heads, headDim, tokens, batch, bytes = 2 }) {
   const keyAndValue = 2;
   const totalBytes = layers * heads * headDim * tokens * batch * keyAndValue * bytes;
@@ -211,58 +133,50 @@
 console.log(estimateKvCacheGiB({
   layers: 32, heads: 32, headDim: 128, tokens: 8192, batch: 4
 }).toFixed(2), &quot;GiB&quot;);</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement GPU memory on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <p>Change the inputs and watch which assumption breaks first. The gap between what you expected and what you got is where the learning is.</p>
   </section>
     
-    <section class="panel">
-    <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Estimate memory for weights plus KV cache for one model, then choose a max context and batch size that leaves headroom.</p>
-    <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
-      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not size GPUs only from model weight size; KV cache and runtime headroom often decide production capacity.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
-    </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
-  </section>
-
     <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Estimate memory for weights plus KV cache for one model, then choose a max context and batch size that leaves headroom.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+    <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> For a 13B-class model on a 24GB card: compute weight memory at 8-bit, estimate per-token KV cost, and derive the max concurrent sequences at a 4k context cap with 2GB reserved for runtime. Then state the two dials you&#39;d turn to double concurrency and what each costs.</p>
+    <ol>
+      <li>Build or configure it, using the code example above as your starting point.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
+    </ol>
+    <p><strong>To make it production-shaped:</strong> Production judgment: know your per-token KV cost, cap admission before the card caps you, use a paging-based serving framework, and treat &#39;it fits in a demo&#39; as meaning exactly one user with a short prompt.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a LLM Fundamentals workbench that demonstrates GPU memory with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not size GPUs only from model weight size; KV cache and runtime headroom often decide production capacity.</li><li>GPU memory is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide GPU memory inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>Model-fits-in-VRAM is not the serving question; the KV cache for concurrent long conversations routinely exceeds the weights themselves.</li><li>OOM under load is not bad luck; it is unbudgeted KV growth, and the fix is admission control and paging, not restarts.</li><li>Quantization headroom is not free capacity; the space you save on weights gets spent on KV cache for more users — deliberately, or by surprise.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-gpu-memory-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about GPU memory?</strong></p>
+    <button data-answer="right">Model-fits-in-VRAM is not the serving question; the KV cache for concurrent long conversations routinely exceeds the weights themselves.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="wrong">Once GPU memory is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-gpu-memory">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of GPU memory?</p>
-    <button data-answer="wrong">Do not size GPUs only from model weight size; KV cache and runtime headroom often decide production capacity.</button>
-    <button data-answer="right">A production-shaped slice should implement GPU memory on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">GPU memory is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-gpu-memory-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing GPU memory into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="right">Production judgment: know your per-token KV cost, cap admission before the card caps you, use a paging-based serving framework, and treat &#39;it fits in a demo&#39; as meaning exactly one user with a short prompt.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain GPU memory to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain GPU memory in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://arxiv.org/abs/2309.06180" rel="noopener noreferrer">vLLM PagedAttention paper</a></li><li><a href="https://huggingface.co/docs/transformers/main/cache_explanation" rel="noopener noreferrer">Hugging Face KV cache guide</a></li></ul>
   </section>
 

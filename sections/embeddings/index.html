@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/embeddings/embedding-intuition.html">
       <span>Chapter 1</span>
       <strong>Embedding intuition</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>An embedding is a dense vector of floating-point numbers that represents the meaning of a piece of text.</small>
     </a><a class="chapter-card" href="/sections/embeddings/vector-spaces.html">
       <span>Chapter 2</span>
       <strong>Vector spaces</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A vector space in the context of embeddings is the high-dimensional numeric space where each point represents one piece of content, positioned so that geometric relationships between points reflect semantic relationships between the original content.</small>
     </a><a class="chapter-card" href="/sections/embeddings/similarity.html">
       <span>Chapter 3</span>
       <strong>Similarity</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Similarity in embedding space is a numeric score, typically cosine similarity or dot product, that measures how close two vectors are, used to rank which stored items are most semantically related to a query.</small>
     </a><a class="chapter-card" href="/sections/embeddings/embedding-models.html">
       <span>Chapter 4</span>
       <strong>Embedding models</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Embedding models are neural networks trained specifically to convert text, images, or other content into vectors, optimized so that semantically related inputs produce nearby vectors, distinct from generative language models that are optimized to produce text.</small>
     </a><a class="chapter-card" href="/sections/embeddings/chunk-embeddings.html">
       <span>Chapter 5</span>
       <strong>Chunk embeddings</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Chunk embeddings are vectors generated for individual pieces of a larger document, rather than the whole document at once, since most embedding models have a limited input length and retrieval works better when each vector represents one focused idea.</small>
     </a><a class="chapter-card" href="/sections/embeddings/dimensionality.html">
       <span>Chapter 6</span>
       <strong>Dimensionality</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Dimensionality is the fixed length of the vector an embedding model produces, ranging from under 100 to several thousand numbers, determining how much semantic nuance the vector can encode and how much it costs to store and search at scale.</small>
     </a><a class="chapter-card" href="/sections/embeddings/normalization.html">
       <span>Chapter 7</span>
       <strong>Normalization</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Normalization in embeddings means scaling each vector to unit length before comparison, so similarity calculations depend only on the direction of the vector, not its magnitude, which keeps distance comparisons consistent across differently-scaled inputs.</small>
     </a><a class="chapter-card" href="/sections/embeddings/distance-metrics.html">
       <span>Chapter 8</span>
       <strong>Distance metrics</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Distance metrics are the mathematical functions, such as cosine similarity, Euclidean distance, and dot product, used to measure how close two embedding vectors are, and the right choice affects both retrieval quality and which vector index types are available.</small>
     </a><a class="chapter-card" href="/sections/embeddings/metadata.html">
       <span>Chapter 9</span>
       <strong>Metadata</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Metadata in an embedding system is the structured information stored alongside each vector, such as source document, timestamp, author, or access permissions, used to filter or boost retrieval results beyond pure vector similarity.</small>
     </a><a class="chapter-card" href="/sections/embeddings/evaluation.html">
       <span>Chapter 10</span>
       <strong>Evaluation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Evaluation of embeddings measures whether the vector space actually retrieves the right content for real queries, using metrics like recall at k and mean reciprocal rank against a labeled set of query-to-correct-answer pairs, rather than trusting an embedding model&#39;s general reputation.</small>
     </a><a class="chapter-card" href="/sections/embeddings/drift.html">
       <span>Chapter 11</span>
       <strong>Drift</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Drift in an embedding system happens when the meaning of content or queries changes over time relative to when the embeddings were generated, or when the embedding model itself is updated, causing previously good retrieval to gradually degrade without any code changing.</small>
     </a><a class="chapter-card" href="/sections/embeddings/storage.html">
       <span>Chapter 12</span>
       <strong>Storage</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Storage for embeddings covers how vectors are persisted and organized, including choice of vector database or index, whether to compress vectors with quantization, and how to keep vectors consistent with their source content as it&#39;s updated or deleted.</small>
     </a><a class="chapter-card" href="/sections/embeddings/serving.html">
       <span>Chapter 13</span>
       <strong>Serving</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Serving embeddings in production means generating vectors for new content or incoming queries in real time, with attention to latency, batching, and caching, since embedding generation sits directly in the critical path of a live retrieval request.</small>
     </a><a class="chapter-card" href="/sections/embeddings/embedding-lab.html">
       <span>Chapter 14</span>
       <strong>Embedding lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The embedding lab is a hands-on exercise to embed a small real document set, run retrieval against a handful of realistic queries, and measure whether the correct chunk is actually retrieved, rather than trusting embeddings work from theory alone.</small>
     </a><a class="chapter-card" href="/sections/embeddings/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete embedding-backed search feature for one real document set, with chunking, storage, retrieval, and a basic evaluation set, that another engineer could extend to a different document set.</small>
     </a><a class="chapter-card" href="/sections/embeddings/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete embedding architecture for a real product: chunking strategy, embedding model choice with justification, storage and indexing plan, drift monitoring, and an evaluation plan, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/embeddings/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The embeddings interview pack prepares you to discuss vector search design credibly: chunking trade-offs, embedding model selection, distance metric choice, and how you&#39;d detect and handle drift, backed by a concrete story rather than a definition of what an embedding is.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/prompt-engineering/index.html">← Prompt Engineering</a>

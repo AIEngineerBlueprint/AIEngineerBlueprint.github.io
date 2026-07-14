@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/structured-output/why-structure-matters.html">
       <span>Chapter 1</span>
       <strong>Why structure matters</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Structured output makes AI responses usable by software because downstream code can parse, validate, route, and test them deterministically.</small>
     </a><a class="chapter-card" href="/sections/structured-output/json-schema.html">
       <span>Chapter 2</span>
       <strong>JSON schema</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>JSON Schema describes the shape, required fields, data types, and constraints of JSON so model output or tool input can be validated.</small>
     </a><a class="chapter-card" href="/sections/structured-output/constrained-decoding.html">
       <span>Chapter 3</span>
       <strong>Constrained decoding</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Constrained decoding restricts token generation so the model can only produce outputs that match a grammar, schema, or allowed token set.</small>
     </a><a class="chapter-card" href="/sections/structured-output/validation.html">
       <span>Chapter 4</span>
       <strong>Validation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Validation checks whether AI inputs, outputs, or tool calls satisfy explicit rules before the system trusts or acts on them.</small>
     </a><a class="chapter-card" href="/sections/structured-output/repair-loops.html">
       <span>Chapter 5</span>
       <strong>Repair loops</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Repair loops ask the model or a deterministic fixer to correct invalid structured output using validation errors as feedback.</small>
     </a><a class="chapter-card" href="/sections/structured-output/typed-clients.html">
       <span>Chapter 6</span>
       <strong>Typed clients</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Typed clients wrap AI outputs and tool calls in language-level types so application code catches contract mismatches early.</small>
     </a><a class="chapter-card" href="/sections/structured-output/extraction.html">
       <span>Chapter 7</span>
       <strong>Extraction</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Extraction is using a model to pull specific structured fields out of unstructured text, such as pulling a date, amount, and vendor name from an invoice, constrained to a defined schema so the output is directly usable by downstream code.</small>
     </a><a class="chapter-card" href="/sections/structured-output/classification.html">
       <span>Chapter 8</span>
       <strong>Classification</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Classification constrains a model&#39;s output to one of a fixed set of predefined categories, distinct from open-ended generation, so downstream code can reliably branch logic based on the result.</small>
     </a><a class="chapter-card" href="/sections/structured-output/workflows.html">
       <span>Chapter 9</span>
       <strong>Workflows</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Workflows for structured output chain multiple structured-output steps together, where one step&#39;s validated output becomes the next step&#39;s input, letting complex multi-stage processes stay reliable end to end.</small>
     </a><a class="chapter-card" href="/sections/structured-output/testing.html">
       <span>Chapter 10</span>
       <strong>Testing</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Testing structured output means verifying that a model reliably produces schema-valid output across representative and edge-case inputs, not just confirming it worked correctly on one example during development.</small>
     </a><a class="chapter-card" href="/sections/structured-output/versioning.html">
       <span>Chapter 11</span>
       <strong>Versioning</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Versioning for structured output means tracking changes to an output schema over time, so downstream consumers of that structured data aren&#39;t unexpectedly broken when a field is added, removed, or changed.</small>
     </a><a class="chapter-card" href="/sections/structured-output/monitoring.html">
       <span>Chapter 12</span>
       <strong>Monitoring</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Monitoring tracks live AI behavior so teams notice quality, safety, latency, cost, and reliability changes after deployment.</small>
     </a><a class="chapter-card" href="/sections/structured-output/failure-handling.html">
       <span>Chapter 13</span>
       <strong>Failure handling</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Failure handling for structured output means detecting when a model&#39;s response doesn&#39;t match the expected schema and applying a defined recovery, such as a repair attempt or a fallback, rather than passing invalid data downstream or crashing.</small>
     </a><a class="chapter-card" href="/sections/structured-output/output-lab.html">
       <span>Chapter 14</span>
       <strong>Output lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The output lab is a hands-on exercise to build a small structured-output pipeline with schema validation and a repair step, then test it against a deliberately malformed response to confirm the repair and fallback logic actually works.</small>
     </a><a class="chapter-card" href="/sections/structured-output/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete structured-output feature for one real task, with a versioned schema, validation, repair logic, and a test set, that another engineer could extend.</small>
     </a><a class="chapter-card" href="/sections/structured-output/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete structured-output system for a real product: schema design and versioning, validation and repair strategy, testing standard, and workflow chaining, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/structured-output/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The structured output interview pack prepares you to discuss schema design, validation, repair strategies, and versioning credibly, backed by a concrete story rather than a general statement that structured output matters.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/tool-calling/index.html">← Tool Calling</a>

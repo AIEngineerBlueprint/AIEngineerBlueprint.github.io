@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Few-shot examples lesson in the Prompt Engineering track.">
+  <meta name="description" content="Few-shot prompting provides the model with 2–10 examples of the desired input-output behaviour directly in the prompt. The model learns the pattern from examp">
   <meta name="theme-color" content="#0f172a">
   <title>Few-shot examples | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,181 +47,80 @@
       <div>
         <p class="eyebrow">Prompt Engineering · Chapter 4</p>
         <h1>Few-shot examples</h1>
-        <p class="lede">Few-shot prompting provides the model with 2–10 examples of the desired input-output behaviour directly in the prompt. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Few-shot prompting provides the model with 2–10 examples of the desired input-output behaviour directly in the prompt. The model learns the pattern from examples without any weight updates.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="prompt-engineering-few-shot-examples">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Few-shot examples is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
     
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Few-shot examples matter because they are the cheapest way to teach the model a specific format or behaviour that it would otherwise guess inconsistently.</p></article><article><span>Objective 2</span><p>Internal flow: examples are part of the prompt token sequence. The model attends to them and produces outputs matching the demonstrated pattern.</p></article><article><span>Objective 3</span><p>Trade-offs: each example costs tokens (context budget). Prioritise diversity over quantity. Test with and without examples using your eval set.</p></article><article><span>Objective 4</span><p>Production checklist: store canonical examples in a prompt library. Version them. When model output quality drops, check if examples are still representative.</p></article>
-    </div>
-  </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Few-shot prompting provides the model with 2–10 examples of the desired input-output behaviour directly in the prompt. The model learns the pattern from examples without any weight updates.</p>
-      <p>Internal flow: examples are part of the prompt token sequence. The model attends to them and produces outputs matching the demonstrated pattern.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Few-shot prompting provides the model with 2–10 examples of the desired input-output behaviour directly in the prompt. The model learns the pattern from examples without any weight updates.</p>
-    <p><strong>Analogy:</strong> Few-shot examples are like showing an apprentice three finished products before asking them to make one. The model does not know your specific format from training, but seeing examples makes the pattern obvious.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Few-shot prompting provides the model with 2–10 examples of the desired input-output behaviour directly in the prompt. The model learns the pattern from examples without any weight updates.</p>
-    <h3>What to learn</h3>
-    <ul><li>Zero-shot: just instructions, no examples. Works for simple tasks. Fails on novel formats or nuanced requirements.</li><li>One-shot: one example. Useful when the format is unusual and you cannot give more examples due to context limits.</li><li>Few-shot (3–10 examples): the most reliable way to teach format, style, and domain-specific rules without fine-tuning.</li><li>Example quality matters more than quantity. Three excellent, diverse examples outperform ten inconsistent ones.</li><li>Examples should cover edge cases: a normal case, a negative case (where the answer is &#39;none&#39; or &#39;N/A&#39;), and an ambiguous case.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>More examples are not always better. Past 5–10 examples, gains diminish quickly and context cost rises.</li><li>Examples from a different distribution than real inputs can hurt performance by setting wrong expectations.</li><li>Few-shot prompting is not fine-tuning. The model weights do not change. Patterns persist only within the context window.</li></ul>
+    <h2>Why this matters</h2>
+    <p>Few-shot examples matter because they are the cheapest way to teach the model a specific format or behaviour that it would otherwise guess inconsistently.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Few-shot examples matter because they are the cheapest way to teach the model a specific format or behaviour that it would otherwise guess inconsistently.</p>
-    <p><strong>When it breaks:</strong> More examples are not always better. Past 5–10 examples, gains diminish quickly and context cost rises.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+    <h2>In plain terms</h2>
+    <p>Few-shot examples are like showing an apprentice three finished products before asking them to make one. The model does not know your specific format from training, but seeing examples makes the pattern obvious.</p>
   </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
+    <h2>How it works</h2>
+    <p>Internal flow: examples are part of the prompt token sequence. The model attends to them and produces outputs matching the demonstrated pattern.</p>
+    <ul><li>Zero-shot: just instructions, no examples. Works for simple tasks. Fails on novel formats or nuanced requirements.</li><li>One-shot: one example. Useful when the format is unusual and you cannot give more examples due to context limits.</li><li>Few-shot (3–10 examples): the most reliable way to teach format, style, and domain-specific rules without fine-tuning.</li><li>Example quality matters more than quantity. Three excellent, diverse examples outperform ten inconsistent ones.</li><li>Examples should cover edge cases: a normal case, a negative case (where the answer is &#39;none&#39; or &#39;N/A&#39;), and an ambiguous case.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
     <p>For a sentiment classifier: instead of just &#39;classify as positive or negative&#39;, include: &#39;Review: Great product, fast shipping! → Positive. Review: Broke after two days, terrible quality. → Negative. Review: It is fine, nothing special. → Neutral. Now classify: Review: Surprised by how good this is for the price.&#39; — the model now knows the exact format and range.</p>
-    <ol><li><strong>Role:</strong> Few-shot prompting provides the model with 2–10 examples of the desired input-output behaviour directly in the prompt.</li><li><strong>Task:</strong> Internal flow: examples are part of the prompt token sequence. The model attends to them and produces outputs matching the demonstrated pattern.</li><li><strong>Context:</strong> For a sentiment classifier: instead of just &#39;classify as positive or negative&#39;, include: &#39;Review: Great product, fast shipping! → Positive. Review: Broke after two days, terrible quality. → Negative. Review: It is fine, nothing special. → Neutral. Now classify: Review: Surprised by how good this is for the price.&#39; — the model now knows the exact format and range.</li><li><strong>Examples:</strong> Trade-offs: each example costs tokens (context budget). Prioritise diversity over quantity. Test with and without examples using your eval set.</li><li><strong>Format:</strong> Production checklist: store canonical examples in a prompt library. Version them. When model output quality drops, check if examples are still representative.</li><li><strong>Checks:</strong> Choose a classification task (support ticket routing, sentiment, intent detection). Write zero-shot, one-shot, and three-shot prompts. Test each on 10 real examples. How much does each additional example improve accuracy?</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="Prompt instruction stack for Few-shot examples">
-    <article>
-      <span>Step 1</span>
-      <strong>Role</strong>
-      <p>Few-shot prompting provides the model with 2–10 examples of the desired input-output behaviour directly in the prompt.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Task</strong>
-      <p>Internal flow: examples are part of the prompt token sequence. The model attends to them and produces outputs matching the demonstrated pattern.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Context</strong>
-      <p>For a sentiment classifier: instead of just &#39;classify as positive or negative&#39;, include: &#39;Review: Great product, fast shipping! → Positive. Review: Broke after two days, terrible quality. → Negative. Review: It is fine, nothing special. → Neutral. Now classify: Review: Surprised by how good this is for the price.&#39; — the model now knows the exact format and range.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Examples</strong>
-      <p>Trade-offs: each example costs tokens (context budget). Prioritise diversity over quantity. Test with and without examples using your eval set.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Format</strong>
-      <p>Production checklist: store canonical examples in a prompt library. Version them. When model output quality drops, check if examples are still representative.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Checks</strong>
-      <p>Choose a classification task (support ticket routing, sentiment, intent detection). Write zero-shot, one-shot, and three-shot prompts. Test each on 10 real examples. How much does each additional example improve accuracy?</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
   </section>
     
-    
-    
-    
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>Internal flow: examples are part of the prompt token sequence. The model attends to them and produces outputs matching the demonstrated pattern.</p>
-    </section>
-
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> Trade-offs: each example costs tokens (context budget). Prioritise diversity over quantity. Test with and without examples using your eval set.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Few-shot examples, shorten the Role to Checks path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Few-shot examples, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Few-shot examples, guard against more examples are not always better. past 5–10 examples, gains diminish quickly and context cost rises.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Few-shot examples, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> Production checklist: store canonical examples in a prompt library. Version them. When model output quality drops, check if examples are still representative.</p>
+    <ul><li><strong>The core tension:</strong> Each example costs tokens (context budget). Prioritise diversity over quantity. Test with and without examples using your eval set.</li></ul>
   </section>
     
-    <section class="panel">
+    
+    <section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> Choose a classification task (support ticket routing, sentiment, intent detection). Write zero-shot, one-shot, and three-shot prompts. Test each on 10 real examples. How much does each additional example improve accuracy?</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: More examples are not always better. Past 5–10 examples, gains diminish quickly and context cost rises.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    <p><strong>To make it production-shaped:</strong> Production checklist: store canonical examples in a prompt library. Version them. When model output quality drops, check if examples are still representative.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Choose a classification task (support ticket routing, sentiment, intent detection). Write zero-shot, one-shot, and three-shot prompts. Test each on 10 real examples. How much does each additional example improve accuracy?</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a Prompt Engineering workbench that demonstrates Few-shot examples with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
     <ul><li>More examples are not always better. Past 5–10 examples, gains diminish quickly and context cost rises.</li><li>Examples from a different distribution than real inputs can hurt performance by setting wrong expectations.</li><li>Few-shot prompting is not fine-tuning. The model weights do not change. Patterns persist only within the context window.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-prompt-engineering-few-shot-examples-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Few-shot examples?</strong></p>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="right">More examples are not always better. Past 5–10 examples, gains diminish quickly and context cost rises.</button>
+    <button data-answer="wrong">Once Few-shot examples is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-prompt-engineering-few-shot-examples">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Few-shot examples?</p>
-    <button data-answer="wrong">More examples are not always better. Past 5–10 examples, gains diminish quickly and context cost rises.</button>
+    <section class="panel quiz" data-quiz="quiz-prompt-engineering-few-shot-examples-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Few-shot examples into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <button data-answer="right">Production checklist: store canonical examples in a prompt library. Version them. When model output quality drops, check if examples are still representative.</button>
-    <button data-answer="wrong">Examples from a different distribution than real inputs can hurt performance by setting wrong expectations.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Few-shot examples to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Few-shot examples in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

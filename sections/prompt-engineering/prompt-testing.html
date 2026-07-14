@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Prompt testing lesson in the Prompt Engineering track.">
+  <meta name="description" content="Prompt testing means running a prompt against a labeled set of representative and edge-case inputs to verify it produces correct, well-formatted output consis">
   <meta name="theme-color" content="#0f172a">
   <title>Prompt testing | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,177 +47,76 @@
       <div>
         <p class="eyebrow">Prompt Engineering · Chapter 8</p>
         <h1>Prompt testing</h1>
-        <p class="lede">Prompt testing means running a prompt against a labeled set of representative and edge-case inputs to verify it produces correct, well-formatted output consistently, rather than trusting that it worked because it looked right on one example. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Prompt testing means running a prompt against a labeled set of representative and edge-case inputs to verify it produces correct, well-formatted output consistently, rather than trusting that it worked because it looked right on one example.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="prompt-engineering-prompt-testing">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Prompt testing is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
     
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Prompt testing matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on building a small labeled test set covering typical inputs and known edge cases, running the prompt against each, and checking whether the output matches expected format and content, repeating this whenever the prompt or underlying model changes, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is building a proper test set for a prompt takes more upfront effort than testing it on one or two examples, but it&#39;s the only way to catch failures on inputs that weren&#39;t part of your original quick check</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Prompt testing on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
-  </section>
-    <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Prompt testing means running a prompt against a labeled set of representative and edge-case inputs to verify it produces correct, well-formatted output consistently, rather than trusting that it worked because it looked right on one example.</p>
-      <p>The internal flow centers on building a small labeled test set covering typical inputs and known edge cases, running the prompt against each, and checking whether the output matches expected format and content, repeating this whenever the prompt or underlying model changes, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Prompt testing means running a prompt against a labeled set of representative and edge-case inputs to verify it produces correct, well-formatted output consistently, rather than trusting that it worked because it looked right on one example.</p>
-    <p><strong>Analogy:</strong> It is like testing a recipe against several different kitchens and ingredient batches before trusting it will work reliably every time, not just the one time you cooked it yourself.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Prompt testing means running a prompt against a labeled set of representative and edge-case inputs to verify it produces correct, well-formatted output consistently, rather than trusting that it worked because it looked right on one example.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: building a small labeled test set covering typical inputs and known edge cases, running the prompt against each, and checking whether the output matches expected format and content, repeating this whenever the prompt or underlying model changes.</li><li>Inputs and outputs: identify what enters Prompt testing, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Prompt testing with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Prompt testing worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>A prompt producing a good result on the first example you tried is not evidence it&#39;s reliable; prompt behavior can vary significantly across different but similarly-phrased inputs, which only a broader test set would reveal.</li><li>Prompt testing is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Prompt testing inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
-  </section>
+    
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Prompt testing matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> A prompt producing a good result on the first example you tried is not evidence it&#39;s reliable; prompt behavior can vary significantly across different but similarly-phrased inputs, which only a broader test set would reveal.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+    <h2>In plain terms</h2>
+    <p>It is like testing a recipe against several different kitchens and ingredient batches before trusting it will work reliably every time, not just the one time you cooked it yourself.</p>
   </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
+    <h2>How it works</h2>
+    <p>In practice it comes down to building a small labeled test set covering typical inputs and known edge cases, running the prompt against each, and checking whether the output matches expected format and content, repeating this whenever the prompt or underlying model changes.</p>
+    
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
     <p>A classification prompt is tested against 20 labeled examples including ambiguous edge cases, revealing that it misclassifies a specific category of input the original single-example test never surfaced.</p>
-    <ol><li><strong>Role:</strong> Prompt testing means running a prompt against a labeled set of representative and edge-case inputs to verify it produces correct, well-formatted output consistently, rather than trusting that it worked because it looked right on one example.</li><li><strong>Task:</strong> The internal flow centers on building a small labeled test set covering typical inputs and known edge cases, running the prompt against each, and checking whether the output matches expected format and content, repeating this whenever the prompt or underlying model changes, then hands a validated result to the next step in the product workflow.</li><li><strong>Context:</strong> A classification prompt is tested against 20 labeled examples including ambiguous edge cases, revealing that it misclassifies a specific category of input the original single-example test never surfaced.</li><li><strong>Examples:</strong> The main trade-off is building a proper test set for a prompt takes more upfront effort than testing it on one or two examples, but it&#39;s the only way to catch failures on inputs that weren&#39;t part of your original quick check</li><li><strong>Format:</strong> A production-shaped slice should implement Prompt testing on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Checks:</strong> Build a five-example test set for one real prompt you use, including one deliberately tricky edge case, and check whether the prompt handles all five correctly.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="Prompt instruction stack for Prompt testing">
-    <article>
-      <span>Step 1</span>
-      <strong>Role</strong>
-      <p>Prompt testing means running a prompt against a labeled set of representative and edge-case inputs to verify it produces correct, well-formatted output consistently, rather than trusting that it worked because it looked right on one example.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Task</strong>
-      <p>The internal flow centers on building a small labeled test set covering typical inputs and known edge cases, running the prompt against each, and checking whether the output matches expected format and content, repeating this whenever the prompt or underlying model changes, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Context</strong>
-      <p>A classification prompt is tested against 20 labeled examples including ambiguous edge cases, revealing that it misclassifies a specific category of input the original single-example test never surfaced.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Examples</strong>
-      <p>The main trade-off is building a proper test set for a prompt takes more upfront effort than testing it on one or two examples, but it&#39;s the only way to catch failures on inputs that weren&#39;t part of your original quick check</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Format</strong>
-      <p>A production-shaped slice should implement Prompt testing on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Checks</strong>
-      <p>Build a five-example test set for one real prompt you use, including one deliberately tricky edge case, and check whether the prompt handles all five correctly.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
   </section>
     
-    
-    
-    
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on building a small labeled test set covering typical inputs and known edge cases, running the prompt against each, and checking whether the output matches expected format and content, repeating this whenever the prompt or underlying model changes, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is building a proper test set for a prompt takes more upfront effort than testing it on one or two examples, but it&#39;s the only way to catch failures on inputs that weren&#39;t part of your original quick check</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>The core tension:</strong> Building a proper test set for a prompt takes more upfront effort than testing it on one or two examples, but it&#39;s the only way to catch failures on inputs that weren&#39;t part of your original quick check</li></ul>
   </section>
-
     <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Prompt testing, shorten the Role to Checks path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Prompt testing, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Prompt testing, guard against a prompt producing a good result on the first example you tried is not evidence it&#39;s reliable; prompt behavior can vary significantly across different but similarly-phrased inputs, which only a broader test set would reveal.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Prompt testing, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
+    <h2>Try it in code</h2>
     <pre><code>const testSet = [
   { input: &quot;my order never arrived&quot;, expectCategory: &quot;shipping&quot; },
   { input: &quot;the app crashed but I got my item&quot;, expectCategory: &quot;bug_report&quot; } // edge case
 ];
 testSet.forEach(t =&gt; assert(classify(t.input) === t.expectCategory));</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Prompt testing on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <p>Change the inputs and watch which assumption breaks first. The gap between what you expected and what you got is where the learning is.</p>
   </section>
     
-    <section class="panel">
+    <section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> Build a five-example test set for one real prompt you use, including one deliberately tricky edge case, and check whether the prompt handles all five correctly.</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: A prompt producing a good result on the first example you tried is not evidence it&#39;s reliable; prompt behavior can vary significantly across different but similarly-phrased inputs, which only a broader test set would reveal.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Build a five-example test set for one real prompt you use, including one deliberately tricky edge case, and check whether the prompt handles all five correctly.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a Prompt Engineering workbench that demonstrates Prompt testing with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>A prompt producing a good result on the first example you tried is not evidence it&#39;s reliable; prompt behavior can vary significantly across different but similarly-phrased inputs, which only a broader test set would reveal.</li><li>Prompt testing is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Prompt testing inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>A prompt producing a good result on the first example you tried is not evidence it&#39;s reliable; prompt behavior can vary significantly across different but similarly-phrased inputs, which only a broader test set would reveal.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
-
-    <section class="panel quiz" data-quiz="quiz-prompt-engineering-prompt-testing">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Prompt testing?</p>
-    <button data-answer="wrong">A prompt producing a good result on the first example you tried is not evidence it&#39;s reliable; prompt behavior can vary significantly across different but similarly-phrased inputs, which only a broader test set would reveal.</button>
-    <button data-answer="right">A production-shaped slice should implement Prompt testing on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Prompt testing is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-prompt-engineering-prompt-testing-0">
+    <h2>Check yourself</h2>
+    <p><strong>Which of these is sound guidance about Prompt testing?</strong></p>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="wrong">Once Prompt testing is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="right">A prompt producing a good result on the first example you tried is not evidence it&#39;s reliable; prompt behavior can vary significantly across different but similarly-phrased inputs, which only a broader test set would reveal.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Prompt testing to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Prompt testing in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://arxiv.org/abs/2306.05685" rel="noopener noreferrer">Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena</a></li></ul>
   </section>
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Working memory lesson in the Memory track.">
+  <meta name="description" content="Working memory is the temporary scratchpad an agent uses while actively performing one task, such as intermediate reasoning steps or a partially built plan, w">
   <meta name="theme-color" content="#0f172a">
   <title>Working memory | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,120 +47,36 @@
       <div>
         <p class="eyebrow">Memory · Chapter 5</p>
         <h1>Working memory</h1>
-        <p class="lede">Working memory is the temporary scratchpad an agent uses while actively performing one task, such as intermediate reasoning steps or a partially built plan, which is not meant to persist once the task ends. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Working memory is the temporary scratchpad an agent uses while actively performing one task, such as intermediate reasoning steps or a partially built plan, which is not meant to persist once the task ends.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="memory-working-memory">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Working memory is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
     
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Working memory matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on the bounded, actively used context an agent holds while performing the current task step, distinct from anything persisted afterward, since it is discarded once the task completes unless explicitly saved, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is keeping rich working memory helps the agent stay coherent across a long task, but if that scratchpad is mistakenly treated as durable memory, stale intermediate state can leak into unrelated later tasks</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Working memory on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
-  </section>
-    <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Working memory is the temporary scratchpad an agent uses while actively performing one task, such as intermediate reasoning steps or a partially built plan, which is not meant to persist once the task ends.</p>
-      <p>The internal flow centers on the bounded, actively used context an agent holds while performing the current task step, distinct from anything persisted afterward, since it is discarded once the task completes unless explicitly saved, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Working memory is the temporary scratchpad an agent uses while actively performing one task, such as intermediate reasoning steps or a partially built plan, which is not meant to persist once the task ends.</p>
-    <p><strong>Analogy:</strong> It is like the notes a person jots down while solving one problem and throws away once the problem is solved.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Working memory is the temporary scratchpad an agent uses while actively performing one task, such as intermediate reasoning steps or a partially built plan, which is not meant to persist once the task ends.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: the bounded, actively used context an agent holds while performing the current task step, distinct from anything persisted afterward, since it is discarded once the task completes unless explicitly saved.</li><li>Inputs and outputs: identify what enters Working memory, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Working memory with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Working memory worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Working memory is not the same as long-term memory just because it holds things during a task; conflating the two causes systems to either persist junk or lose useful task state too early.</li><li>Working memory is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Working memory inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
-  </section>
+    
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Working memory matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Working memory is not the same as long-term memory just because it holds things during a task; conflating the two causes systems to either persist junk or lose useful task state too early.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+    <h2>In plain terms</h2>
+    <p>It is like the notes a person jots down while solving one problem and throws away once the problem is solved.</p>
   </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
+    <h2>How it works</h2>
+    <p>In practice it comes down to the bounded, actively used context an agent holds while performing the current task step, distinct from anything persisted afterward, since it is discarded once the task completes unless explicitly saved.</p>
+    
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
     <p>While executing a multi-step refactor, an agent tracks which files it has already changed and which remain, purely within the current run, and this tracking is discarded once the task is complete.</p>
-    <ol><li><strong>Conversation:</strong> Working memory is the temporary scratchpad an agent uses while actively performing one task, such as intermediate reasoning steps or a partially built plan, which is not meant to persist once the task ends.</li><li><strong>Extract:</strong> The internal flow centers on the bounded, actively used context an agent holds while performing the current task step, distinct from anything persisted afterward, since it is discarded once the task completes unless explicitly saved, then hands a validated result to the next step in the product workflow.</li><li><strong>Store:</strong> While executing a multi-step refactor, an agent tracks which files it has already changed and which remain, purely within the current run, and this tracking is discarded once the task is complete.</li><li><strong>Retrieve:</strong> The main trade-off is keeping rich working memory helps the agent stay coherent across a long task, but if that scratchpad is mistakenly treated as durable memory, stale intermediate state can leak into unrelated later tasks</li><li><strong>Use:</strong> A production-shaped slice should implement Working memory on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Forget:</strong> For one multi-step agent task, list what belongs in working memory only and should be discarded, versus what should be promoted to semantic memory and kept.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="AI memory lifecycle for Working memory">
-    <article>
-      <span>Step 1</span>
-      <strong>Conversation</strong>
-      <p>Working memory is the temporary scratchpad an agent uses while actively performing one task, such as intermediate reasoning steps or a partially built plan, which is not meant to persist once the task ends.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Extract</strong>
-      <p>The internal flow centers on the bounded, actively used context an agent holds while performing the current task step, distinct from anything persisted afterward, since it is discarded once the task completes unless explicitly saved, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Store</strong>
-      <p>While executing a multi-step refactor, an agent tracks which files it has already changed and which remain, purely within the current run, and this tracking is discarded once the task is complete.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Retrieve</strong>
-      <p>The main trade-off is keeping rich working memory helps the agent stay coherent across a long task, but if that scratchpad is mistakenly treated as durable memory, stale intermediate state can leak into unrelated later tasks</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Use</strong>
-      <p>A production-shaped slice should implement Working memory on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Forget</strong>
-      <p>For one multi-step agent task, list what belongs in working memory only and should be discarded, versus what should be promoted to semantic memory and kept.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
   </section>
     
-    
-    
-    
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on the bounded, actively used context an agent holds while performing the current task step, distinct from anything persisted afterward, since it is discarded once the task completes unless explicitly saved, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is keeping rich working memory helps the agent stay coherent across a long task, but if that scratchpad is mistakenly treated as durable memory, stale intermediate state can leak into unrelated later tasks</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>The core tension:</strong> Keeping rich working memory helps the agent stay coherent across a long task, but if that scratchpad is mistakenly treated as durable memory, stale intermediate state can leak into unrelated later tasks</li></ul>
   </section>
-
     <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Working memory, shorten the Conversation to Forget path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Working memory, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Working memory, guard against working memory is not the same as long-term memory just because it holds things during a task; conflating the two causes systems to either persist junk or lose useful task state too early.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Working memory, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
+    <h2>Try it in code</h2>
     <pre><code>function runTask(task) {
   const scratch = { visited: new Set(), plan: [] }; // working memory
   // ...perform the task using scratch...
@@ -168,58 +84,41 @@
   return { result: scratch, promoteToSemantic: promoted ?? null };
   // scratch itself is discarded; only &quot;promoted&quot; survives the task.
 }</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Working memory on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <p>Change the inputs and watch which assumption breaks first. The gap between what you expected and what you got is where the learning is.</p>
   </section>
     
-    <section class="panel">
+    <section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> For one multi-step agent task, list what belongs in working memory only and should be discarded, versus what should be promoted to semantic memory and kept.</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Working memory is not the same as long-term memory just because it holds things during a task; conflating the two causes systems to either persist junk or lose useful task state too early.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>For one multi-step agent task, list what belongs in working memory only and should be discarded, versus what should be promoted to semantic memory and kept.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a Memory workbench that demonstrates Working memory with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Working memory is not the same as long-term memory just because it holds things during a task; conflating the two causes systems to either persist junk or lose useful task state too early.</li><li>Working memory is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Working memory inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>Working memory is not the same as long-term memory just because it holds things during a task; conflating the two causes systems to either persist junk or lose useful task state too early.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
-
-    <section class="panel quiz" data-quiz="quiz-memory-working-memory">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Working memory?</p>
-    <button data-answer="wrong">Working memory is not the same as long-term memory just because it holds things during a task; conflating the two causes systems to either persist junk or lose useful task state too early.</button>
-    <button data-answer="right">A production-shaped slice should implement Working memory on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Working memory is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-memory-working-memory-0">
+    <h2>Check yourself</h2>
+    <p><strong>Which of these is sound guidance about Working memory?</strong></p>
+    <button data-answer="right">Working memory is not the same as long-term memory just because it holds things during a task; conflating the two causes systems to either persist junk or lose useful task state too early.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="wrong">Once Working memory is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Working memory to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Working memory in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://arxiv.org/abs/2310.08560" rel="noopener noreferrer">MemGPT: Towards LLMs as Operating Systems</a></li></ul>
   </section>
 

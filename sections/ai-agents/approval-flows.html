@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Approval flows lesson in the AI Agents track.">
+  <meta name="description" content="Approval flows define which agent actions require human confirmation before executing — routing risky steps to a person with enough context to make the call q">
   <meta name="theme-color" content="#0f172a">
   <title>Approval flows | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,181 +47,83 @@
       <div>
         <p class="eyebrow">AI Agents · Chapter 7</p>
         <h1>Approval flows</h1>
-        <p class="lede">Approval flows insert human or policy checkpoints before an AI system performs sensitive, costly, or irreversible actions. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Approval flows define which agent actions require human confirmation before executing — routing risky steps to a person with enough context to make the call quickly.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="ai-agents-approval-flows">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Approval flows is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Approval flows matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on risk classification, pending actions, reviewer context, approve/deny paths, audit logs, and timeout behavior, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is Approvals reduce risk but slow automation and can create reviewer fatigue.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Approval flows on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The agent refunded $12,000 in one afternoon. Every individual refund looked reasonable; nobody had defined which actions require a human. Approvals are a design surface, not paranoia.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Approval flows insert human or policy checkpoints before an AI system performs sensitive, costly, or irreversible actions.</p>
-      <p>The internal flow centers on risk classification, pending actions, reviewer context, approve/deny paths, audit logs, and timeout behavior, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Approval flows insert human or policy checkpoints before an AI system performs sensitive, costly, or irreversible actions.</p>
-    <p><strong>Analogy:</strong> It is like requiring a manager signature before money moves or production changes deploy.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Approval flows insert human or policy checkpoints before an AI system performs sensitive, costly, or irreversible actions.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: risk classification, pending actions, reviewer context, approve/deny paths, audit logs, and timeout behavior.</li><li>Inputs and outputs: identify what enters Approval flows, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Approval flows with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Approval flows worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Do not ask for approval without showing the exact action, inputs, expected impact, and rollback.</li><li>Approval flows is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Approval flows inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <h2>Why this matters</h2>
+    <p>Approvals are what make real autonomy shippable: without them the safe options are &#39;agent does nothing important&#39; or &#39;agent can hurt you&#39;, and with bad ones you get rubber-stamping that is worse than either.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Approval flows matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Do not ask for approval without showing the exact action, inputs, expected impact, and rollback.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
-  </section>
-    <section class="panel">
-    <h2>Worked example</h2>
-    <p>An agent may draft a database migration but require engineer approval before applying it.</p>
-    <ol><li><strong>Goal:</strong> Approval flows insert human or policy checkpoints before an AI system performs sensitive, costly, or irreversible actions.</li><li><strong>Plan:</strong> The internal flow centers on risk classification, pending actions, reviewer context, approve/deny paths, audit logs, and timeout behavior, then hands a validated result to the next step in the product workflow.</li><li><strong>Tool call:</strong> An agent may draft a database migration but require engineer approval before applying it.</li><li><strong>Observe:</strong> The main trade-off is Approvals reduce risk but slow automation and can create reviewer fatigue.</li><li><strong>Reflect:</strong> A production-shaped slice should implement Approval flows on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Finish or ask:</strong> Create an approval screen payload for an agent that wants to send a customer email.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="Agent control loop for Approval flows">
-    <article>
-      <span>Step 1</span>
-      <strong>Goal</strong>
-      <p>Approval flows insert human or policy checkpoints before an AI system performs sensitive, costly, or irreversible actions.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Plan</strong>
-      <p>The internal flow centers on risk classification, pending actions, reviewer context, approve/deny paths, audit logs, and timeout behavior, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Tool call</strong>
-      <p>An agent may draft a database migration but require engineer approval before applying it.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Observe</strong>
-      <p>The main trade-off is Approvals reduce risk but slow automation and can create reviewer fatigue.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Reflect</strong>
-      <p>A production-shaped slice should implement Approval flows on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Finish or ask</strong>
-      <p>Create an approval screen payload for an agent that wants to send a customer email.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>In plain terms</h2>
+    <p>It is like spending authority in a company: anyone can buy pens, a manager signs off on laptops, and finance approves anything over $10k. Nobody asks the CEO about pens — and nobody buys a building alone.</p>
   </section>
     
-    
-    
-    
-
     <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on risk classification, pending actions, reviewer context, approve/deny paths, audit logs, and timeout behavior, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
+    <h2>How it works</h2>
+    <p>The flow: action proposed → risk classification → auto-run or pend → notify approver with decision-ready context → approve/edit/reject → execute and log the human decision alongside the run.</p>
+    <ul><li>Classify actions by reversibility and blast radius, not by how often the model gets them right: read-only auto-runs; reversible writes auto-run with logging; irreversible or externally-visible actions (payments, emails, deletions, prod deploys) gate on a human.</li><li>The approval UI is the real product: the reviewer needs the action, its arguments, the agent&#39;s reasoning, and the consequence summarized in seconds. A wall of JSON trains people to click yes.</li><li>Approval fatigue is the failure mode that eats the control: if 95% of requests are obviously fine, reviewers stop reading. Tighten the auto-approve set until human review is rare enough to stay real.</li><li>Design the queue mechanics: batch approvals for bulk actions (&#39;close these 40 tickets&#39; as one review, not 40), timeouts with safe defaults (expire = don&#39;t run), and escalation when the approver is away.</li><li>Every approval decision is training data: logs of what humans approved, rejected, and edited tell you which gates to loosen, which to tighten, and where the agent&#39;s judgment actually stands.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
+    <p>An ops agent auto-runs log queries and restarts of stateless services, but &#39;scale down database replicas&#39; pends approval showing: the command, the cluster, current load, the agent&#39;s reasoning, and a one-line risk note. The on-call approves in one click. Last month the same gate caught a scale-down aimed at the primary — one rejected request that paid for the whole system.</p>
+  </section>
+    
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is Approvals reduce risk but slow automation and can create reviewer fatigue.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Approval flows, shorten the Goal to Finish or ask path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Approval flows, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Approval flows, guard against do not ask for approval without showing the exact action, inputs, expected impact, and rollback.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Approval flows, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Approval flows on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <ul><li><strong>The core tension:</strong> Every gate adds latency and human load, every auto-approval adds risk — the equilibrium is gating by irreversibility, then earning wider auto-run scopes with evidence from approval logs.</li></ul>
   </section>
     
-    <section class="panel">
-    <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Create an approval screen payload for an agent that wants to send a customer email.</p>
-    <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
-      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not ask for approval without showing the exact action, inputs, expected impact, and rollback.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
-    </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
-  </section>
-
+    
     <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Create an approval screen payload for an agent that wants to send a customer email.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+    <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> For an agent with ten tools you define, sort every tool call into auto-run / auto-run-with-log / require-approval, using reversibility and blast radius. Then design the approval card for the riskiest one: what five pieces of context let a human decide in ten seconds?</p>
+    <ol>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
+    </ol>
+    <p><strong>To make it production-shaped:</strong> A production approval flow has a written action-classification policy, decision-ready approval cards, timeout-to-safe behavior, and a monthly review of approve/reject rates to recalibrate the gates.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a AI Agents workbench that demonstrates Approval flows with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not ask for approval without showing the exact action, inputs, expected impact, and rollback.</li><li>Approval flows is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Approval flows inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>Approving everything is not safety — past a modest request rate, humans stop reading and the control becomes theater.</li><li>Model confidence is not a risk signal; gate on what the action can do to the world, not on how sure the model sounds.</li><li>Approvals are not a permanent tax: logs of consistently-approved action types are the evidence that lets you widen auto-run scope deliberately.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-ai-agents-approval-flows-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Approval flows?</strong></p>
+    <button data-answer="wrong">Once Approval flows is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="right">Approving everything is not safety — past a modest request rate, humans stop reading and the control becomes theater.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-ai-agents-approval-flows">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Approval flows?</p>
-    <button data-answer="wrong">Do not ask for approval without showing the exact action, inputs, expected impact, and rollback.</button>
-    <button data-answer="right">A production-shaped slice should implement Approval flows on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Approval flows is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-ai-agents-approval-flows-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Approval flows into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="right">A production approval flow has a written action-classification policy, decision-ready approval cards, timeout-to-safe behavior, and a monthly review of approve/reject rates to recalibrate the gates.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Approval flows to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Approval flows in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

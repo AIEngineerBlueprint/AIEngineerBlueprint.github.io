@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/vector-databases/vector-db-role.html">
       <span>Chapter 1</span>
       <strong>Vector DB role</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A vector database stores embeddings and metadata so applications can retrieve semantically similar chunks, items, or memories at low latency.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/indexing.html">
       <span>Chapter 2</span>
       <strong>Indexing</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Indexing organizes chunks, vectors, metadata, and lexical terms so retrieval can answer queries quickly and repeatably.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/hnsw.html">
       <span>Chapter 3</span>
       <strong>HNSW</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>HNSW is an approximate nearest-neighbor index that builds layered graph links between vectors so search can navigate quickly to nearby points.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/ivf.html">
       <span>Chapter 4</span>
       <strong>IVF</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>IVF, or inverted file indexing, clusters vectors into partitions and searches only selected partitions to reduce nearest-neighbor search cost.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/hybrid-search.html">
       <span>Chapter 5</span>
       <strong>Hybrid search</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Hybrid search combines lexical matching such as BM25 with vector similarity so retrieval can handle exact terms and semantic intent.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/bm25.html">
       <span>Chapter 6</span>
       <strong>BM25</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>BM25 is a lexical ranking function that scores documents based on exact term overlap, term frequency, inverse document frequency, and document length normalization.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/metadata-filtering.html">
       <span>Chapter 7</span>
       <strong>Metadata filtering</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Metadata filtering restricts retrieval by structured fields such as tenant, permissions, document type, language, region, freshness, or product version.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/re-ranking.html">
       <span>Chapter 8</span>
       <strong>Re-ranking</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Re-ranking is a second-stage retrieval step that takes the top K retrieved chunks and re-scores them with a more expensive, more accurate relevance model before passing the top N to the LLM.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/schema-design.html">
       <span>Chapter 9</span>
       <strong>Schema design</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Schema design in a vector database defines what fields accompany each vector, such as source ID, metadata for filtering, and namespace, structured so that retrieval queries can combine similarity search with precise filtering efficiently.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/multi-tenancy.html">
       <span>Chapter 10</span>
       <strong>Multi-tenancy</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Multi-tenancy in a vector database means isolating one customer or team&#39;s vectors from another&#39;s, ensuring a similarity search never returns or is influenced by data belonging to a different tenant.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/performance-tuning.html">
       <span>Chapter 11</span>
       <strong>Performance tuning</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Performance tuning for a vector database means adjusting index parameters, such as the number of graph connections in an HNSW index or the number of clusters in an IVF index, to balance search speed, recall accuracy, and memory usage for a specific workload.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/backup.html">
       <span>Chapter 12</span>
       <strong>Backup</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Backup for a vector database means having a reliable, tested way to restore both the vectors and their associated metadata after data loss, corruption, or an accidental deletion, since a vector index alone is often expensive and slow to fully regenerate from scratch.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/operations.html">
       <span>Chapter 13</span>
       <strong>Operations</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Operations for a vector database means monitoring query latency, recall quality, index size growth, and write throughput in production, so degradation is caught through metrics rather than discovered when users notice worse search results.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/vector-db-lab.html">
       <span>Chapter 14</span>
       <strong>Vector DB lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The vector DB lab is a hands-on exercise to load a small real dataset into a vector index, measure baseline recall and latency, then adjust one index parameter and measure how both change.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete vector database setup for one real use case, with a documented schema, tuned index parameters, and a basic operational dashboard, that another engineer could extend.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete vector database architecture for a real product: schema design, index choice and tuning, multi-tenancy approach, backup strategy, and an operational monitoring plan, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/vector-databases/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The vector databases interview pack prepares you to discuss index selection, tuning trade-offs, multi-tenancy, and operational concerns credibly, backed by a concrete story rather than reciting the definition of a vector database.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/embeddings/index.html">← Embeddings</a>
