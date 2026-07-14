@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/tool-calling/function-calling.html">
       <span>Chapter 1</span>
       <strong>Function calling</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Function calling lets a model request a structured call to external code instead of answering only with text.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/tool-schemas.html">
       <span>Chapter 2</span>
       <strong>Tool schemas</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Tool schemas are the structured, typed definitions that describe a tool&#39;s name, parameters, and expected input format to a model, so it can generate a syntactically valid call rather than guessing at argument names and types.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/argument-validation.html">
       <span>Chapter 3</span>
       <strong>Argument validation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Argument validation checks that a model-generated tool call&#39;s arguments are actually well-formed and safe before executing the underlying function, since a model can generate a syntactically valid call with semantically wrong or dangerous values.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/idempotency.html">
       <span>Chapter 4</span>
       <strong>Idempotency</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Idempotency in tool calling means designing tools so that calling them multiple times with the same arguments produces the same result without unintended side effects, which matters because retries and duplicate calls are common in agentic systems.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/error-handling.html">
       <span>Chapter 5</span>
       <strong>Error handling</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Error handling in tool calling means returning structured, informative error information back to the model when a tool call fails, so the model can reason about what went wrong and adjust, rather than receiving an opaque failure or silently continuing on wrong assumptions.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/retries.html">
       <span>Chapter 6</span>
       <strong>Retries</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Retries in tool calling handle transient failures, like a network timeout, by re-attempting a call, distinct from retrying a call that failed due to a fundamentally wrong argument, which would just fail identically again.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/streaming-tools.html">
       <span>Chapter 7</span>
       <strong>Streaming tools</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Streaming tools return partial results incrementally as they become available, rather than only a single result once the entire operation completes, which matters for tools with long-running or large outputs.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/sandboxing.html">
       <span>Chapter 8</span>
       <strong>Sandboxing</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Sandboxing isolates AI-generated code, tools, or file operations so failures and attacks cannot escape into sensitive systems.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/secrets.html">
       <span>Chapter 9</span>
       <strong>Secrets</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Secrets are credentials, tokens, keys, or private material that must never be exposed to models, logs, users, or untrusted tools.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/audit-logs.html">
       <span>Chapter 10</span>
       <strong>Audit logs</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Audit logs for tool calling record every tool call an agent makes, its arguments, its result, and a timestamp, providing a traceable record for debugging, security review, and compliance.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/tool-ux.html">
       <span>Chapter 11</span>
       <strong>Tool UX</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Tool UX is how a tool call and its result are surfaced to a human user, showing what action is being taken, on what data, and with what outcome, so users can understand and trust what an agent is doing on their behalf.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/testing-tools.html">
       <span>Chapter 12</span>
       <strong>Testing tools</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Testing tools means verifying that a tool implementation behaves correctly on its own, independent of any model, and separately verifying that a model calls it correctly given realistic prompts, since either the tool or the model&#39;s usage of it can be the source of a failure.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/production-patterns.html">
       <span>Chapter 13</span>
       <strong>Production patterns</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Production patterns for tool calling are the operational practices, timeouts, circuit breakers, rate limiting, and monitoring, that keep a tool-calling system reliable when real tools are slow, fail, or are called at high volume in production.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/tool-lab.html">
       <span>Chapter 14</span>
       <strong>Tool lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The tool lab is a hands-on exercise to implement one real tool with a schema, argument validation, and structured error handling, then test it against both a valid call and a deliberately invalid one.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships one small, complete tool for a real agent, with a schema, validation, idempotency handling if relevant, structured errors, and an audit log, that another engineer could plug into a different agent.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete tool-calling architecture for a real agent: schema and validation standards, idempotency and retry policy, error-handling conventions, audit logging, and production safeguards, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/tool-calling/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The tool calling interview pack prepares you to discuss tool schema design, validation, idempotency, and production safeguards credibly, backed by a concrete story rather than a definition of function calling.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/memory/index.html">← Memory</a>

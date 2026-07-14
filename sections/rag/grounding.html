@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Grounding lesson in the RAG track.">
+  <meta name="description" content="Grounding constrains an AI answer to explicit evidence — retrieved documents, tool results, database rows, or policy rules — so every claim can be traced to a">
   <meta name="theme-color" content="#0f172a">
   <title>Grounding | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,123 +47,42 @@
       <div>
         <p class="eyebrow">RAG · Chapter 9</p>
         <h1>Grounding</h1>
-        <p class="lede">Grounding constrains an AI answer to explicit evidence such as retrieved documents, tool results, database rows, or policy rules. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Grounding constrains an AI answer to explicit evidence — retrieved documents, tool results, database rows, or policy rules — so every claim can be traced to a source.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="rag-grounding">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Grounding is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    <section class="panel business-card">
-    <h2>For non-technical readers</h2>
-    <p>This is the specific technique that separates a trustworthy AI assistant from a risky one: forcing every answer to be backed by an actual document or data source, and having it say &#39;I don&#39;t know&#39; rather than guess when no source supports the question. For any AI feature dealing with policy, pricing, or compliance-sensitive information, asking &#39;is this grounded in our real documents, or can it just say things confidently without a source&#39; is one of the most important non-technical questions you can ask.</p>
-  </section>
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Grounding matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on evidence selection, source attribution, answer constraints, citation validation, abstention, and contradiction checks, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is Strict grounding reduces hallucination but may refuse helpful answers when retrieval is incomplete.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Grounding on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The bot cites the right document and still invents a number that isn&#39;t in it. Retrieval succeeded; generation drifted. Grounding is the discipline of keeping every claim tied to evidence.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Grounding constrains an AI answer to explicit evidence such as retrieved documents, tool results, database rows, or policy rules.</p>
-      <p>The internal flow centers on evidence selection, source attribution, answer constraints, citation validation, abstention, and contradiction checks, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Grounding constrains an AI answer to explicit evidence such as retrieved documents, tool results, database rows, or policy rules.</p>
-    <p><strong>Analogy:</strong> It is like requiring every claim in a report to cite the page or data row that supports it.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Grounding constrains an AI answer to explicit evidence such as retrieved documents, tool results, database rows, or policy rules.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: evidence selection, source attribution, answer constraints, citation validation, abstention, and contradiction checks.</li><li>Inputs and outputs: identify what enters Grounding, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Grounding with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Grounding worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Do not treat a citation as proof unless the cited text actually supports the sentence.</li><li>Grounding is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Grounding inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <h2>Why this matters</h2>
+    <p>Grounding is the difference between &#39;the answer sounds right&#39; and &#39;the answer is backed by something we can show a user, an auditor, or a court&#39;.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Grounding matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Do not treat a citation as proof unless the cited text actually supports the sentence.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
-  </section>
-    <section class="panel">
-    <h2>Worked example</h2>
-    <p>A benefits assistant answers only from retrieved HR policy sections and says it cannot answer when no policy supports the claim.</p>
-    <ol><li><strong>Question:</strong> Grounding constrains an AI answer to explicit evidence such as retrieved documents, tool results, database rows, or policy rules.</li><li><strong>Rewrite/search query:</strong> The internal flow centers on evidence selection, source attribution, answer constraints, citation validation, abstention, and contradiction checks, then hands a validated result to the next step in the product workflow.</li><li><strong>Retrieve chunks:</strong> A benefits assistant answers only from retrieved HR policy sections and says it cannot answer when no policy supports the claim.</li><li><strong>Re-rank evidence:</strong> The main trade-off is Strict grounding reduces hallucination but may refuse helpful answers when retrieval is incomplete.</li><li><strong>Generate answer:</strong> A production-shaped slice should implement Grounding on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Cite + evaluate:</strong> Take one generated answer and mark each claim as supported, unsupported, or contradicted by the evidence.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="RAG evidence pipeline for Grounding">
-    <article>
-      <span>Step 1</span>
-      <strong>Question</strong>
-      <p>Grounding constrains an AI answer to explicit evidence such as retrieved documents, tool results, database rows, or policy rules.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Rewrite/search query</strong>
-      <p>The internal flow centers on evidence selection, source attribution, answer constraints, citation validation, abstention, and contradiction checks, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Retrieve chunks</strong>
-      <p>A benefits assistant answers only from retrieved HR policy sections and says it cannot answer when no policy supports the claim.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Re-rank evidence</strong>
-      <p>The main trade-off is Strict grounding reduces hallucination but may refuse helpful answers when retrieval is incomplete.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Generate answer</strong>
-      <p>A production-shaped slice should implement Grounding on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Cite + evaluate</strong>
-      <p>Take one generated answer and mark each claim as supported, unsupported, or contradicted by the evidence.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>In plain terms</h2>
+    <p>It is like requiring every claim in a report to cite the page or data row that supports it: the author can still write badly, but now you can check.</p>
   </section>
     
-    
-    
-    
-
     <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on evidence selection, source attribution, answer constraints, citation validation, abstention, and contradiction checks, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
+    <h2>How it works</h2>
+    <p>The flow: select evidence → generate with constraints and per-claim citations → verify claims against cited passages → abstain or escalate when support is missing → log the evidence trail.</p>
+    <ul><li>Retrieval success does not guarantee grounding: the model can hold the right passage and still &#39;improve&#39; it — rounding numbers, merging conditions, adding plausible details that aren&#39;t there. Grounding failures with correct retrieval are the most dangerous kind because the citation looks legitimate.</li><li>Grounding has three levers: prompt constraints (&#39;answer only from the provided sources&#39;), citation requirements per claim, and post-generation verification that checks each claim against its cited passage.</li><li>Abstention is half of grounding: when evidence is missing or contradictory, the grounded behavior is &#39;I can&#39;t answer from the available sources&#39;, not a best guess. Products need an explicit abstention path or the model will fill silence with fiction.</li><li>Verification can be automated: an entailment check or LLM judge asks &#39;does the cited passage support this sentence?&#39; — expensive on every request, cheap on a sampled slice, and invaluable in evals.</li><li>Conflicting sources need a policy: prefer newer versions, prefer higher-authority sources, or surface the conflict — silently picking one is how bots quote superseded policies.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
+    <p>A benefits assistant retrieves the parental-leave policy correctly, then answers &#39;16 weeks fully paid&#39;. The document says 16 weeks at 80% pay. Retrieval scored 100%; grounding failed. A per-claim entailment check would flag the sentence as unsupported by its own citation before a user files a complaint based on it.</p>
+  </section>
+    
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is Strict grounding reduces hallucination but may refuse helpful answers when retrieval is incomplete.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>The core tension:</strong> Strict grounding reduces hallucination but increases refusals when retrieval is weak — teams tune the threshold based on whether a wrong answer or a non-answer costs more in their domain.</li></ul>
   </section>
-
     <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Grounding, shorten the Question to Cite + evaluate path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Grounding, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Grounding, guard against do not treat a citation as proof unless the cited text actually supports the sentence.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Grounding, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
+    <h2>Try it in code</h2>
     <pre><code>async function evaluateRetrieval(query, expectedSourceId) {
   const results = await retrieve(query, { topK: 5 });
   return {
@@ -172,58 +91,50 @@
     returnedSources: results.map((r) =&gt; r.sourceId)
   };
 }</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Grounding on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <p>Change the inputs and watch which assumption breaks first. The gap between what you expected and what you got is where the learning is.</p>
   </section>
     
-    <section class="panel">
-    <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Take one generated answer and mark each claim as supported, unsupported, or contradicted by the evidence.</p>
-    <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
-      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not treat a citation as proof unless the cited text actually supports the sentence.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
-    </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
-  </section>
-
     <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Take one generated answer and mark each claim as supported, unsupported, or contradicted by the evidence.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+    <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Take one real generated answer from any RAG system. Split it into individual claims and mark each one supported, unsupported, or contradicted by the retrieved evidence. Count how many unsupported claims hid inside an answer that &#39;looked cited&#39;.</p>
+    <ol>
+      <li>Build or configure it, using the code example above as your starting point.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
+    </ol>
+    <p><strong>To make it production-shaped:</strong> A production grounding setup measures faithfulness separately from retrieval recall (they fail independently), samples live answers for claim-level verification, and defines the abstention message users see when evidence is missing.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a RAG workbench that demonstrates Grounding with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not treat a citation as proof unless the cited text actually supports the sentence.</li><li>Grounding is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Grounding inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>A citation is not proof: the cited passage must actually support the specific sentence, and models routinely cite correctly while paraphrasing incorrectly.</li><li>Grounding is not solved by better retrieval; generation can drift from perfect evidence, which is why faithfulness needs its own metric.</li><li>Refusing to answer is not a failure state — for a grounded system with missing evidence, it is the correct output.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-rag-grounding-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Grounding?</strong></p>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="right">A citation is not proof: the cited passage must actually support the specific sentence, and models routinely cite correctly while paraphrasing incorrectly.</button>
+    <button data-answer="wrong">Once Grounding is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-rag-grounding">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Grounding?</p>
-    <button data-answer="wrong">Do not treat a citation as proof unless the cited text actually supports the sentence.</button>
-    <button data-answer="right">A production-shaped slice should implement Grounding on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Grounding is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-rag-grounding-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Grounding into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="right">A production grounding setup measures faithfulness separately from retrieval recall (they fail independently), samples live answers for claim-level verification, and defines the abstention message users see when evidence is missing.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Grounding to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Grounding in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://arxiv.org/abs/2005.11401" rel="noopener noreferrer">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a></li></ul>
   </section>
 

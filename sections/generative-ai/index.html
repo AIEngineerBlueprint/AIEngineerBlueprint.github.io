@@ -56,78 +56,79 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/generative-ai/generation-patterns.html">
       <span>Chapter 1</span>
       <strong>Generation patterns</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Generation patterns are the common architectural approaches used to produce new content from a model, such as autoregressive generation producing one token or pixel at a time conditioned on what came before, or diffusion producing content by iteratively refining noise into a coherent output.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/text-generation.html">
       <span>Chapter 2</span>
       <strong>Text generation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Text generation is the process of producing coherent natural language output from a model, typically an autoregressive language model, one token at a time, conditioned on a prompt and the tokens already generated.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/image-generation.html">
       <span>Chapter 3</span>
       <strong>Image generation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Image generation produces novel images from a text description or other conditioning input, typically using a diffusion model that iteratively transforms random noise into a coherent image guided by the conditioning signal.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/audio-generation.html">
       <span>Chapter 4</span>
       <strong>Audio generation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Audio generation produces novel speech, music, or sound from a model, typically conditioned on text, a reference voice, or a musical style, using architectures adapted from text or image generation to work on the specific structure of audio waveforms or spectrograms.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/multimodal-systems.html">
       <span>Chapter 5</span>
       <strong>Multimodal systems</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Multimodal systems process or generate more than one type of content, such as text, images, and audio, within a single model or pipeline, allowing input in one modality to inform output in another.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/multimodal-genai-and-deployment.html">
       <span>Chapter 6</span>
       <strong>Multimodal GenAI and deployment</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Multimodal GenAI combines text, images, audio, video, or documents in one workflow, then deploys the workflow with modality-specific validation, storage, latency, and safety controls.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/latent-spaces.html">
       <span>Chapter 7</span>
       <strong>Latent spaces</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A latent space is the compressed, internal numeric representation a generative model uses to encode the essential structure of its content, from which it decodes a full output, distinct from the final generated pixels, tokens, or waveform samples themselves.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/prompt-to-output-flow.html">
       <span>Chapter 8</span>
       <strong>Prompt-to-output flow</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The prompt-to-output flow is the full pipeline a generative request travels through, from the user&#39;s raw prompt, through encoding, conditioning, generation, and post-processing, to the final delivered output, with each stage capable of introducing quality issues independent of the model&#39;s raw capability.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/controllability.html">
       <span>Chapter 9</span>
       <strong>Controllability</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Controllability is the degree to which a generative model&#39;s output can be reliably steered toward specific, intended properties, such as style, format, or content constraints, rather than producing plausible but uncontrolled variation.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/evaluation.html">
       <span>Chapter 10</span>
       <strong>Evaluation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Evaluation of generative AI systems measures output quality along multiple dimensions, such as coherence, factual accuracy, adherence to the prompt, and safety, since a single fluency or aesthetic quality score can hide serious failures in other dimensions.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/safety.html">
       <span>Chapter 11</span>
       <strong>Safety</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Safety in generative AI covers preventing a system from producing harmful, offensive, or policy-violating content, whether through malicious prompting or unintentional generation, using both training-time alignment and runtime filtering.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/product-ux.html">
       <span>Chapter 12</span>
       <strong>Product UX</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Product UX for generative AI features designs how uncertainty, variation, and occasional failure in generated output are surfaced to users, since generative outputs are probabilistic and imperfect in ways that deterministic software features usually aren&#39;t.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/cost-control.html">
       <span>Chapter 13</span>
       <strong>Cost control</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Cost control for generative AI features means actively managing the compute cost per generation, since image, audio, and long-form text generation can be significantly more expensive per request than typical software operations, and usage can scale unpredictably.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/governance.html">
       <span>Chapter 14</span>
       <strong>Governance</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Governance for generative AI establishes organization-wide policy on what content types are permitted to be generated, how safety and quality are evaluated before launch, and who is accountable for a generative feature&#39;s real-world output.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/genai-lab.html">
       <span>Chapter 15</span>
       <strong>GenAI lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The GenAI lab is a hands-on exercise to generate content with a real model across a few prompts, evaluate the outputs on at least two separate quality dimensions, and identify one concrete failure mode to fix.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/mini-project.html">
       <span>Chapter 16</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete generative feature for one real use case, with a documented prompt-to-output pipeline, a basic multi-dimensional evaluation, and a cost estimate, that another engineer could extend.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/capstone.html">
       <span>Chapter 17</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete generative AI product: generation approach and controllability design, a multi-dimensional evaluation and safety plan, a UX design accounting for output variability, and a cost-control and governance strategy, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/generative-ai/interview-pack.html">
       <span>Chapter 18</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The generative AI interview pack prepares you to discuss generation architecture trade-offs, controllability, multi-dimensional evaluation, and safety design credibly, backed by a concrete story about a real generative feature rather than a general description of what generative AI can do.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/llm-fundamentals/index.html">← LLM Fundamentals</a>

@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/aws-ai-stack/aws-overview.html">
       <span>Chapter 1</span>
       <strong>AWS overview</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>AWS AI architecture combines managed model services, compute, storage, search, identity, networking, and observability into production AI workflows.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/bedrock.html">
       <span>Chapter 2</span>
       <strong>Bedrock</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Amazon Bedrock is a managed AWS service for accessing foundation models, building generative AI applications, and integrating enterprise controls.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/sagemaker.html">
       <span>Chapter 3</span>
       <strong>SageMaker</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>SageMaker is AWS&#39;s managed platform for building, training, deploying, and monitoring machine-learning models.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/lambda.html">
       <span>Chapter 4</span>
       <strong>Lambda</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>AWS Lambda runs short-lived serverless functions that can glue AI workflows, APIs, events, and background processing.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/ecs.html">
       <span>Chapter 5</span>
       <strong>ECS</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Amazon ECS is a managed container orchestration service that runs Docker containers as tasks and services across EC2 or Fargate compute, commonly used to host model-serving APIs, RAG backends, and agent orchestration layers.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/eks.html">
       <span>Chapter 6</span>
       <strong>EKS</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Amazon EKS is a managed Kubernetes control plane for running containerized workloads, commonly used for AI systems that need GPU node pools, complex scheduling, or portability across cloud and on-prem Kubernetes clusters.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/opensearch.html">
       <span>Chapter 7</span>
       <strong>OpenSearch</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Amazon OpenSearch Service is a managed search and analytics engine that supports both traditional text search and vector similarity search through its k-NN plugin, making it usable as a retrieval backend for RAG or as a log and metrics analytics store.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/aurora.html">
       <span>Chapter 8</span>
       <strong>Aurora</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Amazon Aurora is a managed relational database compatible with MySQL and PostgreSQL, commonly used in AI systems for transactional application data and, via the pgvector extension on Aurora PostgreSQL, as a lightweight vector store colocated with other relational data.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/s3.html">
       <span>Chapter 9</span>
       <strong>S3</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Amazon S3 is object storage used across AI systems to hold training datasets, model artifacts, document sources for RAG ingestion, and logs, with lifecycle rules and access controls that scale from a few files to petabytes.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/cloudwatch.html">
       <span>Chapter 10</span>
       <strong>CloudWatch</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Amazon CloudWatch collects metrics, logs, and alarms across AWS services, giving AI systems visibility into latency, error rate, cost-relevant usage, and model-serving health in one place.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/iam.html">
       <span>Chapter 11</span>
       <strong>IAM</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>AWS IAM controls which users, services, and roles can perform which actions on which resources, forming the permission boundary around every other AWS service an AI system touches, from Bedrock model access to S3 document buckets.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/reference-deployment.html">
       <span>Chapter 12</span>
       <strong>Reference deployment</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A reference deployment for the AWS AI stack is a concrete, opinionated architecture combining compute, storage, search, and identity services into one coherent, deployable system rather than a list of services considered in isolation.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/cost-controls.html">
       <span>Chapter 13</span>
       <strong>Cost controls</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Cost controls for the AWS AI stack are the deliberate practices and tools, such as budgets, tagging, and right-sizing, that keep spend on compute, model inference, and storage predictable and attributable, since AI workloads can scale cost quickly without corresponding scaling in value.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/aws-lab.html">
       <span>Chapter 14</span>
       <strong>AWS lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The AWS lab is a hands-on exercise to deploy one small AI workload across at least three real AWS services, such as Lambda, S3, and Bedrock, configure IAM roles between them, and verify it end to end with a real request.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships one small, real AI feature deployed on AWS with documented IAM roles, cost tags, and monitoring, that another engineer could redeploy from the instructions alone.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete AWS AI reference architecture for a real product: compute choice, storage and retrieval layer, IAM boundary design, observability plan, and a cost-control strategy, as one coherent deployable system.</small>
     </a><a class="chapter-card" href="/sections/aws-ai-stack/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The AWS AI stack interview pack prepares you to discuss real AWS deployment decisions credibly: why you chose specific services, how you scoped IAM permissions, and how you controlled cost, backed by a concrete story rather than a list of service names.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/production-ai-systems/index.html">← Production AI Systems</a>

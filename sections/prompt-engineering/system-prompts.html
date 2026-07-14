@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="System prompts lesson in the Prompt Engineering track.">
+  <meta name="description" content="A system prompt is a special instruction placed at the start of a conversation that shapes the model&#39;s behaviour, persona, constraints, and output style for t">
   <meta name="theme-color" content="#0f172a">
   <title>System prompts | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,181 +47,80 @@
       <div>
         <p class="eyebrow">Prompt Engineering · Chapter 6</p>
         <h1>System prompts</h1>
-        <p class="lede">A system prompt is a special instruction placed at the start of a conversation that shapes the model&#39;s behaviour, persona, constraints, and output style for the entire session. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">A system prompt is a special instruction placed at the start of a conversation that shapes the model&#39;s behaviour, persona, constraints, and output style for the entire session.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="prompt-engineering-system-prompts">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why System prompts is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
     
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>System prompts matter because they are the primary way product engineers control model behaviour without fine-tuning.</p></article><article><span>Objective 2</span><p>Internal flow: system prompt → prefixed to all user messages at the API level → the model reads the system prompt as context before processing each user turn.</p></article><article><span>Objective 3</span><p>Trade-offs: detailed system prompts improve reliability but cost tokens every request. For high-volume, cost-sensitive products, use the minimum effective system prompt.</p></article><article><span>Objective 4</span><p>Production checklist: version control system prompts, test every change, log system prompt versions alongside evaluation metrics, audit for prompt injection vulnerability.</p></article>
-    </div>
-  </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>A system prompt is a special instruction placed at the start of a conversation that shapes the model&#39;s behaviour, persona, constraints, and output style for the entire session.</p>
-      <p>Internal flow: system prompt → prefixed to all user messages at the API level → the model reads the system prompt as context before processing each user turn.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: A system prompt is a special instruction placed at the start of a conversation that shapes the model&#39;s behaviour, persona, constraints, and output style for the entire session.</p>
-    <p><strong>Analogy:</strong> A system prompt is a job contract and operating manual for the model. It defines: who the model is, what it can and cannot do, what format it should use, and what to do when it is unsure.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>A system prompt is a special instruction placed at the start of a conversation that shapes the model&#39;s behaviour, persona, constraints, and output style for the entire session.</p>
-    <h3>What to learn</h3>
-    <ul><li>System prompts are placed in the &#39;system&#39; role in the messages array, separate from user turns. This placement signals to the model that these are structural instructions, not user requests.</li><li>Effective system prompts define: persona (&#39;You are a senior support engineer&#39;), constraints (&#39;Answer only using provided context&#39;), format (&#39;Always respond in JSON&#39;), and edge-case behaviour (&#39;If unsure, say so&#39;).</li><li>System prompt size is a trade-off: longer prompts allow more precise control but use context budget and can introduce contradictions.</li><li>System prompts are not a security boundary. A skilled adversarial user can often override them with prompt injection. Do not use them as the sole control for security-critical restrictions.</li><li>System prompts should be tested like code. Run eval sets that cover normal cases, edge cases, and adversarial inputs after every change.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>System prompts cannot reliably prevent determined users from eliciting prohibited behaviour. Use application-level guardrails for hard restrictions.</li><li>Telling the model &#39;you must always&#39; or &#39;you must never&#39; in a system prompt does not guarantee compliance 100% of the time.</li><li>The system prompt is not private. Users can often infer or extract it through adversarial prompting. Treat it as visible.</li></ul>
+    <h2>Why this matters</h2>
+    <p>System prompts matter because they are the primary way product engineers control model behaviour without fine-tuning.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> System prompts matter because they are the primary way product engineers control model behaviour without fine-tuning.</p>
-    <p><strong>When it breaks:</strong> System prompts cannot reliably prevent determined users from eliciting prohibited behaviour. Use application-level guardrails for hard restrictions.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+    <h2>In plain terms</h2>
+    <p>A system prompt is a job contract and operating manual for the model. It defines: who the model is, what it can and cannot do, what format it should use, and what to do when it is unsure.</p>
   </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
+    <h2>How it works</h2>
+    <p>Internal flow: system prompt → prefixed to all user messages at the API level → the model reads the system prompt as context before processing each user turn.</p>
+    <ul><li>System prompts are placed in the &#39;system&#39; role in the messages array, separate from user turns. This placement signals to the model that these are structural instructions, not user requests.</li><li>Effective system prompts define: persona (&#39;You are a senior support engineer&#39;), constraints (&#39;Answer only using provided context&#39;), format (&#39;Always respond in JSON&#39;), and edge-case behaviour (&#39;If unsure, say so&#39;).</li><li>System prompt size is a trade-off: longer prompts allow more precise control but use context budget and can introduce contradictions.</li><li>System prompts are not a security boundary. A skilled adversarial user can often override them with prompt injection. Do not use them as the sole control for security-critical restrictions.</li><li>System prompts should be tested like code. Run eval sets that cover normal cases, edge cases, and adversarial inputs after every change.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
     <p>System: &#39;You are a precise technical documentation assistant for Acme API. Respond in markdown. Include code examples for every explanation. If a feature is not in the provided documentation, say you do not have information about it. Never make up API parameters or methods.&#39;</p>
-    <ol><li><strong>Role:</strong> A system prompt is a special instruction placed at the start of a conversation that shapes the model&#39;s behaviour, persona, constraints, and output style for the entire session.</li><li><strong>Task:</strong> Internal flow: system prompt → prefixed to all user messages at the API level → the model reads the system prompt as context before processing each user turn.</li><li><strong>Context:</strong> System: &#39;You are a precise technical documentation assistant for Acme API. Respond in markdown. Include code examples for every explanation. If a feature is not in the provided documentation, say you do not have information about it. Never make up API parameters or methods.&#39;</li><li><strong>Examples:</strong> Trade-offs: detailed system prompts improve reliability but cost tokens every request. For high-volume, cost-sensitive products, use the minimum effective system prompt.</li><li><strong>Format:</strong> Production checklist: version control system prompts, test every change, log system prompt versions alongside evaluation metrics, audit for prompt injection vulnerability.</li><li><strong>Checks:</strong> Write a system prompt for a RAG-based product documentation assistant. Include: persona, knowledge constraint, output format, uncertainty handling, and one edge-case rule. Then write three adversarial prompts that might break it and fix the system prompt to handle them.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="Prompt instruction stack for System prompts">
-    <article>
-      <span>Step 1</span>
-      <strong>Role</strong>
-      <p>A system prompt is a special instruction placed at the start of a conversation that shapes the model&#39;s behaviour, persona, constraints, and output style for the entire session.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Task</strong>
-      <p>Internal flow: system prompt → prefixed to all user messages at the API level → the model reads the system prompt as context before processing each user turn.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Context</strong>
-      <p>System: &#39;You are a precise technical documentation assistant for Acme API. Respond in markdown. Include code examples for every explanation. If a feature is not in the provided documentation, say you do not have information about it. Never make up API parameters or methods.&#39;</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Examples</strong>
-      <p>Trade-offs: detailed system prompts improve reliability but cost tokens every request. For high-volume, cost-sensitive products, use the minimum effective system prompt.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Format</strong>
-      <p>Production checklist: version control system prompts, test every change, log system prompt versions alongside evaluation metrics, audit for prompt injection vulnerability.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Checks</strong>
-      <p>Write a system prompt for a RAG-based product documentation assistant. Include: persona, knowledge constraint, output format, uncertainty handling, and one edge-case rule. Then write three adversarial prompts that might break it and fix the system prompt to handle them.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
   </section>
     
-    
-    
-    
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>Internal flow: system prompt → prefixed to all user messages at the API level → the model reads the system prompt as context before processing each user turn.</p>
-    </section>
-
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> Trade-offs: detailed system prompts improve reliability but cost tokens every request. For high-volume, cost-sensitive products, use the minimum effective system prompt.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For System prompts, shorten the Role to Checks path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For System prompts, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For System prompts, guard against system prompts cannot reliably prevent determined users from eliciting prohibited behaviour. use application-level guardrails for hard restrictions.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For System prompts, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> Production checklist: version control system prompts, test every change, log system prompt versions alongside evaluation metrics, audit for prompt injection vulnerability.</p>
+    <ul><li><strong>The core tension:</strong> Detailed system prompts improve reliability but cost tokens every request. For high-volume, cost-sensitive products, use the minimum effective system prompt.</li></ul>
   </section>
     
-    <section class="panel">
+    
+    <section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> Write a system prompt for a RAG-based product documentation assistant. Include: persona, knowledge constraint, output format, uncertainty handling, and one edge-case rule. Then write three adversarial prompts that might break it and fix the system prompt to handle them.</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: System prompts cannot reliably prevent determined users from eliciting prohibited behaviour. Use application-level guardrails for hard restrictions.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    <p><strong>To make it production-shaped:</strong> Production checklist: version control system prompts, test every change, log system prompt versions alongside evaluation metrics, audit for prompt injection vulnerability.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Write a system prompt for a RAG-based product documentation assistant. Include: persona, knowledge constraint, output format, uncertainty handling, and one edge-case rule. Then write three adversarial prompts that might break it and fix the system prompt to handle them.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a Prompt Engineering workbench that demonstrates System prompts with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
     <ul><li>System prompts cannot reliably prevent determined users from eliciting prohibited behaviour. Use application-level guardrails for hard restrictions.</li><li>Telling the model &#39;you must always&#39; or &#39;you must never&#39; in a system prompt does not guarantee compliance 100% of the time.</li><li>The system prompt is not private. Users can often infer or extract it through adversarial prompting. Treat it as visible.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-prompt-engineering-system-prompts-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about System prompts?</strong></p>
+    <button data-answer="wrong">Once System prompts is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="right">System prompts cannot reliably prevent determined users from eliciting prohibited behaviour. Use application-level guardrails for hard restrictions.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-prompt-engineering-system-prompts">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of System prompts?</p>
-    <button data-answer="wrong">System prompts cannot reliably prevent determined users from eliciting prohibited behaviour. Use application-level guardrails for hard restrictions.</button>
+    <section class="panel quiz" data-quiz="quiz-prompt-engineering-system-prompts-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing System prompts into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <button data-answer="right">Production checklist: version control system prompts, test every change, log system prompt versions alongside evaluation metrics, audit for prompt injection vulnerability.</button>
-    <button data-answer="wrong">Telling the model &#39;you must always&#39; or &#39;you must never&#39; in a system prompt does not guarantee compliance 100% of the time.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain System prompts to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain System prompts in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

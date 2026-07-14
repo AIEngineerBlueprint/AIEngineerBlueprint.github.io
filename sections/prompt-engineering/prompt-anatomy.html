@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Prompt anatomy lesson in the Prompt Engineering track.">
+  <meta name="description" content="A prompt is the complete input sent to a language model. It typically consists of: a system prompt (who the model is and what it should do), conversation hist">
   <meta name="theme-color" content="#0f172a">
   <title>Prompt anatomy | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,184 +47,83 @@
       <div>
         <p class="eyebrow">Prompt Engineering · Chapter 1</p>
         <h1>Prompt anatomy</h1>
-        <p class="lede">A prompt is the complete input sent to a language model. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">A prompt is the complete input sent to a language model. It typically consists of: a system prompt (who the model is and what it should do), conversation history, retrieved context, and the user&#39;s message.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="prompt-engineering-prompt-anatomy">Bookmark</button>
     </div>
 
+    
     <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Prompt anatomy is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
+    <h2>Why this matters</h2>
+    <p>Prompt anatomy matters because the structure of a prompt — not just its words — determines output quality, consistency, and safety.</p>
+  </section>
+    <section class="panel explain-card">
+    <h2>In plain terms</h2>
+    <p>A prompt is like a detailed job briefing before a task. The system prompt is the job description and company policies. The conversation history is the context of what has been discussed. The retrieved context is the reference materials. The user message is today&#39;s specific request.</p>
+  </section>
     <section class="panel business-card">
     <h2>For non-technical readers</h2>
     <p>For a non-technical reader, the practical insight is that an AI system&#39;s behavior is shaped far more by this hidden &#39;job briefing&#39; than by the visible question a customer types. Two AI chatbots built on the identical underlying model can behave completely differently, one professional and cautious, one casual and expansive, purely because of how their instructions were written. If your company&#39;s AI assistant is behaving oddly, the fix is often rewriting this behind-the-scenes briefing, not switching to a &#39;better&#39; model entirely.</p>
   </section>
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Prompt anatomy matters because the structure of a prompt — not just its words — determines output quality, consistency, and safety.</p></article><article><span>Objective 2</span><p>Internal flow: all prompt components are concatenated into a single token sequence. The model attends over the entire sequence to generate each output token.</p></article><article><span>Objective 3</span><p>Trade-off: longer, more detailed prompts improve reliability but cost more tokens and introduce more surface area for contradictions or confusion.</p></article><article><span>Objective 4</span><p>Production checklist: version prompts like code, test changes with an eval set, separate system prompt from user input explicitly, and log prompts alongside outputs.</p></article>
-    </div>
-  </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>A prompt is the complete input sent to a language model. It typically consists of: a system prompt (who the model is and what it should do), conversation history, retrieved context, and the user&#39;s message.</p>
-      <p>Internal flow: all prompt components are concatenated into a single token sequence. The model attends over the entire sequence to generate each output token.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: A prompt is the complete input sent to a language model. It typically consists of: a system prompt (who the model is and what it should do), conversation history, retrieved context, and the user&#39;s message.</p>
-    <p><strong>Analogy:</strong> A prompt is like a detailed job briefing before a task. The system prompt is the job description and company policies. The conversation history is the context of what has been discussed. The retrieved context is the reference materials. The user message is today&#39;s specific request.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>A prompt is the complete input sent to a language model. It typically consists of: a system prompt (who the model is and what it should do), conversation history, retrieved context, and the user&#39;s message.</p>
-    <h3>What to learn</h3>
+    <h2>How it works</h2>
+    <p>Internal flow: all prompt components are concatenated into a single token sequence. The model attends over the entire sequence to generate each output token.</p>
     <ul><li>System prompt: set the model&#39;s role, behaviour, restrictions, and output format. Evaluated once per session but shapes all responses.</li><li>Context: retrieved documents, conversation history, or provided data the model should use. Keep it relevant — irrelevant context degrades performance.</li><li>Instruction: what you want the model to do. Be specific about format, length, tone, and required components.</li><li>Examples: few-shot examples of the desired input-output format. Highly effective for teaching novel formats or edge-case behaviour.</li><li>Output format: tell the model explicitly what format the output should take (JSON, markdown, list, a single sentence). Models follow explicit formatting instructions reliably.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Adding more instructions does not always improve output. Contradictory or overly long prompts can degrade performance.</li><li>System prompts are not secure by default. Prompt injection can override them — do not rely on system prompts for security-critical restrictions.</li><li>The order of components matters. Placing the most important instruction at the beginning or end of the prompt tends to improve instruction following.</li></ul>
   </section>
-    <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Prompt anatomy matters because the structure of a prompt — not just its words — determines output quality, consistency, and safety.</p>
-    <p><strong>When it breaks:</strong> Adding more instructions does not always improve output. Contradictory or overly long prompts can degrade performance.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
-  </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
+    <h2>A concrete example</h2>
     <p>System: &#39;You are a support agent for Acme SaaS. Answer using only the provided knowledge base. If you do not know, say so. Always include the relevant article title.&#39; | Context: [retrieved KB articles] | User: &#39;How do I export my data?&#39; The model now has role, constraint, evidence, and specific instruction.</p>
-    <ol><li><strong>Role:</strong> A prompt is the complete input sent to a language model.</li><li><strong>Task:</strong> Internal flow: all prompt components are concatenated into a single token sequence. The model attends over the entire sequence to generate each output token.</li><li><strong>Context:</strong> System: &#39;You are a support agent for Acme SaaS. Answer using only the provided knowledge base. If you do not know, say so. Always include the relevant article title.&#39; | Context: [retrieved KB articles] | User: &#39;How do I export my data?&#39; The model now has role, constraint, evidence, and specific instruction.</li><li><strong>Examples:</strong> Trade-off: longer, more detailed prompts improve reliability but cost more tokens and introduce more surface area for contradictions or confusion.</li><li><strong>Format:</strong> Production checklist: version prompts like code, test changes with an eval set, separate system prompt from user input explicitly, and log prompts alongside outputs.</li><li><strong>Checks:</strong> Take a prompt you currently use. Label each part: system prompt, context, instruction, examples, output format. Now identify the weakest part (where the model most often misses your intent) and rewrite just that part.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="Prompt instruction stack for Prompt anatomy">
-    <article>
-      <span>Step 1</span>
-      <strong>Role</strong>
-      <p>A prompt is the complete input sent to a language model.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Task</strong>
-      <p>Internal flow: all prompt components are concatenated into a single token sequence. The model attends over the entire sequence to generate each output token.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Context</strong>
-      <p>System: &#39;You are a support agent for Acme SaaS. Answer using only the provided knowledge base. If you do not know, say so. Always include the relevant article title.&#39; | Context: [retrieved KB articles] | User: &#39;How do I export my data?&#39; The model now has role, constraint, evidence, and specific instruction.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Examples</strong>
-      <p>Trade-off: longer, more detailed prompts improve reliability but cost more tokens and introduce more surface area for contradictions or confusion.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Format</strong>
-      <p>Production checklist: version prompts like code, test changes with an eval set, separate system prompt from user input explicitly, and log prompts alongside outputs.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Checks</strong>
-      <p>Take a prompt you currently use. Label each part: system prompt, context, instruction, examples, output format. Now identify the weakest part (where the model most often misses your intent) and rewrite just that part.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
   </section>
     
-    
-    
-    
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>Internal flow: all prompt components are concatenated into a single token sequence. The model attends over the entire sequence to generate each output token.</p>
-    </section>
-
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> Trade-off: longer, more detailed prompts improve reliability but cost more tokens and introduce more surface area for contradictions or confusion.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Prompt anatomy, shorten the Role to Checks path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Prompt anatomy, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Prompt anatomy, guard against adding more instructions does not always improve output. contradictory or overly long prompts can degrade performance.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Prompt anatomy, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> Production checklist: version prompts like code, test changes with an eval set, separate system prompt from user input explicitly, and log prompts alongside outputs.</p>
+    <ul><li><strong>The core tension:</strong> Longer, more detailed prompts improve reliability but cost more tokens and introduce more surface area for contradictions or confusion.</li></ul>
   </section>
     
-    <section class="panel">
+    
+    <section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> Take a prompt you currently use. Label each part: system prompt, context, instruction, examples, output format. Now identify the weakest part (where the model most often misses your intent) and rewrite just that part.</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Adding more instructions does not always improve output. Contradictory or overly long prompts can degrade performance.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    <p><strong>To make it production-shaped:</strong> Production checklist: version prompts like code, test changes with an eval set, separate system prompt from user input explicitly, and log prompts alongside outputs.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Take a prompt you currently use. Label each part: system prompt, context, instruction, examples, output format. Now identify the weakest part (where the model most often misses your intent) and rewrite just that part.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a Prompt Engineering workbench that demonstrates Prompt anatomy with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
     <ul><li>Adding more instructions does not always improve output. Contradictory or overly long prompts can degrade performance.</li><li>System prompts are not secure by default. Prompt injection can override them — do not rely on system prompts for security-critical restrictions.</li><li>The order of components matters. Placing the most important instruction at the beginning or end of the prompt tends to improve instruction following.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-prompt-engineering-prompt-anatomy-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Prompt anatomy?</strong></p>
+    <button data-answer="right">Adding more instructions does not always improve output. Contradictory or overly long prompts can degrade performance.</button>
+    <button data-answer="wrong">Once Prompt anatomy is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-prompt-engineering-prompt-anatomy">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Prompt anatomy?</p>
-    <button data-answer="wrong">Adding more instructions does not always improve output. Contradictory or overly long prompts can degrade performance.</button>
+    <section class="panel quiz" data-quiz="quiz-prompt-engineering-prompt-anatomy-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Prompt anatomy into their product. Which approach shows production judgment?</strong></p>
     <button data-answer="right">Production checklist: version prompts like code, test changes with an eval set, separate system prompt from user input explicitly, and log prompts alongside outputs.</button>
-    <button data-answer="wrong">System prompts are not secure by default. Prompt injection can override them — do not rely on system prompts for security-critical restrictions.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Prompt anatomy to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Prompt anatomy in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

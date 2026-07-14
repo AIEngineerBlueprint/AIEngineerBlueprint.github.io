@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/evaluation/eval-strategy.html">
       <span>Chapter 1</span>
       <strong>Eval strategy</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>An evaluation strategy defines how you measure whether your AI system is producing good outputs — what data to test on, what metrics to compute, how often to run evals, and what threshold gates a release.</small>
     </a><a class="chapter-card" href="/sections/evaluation/golden-datasets.html">
       <span>Chapter 2</span>
       <strong>Golden datasets</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A golden dataset is a curated set of representative inputs with expected outputs or judgments used to evaluate regressions.</small>
     </a><a class="chapter-card" href="/sections/evaluation/unit-evals.html">
       <span>Chapter 3</span>
       <strong>Unit evals</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Unit evals are small targeted tests that check one behavior of an AI system, prompt, tool, or guardrail.</small>
     </a><a class="chapter-card" href="/sections/evaluation/regression-evals.html">
       <span>Chapter 4</span>
       <strong>Regression evals</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Regression evals compare new AI system behavior against a previous baseline to catch quality, safety, cost, or latency regressions before release.</small>
     </a><a class="chapter-card" href="/sections/evaluation/llm-as-judge.html">
       <span>Chapter 5</span>
       <strong>LLM-as-judge</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>LLM-as-judge uses a language model (usually a stronger one) to evaluate the quality of another model&#39;s output, given a rubric.</small>
     </a><a class="chapter-card" href="/sections/evaluation/human-review.html">
       <span>Chapter 6</span>
       <strong>Human review</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Human review brings trained people into AI evaluation or operation for cases where judgment, risk, or ambiguity exceeds automation limits.</small>
     </a><a class="chapter-card" href="/sections/evaluation/rag-evals.html">
       <span>Chapter 7</span>
       <strong>RAG evals</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>RAG evals test retrieval, grounding, citations, and answer faithfulness together for retrieval-augmented systems.</small>
     </a><a class="chapter-card" href="/sections/evaluation/agent-evals.html">
       <span>Chapter 8</span>
       <strong>Agent evals</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Agent evals measure whether an agent chooses good actions, uses tools correctly, stops safely, and completes tasks within budget.</small>
     </a><a class="chapter-card" href="/sections/evaluation/safety-evals.html">
       <span>Chapter 9</span>
       <strong>Safety evals</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Safety evals test whether an AI system avoids harmful, private, policy-violating, or unauthorized behavior under normal and adversarial inputs.</small>
     </a><a class="chapter-card" href="/sections/evaluation/cost-and-latency.html">
       <span>Chapter 10</span>
       <strong>Cost and latency</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Cost and latency evaluation measures the operational expense and response time of an AI system alongside its quality metrics, since a system that is accurate but too slow or too expensive to run at real usage volume isn&#39;t actually production-viable.</small>
     </a><a class="chapter-card" href="/sections/evaluation/dashboards.html">
       <span>Chapter 11</span>
       <strong>Dashboards</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Dashboards for AI evaluation surface quality, cost, and latency metrics in an ongoing, visible way, so degradation or improvement is apparent to the team at a glance rather than requiring someone to run a manual evaluation script.</small>
     </a><a class="chapter-card" href="/sections/evaluation/ci-integration.html">
       <span>Chapter 12</span>
       <strong>CI integration</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>CI integration for evaluation runs a defined set of eval cases automatically on every relevant code, prompt, or model change, blocking or flagging changes that regress quality below an accepted threshold, the same way unit tests gate a traditional software change.</small>
     </a><a class="chapter-card" href="/sections/evaluation/continuous-eval.html">
       <span>Chapter 13</span>
       <strong>Continuous eval</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Continuous eval means re-running evaluation regularly against live or recent production data, not just once before launch, since model behavior, user query patterns, and underlying source content can all drift after deployment in ways a one-time evaluation would never catch.</small>
     </a><a class="chapter-card" href="/sections/evaluation/eval-lab.html">
       <span>Chapter 14</span>
       <strong>Eval lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The eval lab is a hands-on exercise to build a small golden evaluation set for a real AI feature, run it to get a baseline, then deliberately introduce a regression and confirm the evaluation actually catches it.</small>
     </a><a class="chapter-card" href="/sections/evaluation/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete evaluation system for one real AI feature, including a golden dataset, a CI-integrated check, and a basic dashboard, that another engineer could extend to a different feature.</small>
     </a><a class="chapter-card" href="/sections/evaluation/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete evaluation strategy for a real AI product: golden dataset design, cost and latency tracking alongside quality, CI integration, continuous production evaluation, and dashboards, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/evaluation/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The evaluation interview pack prepares you to discuss AI quality assurance design credibly: golden dataset construction, CI integration, and continuous evaluation for drift, backed by a concrete story rather than a general statement that evaluation matters.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/structured-output/index.html">← Structured Output</a>

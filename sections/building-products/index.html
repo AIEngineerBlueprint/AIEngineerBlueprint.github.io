@@ -54,6 +54,7 @@
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> Building AI products is like designing a service business with software employees. You define the job, train the workflow, measure quality, and decide when humans must step in. The winning skill is turning model capability into a reliable user outcome with requirements, evaluation, rollout, and operations.</p>
   </section>
+  
   <section class="panel deep-dive">
         <h2>Production build path</h2>
         <p>Use this track to contribute to one of the platform projects below. These projects are intentionally track-level because they combine multiple chapters into a complete product slice.</p>
@@ -137,71 +138,71 @@
   <section class="chapter-grid"><a class="chapter-card" href="/sections/building-products/product-strategy.html">
       <span>Chapter 1</span>
       <strong>Product strategy</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Product strategy decides which user problem an AI capability should solve, why AI is needed, and how success will be measured.</small>
     </a><a class="chapter-card" href="/sections/building-products/requirements.html">
       <span>Chapter 2</span>
       <strong>Requirements</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Requirements translate an AI product idea into explicit capabilities, constraints, data needs, success metrics, and failure behavior.</small>
     </a><a class="chapter-card" href="/sections/building-products/architecture.html">
       <span>Chapter 3</span>
       <strong>Architecture</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Architecture for an AI product is the overall system design connecting the user-facing application, the model or model gateway, retrieval and tool integrations, guardrails, and observability into one coherent, deployable system, distinct from any single component&#39;s internal design.</small>
     </a><a class="chapter-card" href="/sections/building-products/api-design.html">
       <span>Chapter 4</span>
       <strong>API design</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>API design for AI products defines request/response contracts, streaming behavior, errors, auth, idempotency, and observability fields.</small>
     </a><a class="chapter-card" href="/sections/building-products/database-design.html">
       <span>Chapter 5</span>
       <strong>Database design</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Database design for AI products stores prompts, traces, evals, documents, embeddings, feedback, and user state with clear ownership and retention.</small>
     </a><a class="chapter-card" href="/sections/building-products/prompt-library.html">
       <span>Chapter 6</span>
       <strong>Prompt library</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A prompt library stores reusable, versioned prompt templates with owners, variables, eval results, and release history.</small>
     </a><a class="chapter-card" href="/sections/building-products/testing.html">
       <span>Chapter 7</span>
       <strong>Testing</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Testing for AI products combines traditional deterministic software tests for the surrounding application code with AI-specific evaluation for the probabilistic model behavior, since standard unit tests alone cannot verify whether generated output is actually good.</small>
     </a><a class="chapter-card" href="/sections/building-products/evaluation.html">
       <span>Chapter 8</span>
       <strong>Evaluation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Evaluation in the context of building AI products means deciding, at the product level, what quality actually means for this specific feature, accuracy, tone, safety, latency, and building the measurement process that proves whether the product meets that bar before and after every change.</small>
     </a><a class="chapter-card" href="/sections/building-products/ci-cd.html">
       <span>Chapter 9</span>
       <strong>CI/CD</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>CI/CD for AI systems automates tests, evals, builds, deployments, and rollbacks for prompts, models, tools, and application code.</small>
     </a><a class="chapter-card" href="/sections/building-products/deployment.html">
       <span>Chapter 10</span>
       <strong>Deployment</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Deployment moves an AI feature into a controlled runtime with scaling, secrets, networking, monitoring, and rollback in place.</small>
     </a><a class="chapter-card" href="/sections/building-products/monitoring.html">
       <span>Chapter 11</span>
       <strong>Monitoring</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Monitoring tracks live AI behavior so teams notice quality, safety, latency, cost, and reliability changes after deployment.</small>
     </a><a class="chapter-card" href="/sections/building-products/documentation.html">
       <span>Chapter 12</span>
       <strong>Documentation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Documentation for AI products explains behavior, limits, data use, operations, evaluation, and user responsibilities.</small>
     </a><a class="chapter-card" href="/sections/building-products/release.html">
       <span>Chapter 13</span>
       <strong>Release</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Release is the coordinated launch of an AI capability with gating, communication, monitoring, feedback collection, and rollback readiness.</small>
     </a><a class="chapter-card" href="/sections/building-products/product-lab.html">
       <span>Chapter 14</span>
       <strong>Product lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Product lab is the capstone-style practice of turning AI concepts into a runnable product slice with requirements, architecture, cloud deployment variants, smoke tests, evals, observability, security, and release criteria.</small>
     </a><a class="chapter-card" href="/sections/building-products/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete AI product feature end to end, including architecture, tests, and evaluation, deployed and documented well enough that another engineer could run, test, and extend it.</small>
     </a><a class="chapter-card" href="/sections/building-products/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete AI product from requirements through architecture, testing and evaluation strategy, deployment, and monitoring, as one coherent plan for a real product idea.</small>
     </a><a class="chapter-card" href="/sections/building-products/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The building products interview pack prepares you to discuss end-to-end AI product delivery credibly: translating requirements into evaluation criteria, architecture trade-offs, and testing strategy, backed by a concrete story about a real product you shipped.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/azure-ai-stack/index.html">← Azure AI Stack</a>

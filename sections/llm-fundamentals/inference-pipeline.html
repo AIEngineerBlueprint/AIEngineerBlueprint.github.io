@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Inference pipeline lesson in the LLM Fundamentals track.">
+  <meta name="description" content="The inference pipeline is the sequence every request travels — tokenize, prefill the prompt, decode token-by-token, detokenize and stream — and naming its sta">
   <meta name="theme-color" content="#0f172a">
   <title>Inference pipeline | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,181 +47,83 @@
       <div>
         <p class="eyebrow">LLM Fundamentals · Chapter 10</p>
         <h1>Inference pipeline</h1>
-        <p class="lede">An inference pipeline is the runtime path that receives a request, prepares context, calls the model, streams or parses output, validates the result, and records telemetry. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">The inference pipeline is the sequence every request travels — tokenize, prefill the prompt, decode token-by-token, detokenize and stream — and naming its stages is what turns vague latency complaints into locatable problems.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="llm-fundamentals-inference-pipeline">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Inference pipeline is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Inference pipeline matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on request validation, prompt assembly, retrieval or tool calls, model invocation, decoding, post-processing, guardrails, caching, and tracing, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is Low latency pushes you toward caching and smaller contexts; high quality pushes you toward more context and validation.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Inference pipeline on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>p50 latency is fine, p99 is nine seconds, and nobody can say why. Until you can name the stages — tokenize, prefill, decode, detokenize — you can&#39;t even locate the problem.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>An inference pipeline is the runtime path that receives a request, prepares context, calls the model, streams or parses output, validates the result, and records telemetry.</p>
-      <p>The internal flow centers on request validation, prompt assembly, retrieval or tool calls, model invocation, decoding, post-processing, guardrails, caching, and tracing, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: An inference pipeline is the runtime path that receives a request, prepares context, calls the model, streams or parses output, validates the result, and records telemetry.</p>
-    <p><strong>Analogy:</strong> It is like a restaurant kitchen line: order intake, prep, cooking, plating, quality check, and delivery all affect the final experience.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>An inference pipeline is the runtime path that receives a request, prepares context, calls the model, streams or parses output, validates the result, and records telemetry.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: request validation, prompt assembly, retrieval or tool calls, model invocation, decoding, post-processing, guardrails, caching, and tracing.</li><li>Inputs and outputs: identify what enters Inference pipeline, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Inference pipeline with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Inference pipeline worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Do not debug model quality without inspecting prompt assembly and post-processing.</li><li>Inference pipeline is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Inference pipeline inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <h2>Why this matters</h2>
+    <p>Until you can name the stages, every latency and cost problem is a mystery attributed to &#39;the model&#39; — the pipeline is the debugging map for the most common production complaints.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Inference pipeline matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Do not debug model quality without inspecting prompt assembly and post-processing.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
-  </section>
-    <section class="panel">
-    <h2>Worked example</h2>
-    <p>A chat request may pass through auth, RAG retrieval, model streaming, citation validation, and a trace sink before the user sees the answer.</p>
-    <ol><li><strong>User intent:</strong> An inference pipeline is the runtime path that receives a request, prepares context, calls the model, streams or parses output, validates the result, and records telemetry.</li><li><strong>Prompt + context:</strong> The internal flow centers on request validation, prompt assembly, retrieval or tool calls, model invocation, decoding, post-processing, guardrails, caching, and tracing, then hands a validated result to the next step in the product workflow.</li><li><strong>Tokens:</strong> A chat request may pass through auth, RAG retrieval, model streaming, citation validation, and a trace sink before the user sees the answer.</li><li><strong>Transformer layers:</strong> The main trade-off is Low latency pushes you toward caching and smaller contexts; high quality pushes you toward more context and validation.</li><li><strong>Sampling:</strong> A production-shaped slice should implement Inference pipeline on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Validated answer:</strong> Trace one real LLM request and write the timestamp, input, output, and owner for each stage.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="LLM request flow for Inference pipeline">
-    <article>
-      <span>Step 1</span>
-      <strong>User intent</strong>
-      <p>An inference pipeline is the runtime path that receives a request, prepares context, calls the model, streams or parses output, validates the result, and records telemetry.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Prompt + context</strong>
-      <p>The internal flow centers on request validation, prompt assembly, retrieval or tool calls, model invocation, decoding, post-processing, guardrails, caching, and tracing, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Tokens</strong>
-      <p>A chat request may pass through auth, RAG retrieval, model streaming, citation validation, and a trace sink before the user sees the answer.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Transformer layers</strong>
-      <p>The main trade-off is Low latency pushes you toward caching and smaller contexts; high quality pushes you toward more context and validation.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Sampling</strong>
-      <p>A production-shaped slice should implement Inference pipeline on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Validated answer</strong>
-      <p>Trace one real LLM request and write the timestamp, input, output, and owner for each stage.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>In plain terms</h2>
+    <p>It is like understanding a restaurant&#39;s flow — order taken, kitchen prep, cooking, plating — before complaining dinner was slow: &#39;slow&#39; means something different at each station, and so does the fix.</p>
   </section>
     
-    
-    
-    
-
     <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on request validation, prompt assembly, retrieval or tool calls, model invocation, decoding, post-processing, guardrails, caching, and tracing, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
+    <h2>How it works</h2>
+    <p>The flow: request → queue → tokenize → prefill the full prompt (TTFT) → decode token-by-token (tokens/sec) → detokenize and stream → done; each arrow is measurable, and per-stage timing in traces is what makes it actionable.</p>
+    <ul><li>Prefill and decode are different animals: prefill processes the entire prompt in parallel (compute-bound, sets time-to-first-token, scales with prompt length); decode generates one token at a time (memory-bandwidth-bound, sets tokens-per-second, scales with output length) — most latency mysteries dissolve once you ask &#39;which phase?&#39;.</li><li>Time-to-first-token ≈ queue wait + prefill: a 50k-token context takes real prefill work before token one appears — long-context &#39;slowness&#39; is usually prefill doing exactly what it must, and prompt caching is the lever that skips repeated prefill.</li><li>Decode speed is why answers &#39;type&#39; at a fixed rhythm: each token requires reading model weights and the KV cache; output length is the multiplier — a 2,000-token answer costs 4x the decode time of a 500-token one, which makes &#39;be concise&#39; a latency optimization.</li><li>Serving infrastructure shapes what you observe: continuous batching interleaves many users&#39; decode steps (throughput up, mild jitter per user), and queue depth at peak shows up as TTFT variance — p99 stories often live in the scheduler, not the model.</li><li>The pipeline maps directly to what you pay and tune: input tokens ≈ prefill, output tokens ≈ decode (which is why output tokens price higher), TTFT vs tokens/sec are separate SLOs with separate fixes — trim context and cache prefixes for one, cap output length and pick faster models for the other.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
+    <p>p50 latency is fine; p99 is nine seconds. Naming the stages finds it in an afternoon: traces show p99 requests are the ones with 60k-token contexts — prefill, not decode; tokens/sec is identical across percentiles. Fixes follow from the diagnosis: trim retrieved context via re-ranking, enable prompt caching for the stable 8k-token system prefix. p99 drops to 2.8s with zero model changes — because the problem was never &#39;the model is slow&#39;, it was &#39;we make it re-read a novel per request&#39;.</p>
+  </section>
+    
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is Low latency pushes you toward caching and smaller contexts; high quality pushes you toward more context and validation.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Inference pipeline, shorten the User intent to Validated answer path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Inference pipeline, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Inference pipeline, guard against do not debug model quality without inspecting prompt assembly and post-processing.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Inference pipeline, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Inference pipeline on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <ul><li><strong>The core tension:</strong> Throughput and latency fight in serving (batching helps the fleet, adds jitter per request), and context length fights TTFT — these are physics-shaped trades you budget, not bugs you fix.</li></ul>
   </section>
     
-    <section class="panel">
-    <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Trace one real LLM request and write the timestamp, input, output, and owner for each stage.</p>
-    <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
-      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not debug model quality without inspecting prompt assembly and post-processing.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
-    </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
-  </section>
-
+    
     <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Trace one real LLM request and write the timestamp, input, output, and owner for each stage.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+    <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Instrument one AI endpoint (or reason from provider metrics): median TTFT, median tokens/sec, and p99 of each. Attribute your worst latency percentile to queue, prefill, or decode — then name the one change (context trim, prompt cache, output cap, model swap) that targets that specific stage.</p>
+    <ol>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
+    </ol>
+    <p><strong>To make it production-shaped:</strong> Production judgment: instrument TTFT and tokens/sec separately, attribute latency to prefill vs decode vs queue before optimizing anything, and treat prompt length, output caps, and caching as your first-line latency tools.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a LLM Fundamentals workbench that demonstrates Inference pipeline with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not debug model quality without inspecting prompt assembly and post-processing.</li><li>Inference pipeline is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Inference pipeline inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>&#39;The model is slow&#39; is not a diagnosis; prefill-slow, decode-slow, and queue-slow have different causes and completely different fixes.</li><li>Long prompts are not free even when answers are short; prefill scales with input length, which is exactly why input tokens cost money and TTFT grows with context.</li><li>Streaming does not change pipeline speed; it exposes decode as it happens — the improvement is perceived latency, and TTFT is still the number that decides how it feels.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-inference-pipeline-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Inference pipeline?</strong></p>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="wrong">Once Inference pipeline is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="right">&#39;The model is slow&#39; is not a diagnosis; prefill-slow, decode-slow, and queue-slow have different causes and completely different fixes.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-inference-pipeline">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Inference pipeline?</p>
-    <button data-answer="wrong">Do not debug model quality without inspecting prompt assembly and post-processing.</button>
-    <button data-answer="right">A production-shaped slice should implement Inference pipeline on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Inference pipeline is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-inference-pipeline-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Inference pipeline into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">Production judgment: instrument TTFT and tokens/sec separately, attribute latency to prefill vs decode vs queue before optimizing anything, and treat prompt length, output caps, and caching as your first-line latency tools.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Inference pipeline to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Inference pipeline in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

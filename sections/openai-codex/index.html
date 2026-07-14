@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/openai-codex/codex-overview.html">
       <span>Chapter 1</span>
       <strong>Codex overview</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>OpenAI Codex is an agentic coding tool available as a CLI, IDE extension, and cloud/web interface that reads a codebase, plans changes, edits files, and runs commands, with configurable levels of autonomy through sandboxing and approval policies.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/model-selection.html">
       <span>Chapter 2</span>
       <strong>Model selection</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Model selection chooses the smallest, safest, fastest model that satisfies the product&#39;s quality and operational requirements.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/prompting.html">
       <span>Chapter 3</span>
       <strong>Prompting</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Prompting Codex effectively means giving it a specific, scoped task description plus the repository context it needs, via AGENTS.md or explicit file references, since a vague instruction produces a vague or overly broad plan.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/agent-workflows.html">
       <span>Chapter 4</span>
       <strong>Agent workflows</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Agent workflows for Codex are patterns for structuring how a task moves from description to a mergeable change: local CLI sessions for interactive work, and cloud or web sessions for longer-running or delegated tasks that continue running after you step away.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/repository-setup.html">
       <span>Chapter 5</span>
       <strong>Repository setup</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Repository setup for Codex means adding an AGENTS.md file describing build commands, conventions, and constraints, following a hierarchical discovery order from global to project-specific, so Codex starts every session with consistent expectations.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/testing.html">
       <span>Chapter 6</span>
       <strong>Testing</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Testing with Codex means having it run the project&#39;s real test suite after making changes and iterate based on actual failures, closing the loop between generating a change and verifying it rather than trusting the diff alone.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/refactoring.html">
       <span>Chapter 7</span>
       <strong>Refactoring</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Refactoring with Codex means using it to restructure code without changing behavior, verified by running the existing test suite before and after, with the task scoped to an explicit set of files to keep the diff reviewable.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/review.html">
       <span>Chapter 8</span>
       <strong>Review</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Codex&#39;s code review feature reads a pull request&#39;s diff on GitHub and generates review comments flagging likely bugs, missing edge cases, and convention violations, intended to give human reviewers a useful first pass rather than replace their approval.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/security.html">
       <span>Chapter 9</span>
       <strong>Security</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Security for Codex centers on sandbox mode, read-only, workspace-write, or danger-full-access, and approval policy, untrusted, on-request, or never, which together define exactly what the agent can touch and when it needs explicit human confirmation.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/automation.html">
       <span>Chapter 10</span>
       <strong>Automation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Automation with Codex means running it non-interactively as part of CI or a scheduled job, typically through cloud sessions, to perform a scoped task like dependency updates or issue triage without a human present for each step.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/team-workflow.html">
       <span>Chapter 11</span>
       <strong>Team workflow</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Team workflow for Codex means establishing shared conventions, a checked-in AGENTS.md, and consistent review standards so every developer&#39;s use of the tool produces predictable, reviewable results rather than each person developing incompatible habits.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/best-practices.html">
       <span>Chapter 12</span>
       <strong>Best practices</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Best practices for Codex combine scoped prompting, an up-to-date AGENTS.md, sandbox and approval settings matched to task risk, and mandatory test verification into a consistent habit, so output quality doesn&#39;t depend on any one developer&#39;s individual discipline.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/troubleshooting.html">
       <span>Chapter 13</span>
       <strong>Troubleshooting</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Troubleshooting Codex means diagnosing whether an unexpected result comes from insufficient repository context, a sandbox or approval setting blocking an action, or a genuinely wrong plan, and applying the fix that matches the actual cause rather than just rewording the prompt.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/codex-lab.html">
       <span>Chapter 14</span>
       <strong>Codex lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The Codex lab is a hands-on exercise to run one real, moderately complex task through Codex end to end, from a scoped prompt through test verification, then reflect on what sandbox, approval, or AGENTS.md configuration would improve the next run.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships one small, complete Codex workflow artifact for a real repository, such as an AGENTS.md plus a documented review checklist, that a teammate could adopt directly.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete operating model for using Codex across a real engineering team: which tasks run autonomously versus require review, what sandbox and approval settings apply by default, shared AGENTS.md standards, and the metrics that prove it&#39;s actually helping.</small>
     </a><a class="chapter-card" href="/sections/openai-codex/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The Codex interview pack prepares you to discuss agentic coding tool adoption credibly: sandbox and approval configuration, AGENTS.md design, and rollout risk management, backed by a concrete story rather than a feature list.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/github-copilot/index.html">← GitHub Copilot</a>

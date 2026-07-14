@@ -54,6 +54,7 @@
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> MCP is like a USB-C port for AI applications: one standard way for a model client to discover tools, resources, and prompts from many servers. A protocol boundary keeps tool access governable. Teams can add capabilities without hard-wiring every integration into every assistant.</p>
   </section>
+  
   <section class="panel deep-dive">
         <h2>Production build path</h2>
         <p>Use this track to contribute to one of the platform projects below. These projects are intentionally track-level because they combine multiple chapters into a complete product slice.</p>
@@ -63,71 +64,71 @@
   <section class="chapter-grid"><a class="chapter-card" href="/sections/mcp/protocol-overview.html">
       <span>Chapter 1</span>
       <strong>Protocol overview</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>MCP protocol overview explains how clients, servers, tools, resources, and prompts exchange structured context so AI apps can connect to external capabilities safely.</small>
     </a><a class="chapter-card" href="/sections/mcp/mcp-architecture.html">
       <span>Chapter 2</span>
       <strong>MCP architecture</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>MCP architecture defines where the host app, client, server, tools, resources, prompts, permissions, and transport boundaries sit.</small>
     </a><a class="chapter-card" href="/sections/mcp/transports.html">
       <span>Chapter 3</span>
       <strong>Transports</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Transports in MCP are the communication mechanisms, such as stdio for local processes or HTTP-based streaming for remote servers, that carry messages between an MCP client and server, chosen based on whether the server runs locally or remotely.</small>
     </a><a class="chapter-card" href="/sections/mcp/resources.html">
       <span>Chapter 4</span>
       <strong>Resources</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Resources in MCP are a way for a server to expose readable data, such as files or database records, to a client in a structured, addressable way, distinct from tools which perform actions.</small>
     </a><a class="chapter-card" href="/sections/mcp/tools.html">
       <span>Chapter 5</span>
       <strong>Tools</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Tools in MCP are the functions a server exposes that a client&#39;s model can invoke to perform an action or computation, following the same schema-based function-calling pattern used across most agentic AI systems.</small>
     </a><a class="chapter-card" href="/sections/mcp/prompts.html">
       <span>Chapter 6</span>
       <strong>Prompts</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Prompts in MCP are reusable, server-defined prompt templates that a client can discover and use, letting a server share proven prompting patterns for its specific domain rather than every client having to write its own from scratch.</small>
     </a><a class="chapter-card" href="/sections/mcp/server-implementation.html">
       <span>Chapter 7</span>
       <strong>Server implementation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>MCP server implementation exposes tools, resources, and prompts through a protocol contract that clients can discover and call.</small>
     </a><a class="chapter-card" href="/sections/mcp/client-integration.html">
       <span>Chapter 8</span>
       <strong>Client integration</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>MCP client integration connects an AI host to MCP servers, discovers capabilities, chooses tools/resources, and enforces user or workspace policy.</small>
     </a><a class="chapter-card" href="/sections/mcp/security-model.html">
       <span>Chapter 9</span>
       <strong>Security model</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The MCP security model defines how servers, tools, resources, users, and hosts are trusted, permissioned, isolated, and audited.</small>
     </a><a class="chapter-card" href="/sections/mcp/enterprise-governance.html">
       <span>Chapter 10</span>
       <strong>Enterprise governance</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Enterprise governance for MCP defines how organizations approve servers, manage versions, enforce policies, monitor usage, and respond to incidents.</small>
     </a><a class="chapter-card" href="/sections/mcp/observability.html">
       <span>Chapter 11</span>
       <strong>Observability</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Observability gives engineers enough traces, metrics, logs, and examples to understand AI system behavior in production.</small>
     </a><a class="chapter-card" href="/sections/mcp/versioning.html">
       <span>Chapter 12</span>
       <strong>Versioning</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Versioning for MCP means managing changes to a server&#39;s exposed tools, resources, and prompts over time so that connected clients aren&#39;t unexpectedly broken by a change to the server&#39;s interface.</small>
     </a><a class="chapter-card" href="/sections/mcp/operations.html">
       <span>Chapter 13</span>
       <strong>Operations</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Operations for MCP means monitoring server uptime, tool call latency and error rate, and resource access patterns in production, so a connected agent&#39;s failures can be traced back to the specific MCP server or tool responsible.</small>
     </a><a class="chapter-card" href="/sections/mcp/mcp-lab.html">
       <span>Chapter 14</span>
       <strong>MCP lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The MCP lab is a hands-on exercise to build a small MCP server exposing one resource and one tool, connect it to a client, and verify both work correctly end to end.</small>
     </a><a class="chapter-card" href="/sections/mcp/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete MCP server for one real use case, with a documented resource, a validated tool, and basic operational monitoring, that another engineer could connect a client to.</small>
     </a><a class="chapter-card" href="/sections/mcp/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete MCP server architecture for a real system: resource and tool design, transport choice, versioning strategy, security model, and operational monitoring, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/mcp/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The MCP interview pack prepares you to discuss protocol design choices credibly: resources versus tools, transport selection, and versioning strategy, backed by a concrete story rather than a definition of the protocol.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/rag/index.html">← RAG</a>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Entra ID lesson in the Azure AI Stack track.">
+  <meta name="description" content="Microsoft Entra ID, formerly Azure Active Directory, is Azure&#39;s identity platform, controlling which users, services, and applications can authenticate and wh">
   <meta name="theme-color" content="#0f172a">
   <title>Entra ID | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,127 +47,43 @@
       <div>
         <p class="eyebrow">Azure AI Stack · Chapter 8</p>
         <h1>Entra ID</h1>
-        <p class="lede">Microsoft Entra ID, formerly Azure Active Directory, is Azure&#39;s identity platform, controlling which users, services, and applications can authenticate and what they&#39;re authorized to do across every other Azure service an AI system touches, including Azure OpenAI. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Microsoft Entra ID, formerly Azure Active Directory, is Azure&#39;s identity platform, controlling which users, services, and applications can authenticate and what they&#39;re authorized to do across every other Azure service an AI system touches, including Azure OpenAI.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="azure-ai-stack-entra-id">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Entra ID is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
     
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Entra ID matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on managed identities assigned to compute resources like AKS pods or Functions, granting them scoped Azure role-based access control permissions without embedding long-lived credentials in code, combined with conditional access policies for human users, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is managed identities remove the risk of leaked long-lived credentials and simplify rotation, but they require more upfront role-assignment design than just embedding a key, and misconfigured scope can either block legitimate access or grant more than intended</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Entra ID on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
-  </section>
-    <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Microsoft Entra ID, formerly Azure Active Directory, is Azure&#39;s identity platform, controlling which users, services, and applications can authenticate and what they&#39;re authorized to do across every other Azure service an AI system touches, including Azure OpenAI.</p>
-      <p>The internal flow centers on managed identities assigned to compute resources like AKS pods or Functions, granting them scoped Azure role-based access control permissions without embedding long-lived credentials in code, combined with conditional access policies for human users, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Microsoft Entra ID, formerly Azure Active Directory, is Azure&#39;s identity platform, controlling which users, services, and applications can authenticate and what they&#39;re authorized to do across every other Azure service an AI system touches, including Azure OpenAI.</p>
-    <p><strong>Analogy:</strong> It is like the single keycard system for an entire campus, where every building, elevator, and room checks the same badge instead of each having its own separate lock.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Microsoft Entra ID, formerly Azure Active Directory, is Azure&#39;s identity platform, controlling which users, services, and applications can authenticate and what they&#39;re authorized to do across every other Azure service an AI system touches, including Azure OpenAI.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: managed identities assigned to compute resources like AKS pods or Functions, granting them scoped Azure role-based access control permissions without embedding long-lived credentials in code, combined with conditional access policies for human users.</li><li>Inputs and outputs: identify what enters Entra ID, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Entra ID with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Entra ID worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Using an API key for Azure OpenAI instead of a managed identity is not just a minor convenience trade-off; it reintroduces exactly the credential-leakage risk that managed identities exist to remove.</li><li>Entra ID is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Entra ID inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
-  </section>
+    
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Entra ID matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Using an API key for Azure OpenAI instead of a managed identity is not just a minor convenience trade-off; it reintroduces exactly the credential-leakage risk that managed identities exist to remove.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+    <h2>In plain terms</h2>
+    <p>It is like the single keycard system for an entire campus, where every building, elevator, and room checks the same badge instead of each having its own separate lock.</p>
   </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
+    <h2>How it works</h2>
+    <p>In practice it comes down to managed identities assigned to compute resources like AKS pods or Functions, granting them scoped Azure role-based access control permissions without embedding long-lived credentials in code, combined with conditional access policies for human users.</p>
+    
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
     <p>An AKS pod running a RAG API uses a managed identity scoped to read one specific Blob Storage container and call Azure OpenAI, with no API keys stored in code or environment variables.</p>
-    <ol><li><strong>Blob/data:</strong> Microsoft Entra ID, formerly Azure Active Directory, is Azure&#39;s identity platform, controlling which users, services, and applications can authenticate and what they&#39;re authorized to do across every other Azure service an AI system touches, including Azure OpenAI.</li><li><strong>Functions/AKS:</strong> The internal flow centers on managed identities assigned to compute resources like AKS pods or Functions, granting them scoped Azure role-based access control permissions without embedding long-lived credentials in code, combined with conditional access policies for human users, then hands a validated result to the next step in the product workflow.</li><li><strong>Azure OpenAI:</strong> An AKS pod running a RAG API uses a managed identity scoped to read one specific Blob Storage container and call Azure OpenAI, with no API keys stored in code or environment variables.</li><li><strong>AI Search:</strong> The main trade-off is managed identities remove the risk of leaked long-lived credentials and simplify rotation, but they require more upfront role-assignment design than just embedding a key, and misconfigured scope can either block legitimate access or grant more than intended</li><li><strong>Entra ID:</strong> A production-shaped slice should implement Entra ID on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>App Insights:</strong> Design a managed identity and role assignment for one AKS pod that needs to read from Blob Storage and call Azure OpenAI, scoped to only those two permissions.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="Azure AI reference path for Entra ID">
-    <article>
-      <span>Step 1</span>
-      <strong>Blob/data</strong>
-      <p>Microsoft Entra ID, formerly Azure Active Directory, is Azure&#39;s identity platform, controlling which users, services, and applications can authenticate and what they&#39;re authorized to do across every other Azure service an AI system touches, including Azure OpenAI.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Functions/AKS</strong>
-      <p>The internal flow centers on managed identities assigned to compute resources like AKS pods or Functions, granting them scoped Azure role-based access control permissions without embedding long-lived credentials in code, combined with conditional access policies for human users, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Azure OpenAI</strong>
-      <p>An AKS pod running a RAG API uses a managed identity scoped to read one specific Blob Storage container and call Azure OpenAI, with no API keys stored in code or environment variables.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>AI Search</strong>
-      <p>The main trade-off is managed identities remove the risk of leaked long-lived credentials and simplify rotation, but they require more upfront role-assignment design than just embedding a key, and misconfigured scope can either block legitimate access or grant more than intended</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Entra ID</strong>
-      <p>A production-shaped slice should implement Entra ID on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>App Insights</strong>
-      <p>Design a managed identity and role assignment for one AKS pod that needs to read from Blob Storage and call Azure OpenAI, scoped to only those two permissions.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
   </section>
     
-    
-    
-    
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on managed identities assigned to compute resources like AKS pods or Functions, granting them scoped Azure role-based access control permissions without embedding long-lived credentials in code, combined with conditional access policies for human users, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is managed identities remove the risk of leaked long-lived credentials and simplify rotation, but they require more upfront role-assignment design than just embedding a key, and misconfigured scope can either block legitimate access or grant more than intended</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>The core tension:</strong> Managed identities remove the risk of leaked long-lived credentials and simplify rotation, but they require more upfront role-assignment design than just embedding a key, and misconfigured scope can either block legitimate access or grant more than intended</li></ul>
   </section>
-
     <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Entra ID, shorten the Blob/data to App Insights path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Entra ID, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Entra ID, guard against using an api key for azure openai instead of a managed identity is not just a minor convenience trade-off; it reintroduces exactly the credential-leakage risk that managed identities exist to remove.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Entra ID, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
+    <h2>Try it in code</h2>
     <pre><code># Assign a managed identity least-privilege access
 az role assignment create \
   --assignee &lt;managed-identity-object-id&gt; \
   --role &quot;Storage Blob Data Reader&quot; \
   --scope &quot;/subscriptions/.../containers/raw-documents&quot;
 # plus a role assignment scoped only to the Azure OpenAI resource</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Entra ID on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <p>Change the inputs and watch which assumption breaks first. The gap between what you expected and what you got is where the learning is.</p>
   </section>
     <section class="panel setup-card">
     <h2>Set up and test Entra ID in Azure</h2>
@@ -182,55 +98,38 @@ az group list --query &quot;[0].name&quot;
     <ul><li>Authentication failures usually mean the wrong tenant, subscription, role, key, or managed identity.</li><li>Not found errors often mean wrong resource group, region, deployment name, or API version.</li><li>A useful smoke test records identity, resource, API version, latency, and expected output.</li></ul>
     <p><strong>Next step:</strong> Only after identity and network access are proven should you add production prompts, data, or write actions.</p>
   </section>
-    <section class="panel">
+    <section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> Design a managed identity and role assignment for one AKS pod that needs to read from Blob Storage and call Azure OpenAI, scoped to only those two permissions.</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Build or configure it, using the code example above as your starting point.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Using an API key for Azure OpenAI instead of a managed identity is not just a minor convenience trade-off; it reintroduces exactly the credential-leakage risk that managed identities exist to remove.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Design a managed identity and role assignment for one AKS pod that needs to read from Blob Storage and call Azure OpenAI, scoped to only those two permissions.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a Azure AI Stack workbench that demonstrates Entra ID with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Using an API key for Azure OpenAI instead of a managed identity is not just a minor convenience trade-off; it reintroduces exactly the credential-leakage risk that managed identities exist to remove.</li><li>Entra ID is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Entra ID inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>Using an API key for Azure OpenAI instead of a managed identity is not just a minor convenience trade-off; it reintroduces exactly the credential-leakage risk that managed identities exist to remove.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
-
-    <section class="panel quiz" data-quiz="quiz-azure-ai-stack-entra-id">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Entra ID?</p>
-    <button data-answer="wrong">Using an API key for Azure OpenAI instead of a managed identity is not just a minor convenience trade-off; it reintroduces exactly the credential-leakage risk that managed identities exist to remove.</button>
-    <button data-answer="right">A production-shaped slice should implement Entra ID on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Entra ID is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-azure-ai-stack-entra-id-0">
+    <h2>Check yourself</h2>
+    <p><strong>Which of these is sound guidance about Entra ID?</strong></p>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="right">Using an API key for Azure OpenAI instead of a managed identity is not just a minor convenience trade-off; it reintroduces exactly the credential-leakage risk that managed identities exist to remove.</button>
+    <button data-answer="wrong">Once Entra ID is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Entra ID to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Entra ID in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://learn.microsoft.com/en-us/entra/fundamentals/whatis" rel="noopener noreferrer">Microsoft Entra ID overview</a></li><li><a href="https://learn.microsoft.com/azure/ai-services/openai/" rel="noopener noreferrer">Azure OpenAI documentation</a></li></ul>
   </section>
 

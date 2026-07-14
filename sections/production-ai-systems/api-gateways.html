@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="API gateways lesson in the Production AI Systems track.">
+  <meta name="description" content="An AI gateway is the single controlled door between your organization and model providers: authentication, routing, retries, rate limits, spend caps, logging,">
   <meta name="theme-color" content="#0f172a">
   <title>API gateways | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,181 +47,83 @@
       <div>
         <p class="eyebrow">Production AI Systems · Chapter 2</p>
         <h1>API gateways</h1>
-        <p class="lede">API gateways sit at the edge of AI services to handle auth, routing, rate limits, request shaping, and telemetry before traffic reaches model workflows. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">An AI gateway is the single controlled door between your organization and model providers: authentication, routing, retries, rate limits, spend caps, logging, and key management in one place instead of scattered across every feature.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="production-ai-systems-api-gateways">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why API gateways is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>API gateways matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on authentication, quotas, routing, request IDs, payload limits, retries, and response policies, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is Gateways centralize controls but can become a bottleneck.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement API gateways on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>A leaked API key burned $6,000 of tokens over a weekend. Every model call went direct to the provider — no gateway to rotate keys, cap spend, or even notice.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>API gateways sit at the edge of AI services to handle auth, routing, rate limits, request shaping, and telemetry before traffic reaches model workflows.</p>
-      <p>The internal flow centers on authentication, quotas, routing, request IDs, payload limits, retries, and response policies, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: API gateways sit at the edge of AI services to handle auth, routing, rate limits, request shaping, and telemetry before traffic reaches model workflows.</p>
-    <p><strong>Analogy:</strong> They are like the front desk and security checkpoint for an AI platform.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>API gateways sit at the edge of AI services to handle auth, routing, rate limits, request shaping, and telemetry before traffic reaches model workflows.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: authentication, quotas, routing, request IDs, payload limits, retries, and response policies.</li><li>Inputs and outputs: identify what enters API gateways, what state changes, and what the next system component receives.</li><li>Evaluation signal: test API gateways with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether API gateways worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Do not put model-specific business logic only in the gateway.</li><li>API gateways is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide API gateways inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <h2>Why this matters</h2>
+    <p>Direct-to-provider wiring makes every control optional and every incident organization-wide; the gateway converts spend, security, reliability, and observability from per-team hopes into infrastructure guarantees.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> API gateways matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Do not put model-specific business logic only in the gateway.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
-  </section>
-    <section class="panel">
-    <h2>Worked example</h2>
-    <p>A gateway routes premium users to a larger model and applies stricter rate limits to anonymous traffic.</p>
-    <ol><li><strong>API:</strong> API gateways sit at the edge of AI services to handle auth, routing, rate limits, request shaping, and telemetry before traffic reaches model workflows.</li><li><strong>Orchestrator:</strong> The internal flow centers on authentication, quotas, routing, request IDs, payload limits, retries, and response policies, then hands a validated result to the next step in the product workflow.</li><li><strong>Model/retrieval:</strong> A gateway routes premium users to a larger model and applies stricter rate limits to anonymous traffic.</li><li><strong>Policy:</strong> The main trade-off is Gateways centralize controls but can become a bottleneck.</li><li><strong>Telemetry:</strong> A production-shaped slice should implement API gateways on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Release loop:</strong> Design gateway rules for an internal LLM API with three user tiers.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="Production AI platform loop for API gateways">
-    <article>
-      <span>Step 1</span>
-      <strong>API</strong>
-      <p>API gateways sit at the edge of AI services to handle auth, routing, rate limits, request shaping, and telemetry before traffic reaches model workflows.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Orchestrator</strong>
-      <p>The internal flow centers on authentication, quotas, routing, request IDs, payload limits, retries, and response policies, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Model/retrieval</strong>
-      <p>A gateway routes premium users to a larger model and applies stricter rate limits to anonymous traffic.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Policy</strong>
-      <p>The main trade-off is Gateways centralize controls but can become a bottleneck.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Telemetry</strong>
-      <p>A production-shaped slice should implement API gateways on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Release loop</strong>
-      <p>Design gateway rules for an internal LLM API with three user tiers.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>In plain terms</h2>
+    <p>It is like a hotel front desk versus giving every guest a master key: the front desk knows who&#39;s inside, what they&#39;re spending, and can revoke access in one motion — the master-key approach discovers problems on the final bill.</p>
   </section>
     
-    
-    
-    
-
     <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on authentication, quotas, routing, request IDs, payload limits, retries, and response policies, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
+    <h2>How it works</h2>
+    <p>The flow: caller authenticates with a scoped token → budget and rate checks → route by alias and policy → provider call with retries and circuit breaking → response logged with cost and latency → dashboards and alerts fed from one stream.</p>
+    <ul><li>Keys live only in the gateway: teams authenticate to it with scoped internal credentials; provider keys rotate in one place. A leaked internal token is a revocation; a leaked provider key sprayed across twelve services is a weekend.</li><li>Spend control belongs at the chokepoint: per-team and per-feature budgets, request-level cost estimation, and hard caps — the difference between &#39;the gateway declined requests over budget at 2am&#39; and &#39;finance found it on the invoice&#39;.</li><li>Routing is leverage: model aliases (&#39;fast&#39;, &#39;smart&#39;) let the gateway upgrade models, fail over across providers, and canary new versions without any team changing code — provider migration becomes config, not a quarter.</li><li>Reliability policy is uniform: retries with backoff, timeout budgets, circuit breakers per provider, and request hedging live once in the gateway instead of six teams implementing five different retry bugs.</li><li>Every request is observable: tokens, latency, cost, model version, and caller identity logged uniformly — this is the data layer that spend dashboards, capacity planning, and incident forensics all sit on.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
+    <p>A leaked provider key once burned $6,000 over a weekend — every service called providers directly, and rotation took two days of coordinated deploys. Post-gateway: internal tokens per team, provider keys held only by the gateway, a $50/day cap per feature with alerting at 80%, and model alias &#39;default-smart&#39; — which let the platform team move 14 features to a cheaper model in an afternoon, cutting spend 30% with two teams&#39; eval suites as the safety check.</p>
+  </section>
+    
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is Gateways centralize controls but can become a bottleneck.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For API gateways, shorten the API to Release loop path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For API gateways, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For API gateways, guard against do not put model-specific business logic only in the gateway.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For API gateways, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement API gateways on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <ul><li><strong>The core tension:</strong> The gateway is a new single point of failure and adds a network hop — so it must be boring, redundant, and fast (single-digit ms overhead), because its failure mode is everyone&#39;s failure mode.</li></ul>
   </section>
     
-    <section class="panel">
-    <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> Design gateway rules for an internal LLM API with three user tiers.</p>
-    <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
-      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not put model-specific business logic only in the gateway.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
-    </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
-  </section>
-
+    
     <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Design gateway rules for an internal LLM API with three user tiers.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+    <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Specify your gateway&#39;s policy surface: the auth model for callers, three budget tiers with cap behavior, the model aliases you&#39;d expose and their failover order, and the five fields logged per request that incident response would need.</p>
+    <ol>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
+    </ol>
+    <p><strong>To make it production-shaped:</strong> A production gateway holds all provider keys, enforces per-team budgets with hard caps, exposes model aliases for routing and failover, and emits per-request cost and latency telemetry that finance and on-call both trust.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a Production AI Systems workbench that demonstrates API gateways with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not put model-specific business logic only in the gateway.</li><li>API gateways is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide API gateways inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>A gateway is not just a proxy; the value is the policy it enforces — budgets, routing, retries — not the forwarding.</li><li>Per-team provider keys are not isolation; they are key sprawl, and the audit question &#39;who can call the model with customer data&#39; becomes unanswerable.</li><li>Adding the gateway later is not free; by then every service has its own retry logic and key handling, and migration competes with roadmaps forever.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-production-ai-systems-api-gateways-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about API gateways?</strong></p>
+    <button data-answer="right">A gateway is not just a proxy; the value is the policy it enforces — budgets, routing, retries — not the forwarding.</button>
+    <button data-answer="wrong">Once API gateways is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-production-ai-systems-api-gateways">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of API gateways?</p>
-    <button data-answer="wrong">Do not put model-specific business logic only in the gateway.</button>
-    <button data-answer="right">A production-shaped slice should implement API gateways on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">API gateways is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-production-ai-systems-api-gateways-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing API gateways into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="right">A production gateway holds all provider keys, enforces per-team budgets with hard caps, exposes model aliases for routing and failover, and emits per-request cost and latency telemetry that finance and on-call both trust.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain API gateways to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain API gateways in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

@@ -54,6 +54,7 @@
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> AI security is zero-trust engineering for probabilistic software. Treat prompts, documents, tools, plugins, and model output as untrusted until checked. AI products connect natural language to data and actions, which creates new paths for injection, leakage, and privilege misuse.</p>
   </section>
+  
   <section class="panel deep-dive">
         <h2>Production build path</h2>
         <p>Use this track to contribute to one of the platform projects below. These projects are intentionally track-level because they combine multiple chapters into a complete product slice.</p>
@@ -63,71 +64,71 @@
   <section class="chapter-grid"><a class="chapter-card" href="/sections/ai-security/owasp-llm-top-10.html">
       <span>Chapter 1</span>
       <strong>OWASP LLM Top 10</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The OWASP LLM Top 10 is a community-maintained list of the ten most critical security vulnerabilities in LLM-based applications, providing a common vocabulary and prioritisation framework for AI security.</small>
     </a><a class="chapter-card" href="/sections/ai-security/prompt-injection.html">
       <span>Chapter 2</span>
       <strong>Prompt injection</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Prompt injection is an attack where an adversary embeds instructions into data the model processes (user input, retrieved documents, tool results) that override or manipulate the original system instructions.</small>
     </a><a class="chapter-card" href="/sections/ai-security/data-leakage.html">
       <span>Chapter 3</span>
       <strong>Data leakage</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Data leakage happens when private, sensitive, or evaluation-only data appears where it should not, such as prompts, logs, outputs, training data, or test sets.</small>
     </a><a class="chapter-card" href="/sections/ai-security/model-theft.html">
       <span>Chapter 4</span>
       <strong>Model theft</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Model theft is extracting model behavior, weights, prompts, or proprietary outputs through attacks, scraping, or misuse.</small>
     </a><a class="chapter-card" href="/sections/ai-security/supply-chain.html">
       <span>Chapter 5</span>
       <strong>Supply chain</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>AI supply-chain risk comes from models, datasets, packages, containers, prompts, and tools that may be compromised or untrusted.</small>
     </a><a class="chapter-card" href="/sections/ai-security/model-poisoning.html">
       <span>Chapter 6</span>
       <strong>Model poisoning</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Model poisoning manipulates training or fine-tuning data so a model learns hidden malicious behavior or degraded performance.</small>
     </a><a class="chapter-card" href="/sections/ai-security/rag-attacks.html">
       <span>Chapter 7</span>
       <strong>RAG attacks</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>RAG attacks target the retrieval and grounding layer with poisoned documents, hidden instructions, misleading citations, or permission bypasses.</small>
     </a><a class="chapter-card" href="/sections/ai-security/mcp-attacks.html">
       <span>Chapter 8</span>
       <strong>MCP attacks</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>MCP attacks abuse Model Context Protocol tools, resources, or servers to leak data, escalate permissions, or manipulate agent behavior.</small>
     </a><a class="chapter-card" href="/sections/ai-security/agent-attacks.html">
       <span>Chapter 9</span>
       <strong>Agent attacks</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Agent attacks exploit autonomous planning, tool access, memory, or approvals to make agents take harmful actions.</small>
     </a><a class="chapter-card" href="/sections/ai-security/secrets.html">
       <span>Chapter 10</span>
       <strong>Secrets</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Secrets are credentials, tokens, keys, or private material that must never be exposed to models, logs, users, or untrusted tools.</small>
     </a><a class="chapter-card" href="/sections/ai-security/identity.html">
       <span>Chapter 11</span>
       <strong>Identity</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Identity controls who the user, agent, tool, and service are so permissions can be enforced correctly.</small>
     </a><a class="chapter-card" href="/sections/ai-security/sandboxing.html">
       <span>Chapter 12</span>
       <strong>Sandboxing</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Sandboxing isolates AI-generated code, tools, or file operations so failures and attacks cannot escape into sensitive systems.</small>
     </a><a class="chapter-card" href="/sections/ai-security/threat-models.html">
       <span>Chapter 13</span>
       <strong>Threat models</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Threat models identify assets, actors, entry points, trust boundaries, abuses, and mitigations before building or shipping an AI system.</small>
     </a><a class="chapter-card" href="/sections/ai-security/security-lab.html">
       <span>Chapter 14</span>
       <strong>Security lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The security lab is a hands-on exercise to attempt one real prompt-injection or jailbreak technique against an AI system you have access to, observe whether it succeeds, and then implement and verify a specific defense against it.</small>
     </a><a class="chapter-card" href="/sections/ai-security/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete security review for one real AI feature, covering at least three attack categories from the OWASP LLM Top 10, with a specific tested mitigation for each, that another engineer could use as a template.</small>
     </a><a class="chapter-card" href="/sections/ai-security/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete AI security program for a real product: threat model, specific defenses mapped to the OWASP LLM Top 10 categories relevant to the system, identity and sandboxing design, and an ongoing security testing cadence.</small>
     </a><a class="chapter-card" href="/sections/ai-security/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The AI security interview pack prepares you to discuss LLM-specific threat modeling and defense design credibly: prompt injection, data leakage, and tool-access security, backed by a concrete story about a real vulnerability or defense you implemented.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/grounding/index.html">← Grounding</a>

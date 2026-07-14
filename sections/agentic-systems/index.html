@@ -54,6 +54,7 @@
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> Agentic systems are like an operations room: different specialists coordinate, hand off tasks, escalate blockers, and keep a shared view of state. Coordination becomes the product risk. Reliability depends on state, ownership, retries, and human checkpoints.</p>
   </section>
+  
   <section class="panel deep-dive">
         <h2>Production build path</h2>
         <p>Use this track to contribute to one of the platform projects below. These projects are intentionally track-level because they combine multiple chapters into a complete product slice.</p>
@@ -63,75 +64,75 @@
   <section class="chapter-grid"><a class="chapter-card" href="/sections/agentic-systems/agentic-ai-and-orchestration.html">
       <span>Chapter 1</span>
       <strong>Agentic AI and orchestration</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Agentic AI orchestration coordinates multiple model calls, tools, agents, memory, approvals, and state transitions so an AI system can complete multi-step work safely.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/agentic-workflows.html">
       <span>Chapter 2</span>
       <strong>Agentic workflows</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Agentic workflows are structured, multi-step processes an AI system follows to complete a task: planning, taking actions, observing results, and adjusting, repeated until the goal is met or a stopping condition is hit.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/single-vs-multi-agent.html">
       <span>Chapter 3</span>
       <strong>Single vs multi-agent</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Single vs multi-agent design decides whether one agent handles an entire task with full context, or whether the task is split across multiple specialized agents that collaborate, each with narrower scope and context.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/agent-to-agent-communication.html">
       <span>Chapter 4</span>
       <strong>Agent-to-agent communication</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Agent-to-agent communication is the structured exchange of tasks, evidence, decisions, and constraints between specialized agents in a multi-agent workflow.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/task-decomposition.html">
       <span>Chapter 5</span>
       <strong>Task decomposition</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Task decomposition breaks a large or ambiguous goal into smaller subtasks, each with a clear input, output, and success check, so an agent&#39;s progress can be verified incrementally rather than trusted only at the final result.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/coordination.html">
       <span>Chapter 6</span>
       <strong>Coordination</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Coordination is how multiple agents stay consistent with each other: sharing state, avoiding duplicated or conflicting work, and handing off results cleanly through a coordinator, shared queue, or direct messaging.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/state-machines.html">
       <span>Chapter 7</span>
       <strong>State machines</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>State machines give agentic systems explicit, named stages and transition rules, so the system always knows precisely what stage a task is in and what actions are valid next, rather than inferring progress from unstructured conversation history.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/retries.html">
       <span>Chapter 8</span>
       <strong>Retries</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Retries handle recoverable failures in an agentic workflow by detecting a failed step, deciding if retrying makes sense, and re-attempting with a bounded limit, instead of either giving up immediately or looping forever.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/human-checkpoints.html">
       <span>Chapter 9</span>
       <strong>Human checkpoints</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Human checkpoints are deliberate pause points in an agentic workflow where the system stops and requires explicit human approval before continuing, placed specifically before irreversible or high-risk actions.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/failure-scenarios.html">
       <span>Chapter 10</span>
       <strong>Failure scenarios</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Failure scenario analysis enumerates the concrete ways an agentic system can fail, such as a wrong plan, a tool error, agent miscommunication, or silent partial completion, and defines detection and recovery for each in advance, rather than discovering them live in production.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/careful-deployment.html">
       <span>Chapter 11</span>
       <strong>Careful deployment</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Careful deployment introduces agentic autonomy gradually: starting in shadow mode where the agent proposes actions without executing them, then limited scope with required approval, then wider autonomy only once outcomes are measured and trusted.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/governance.html">
       <span>Chapter 12</span>
       <strong>Governance</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Governance for agentic systems is the set of policies controlling what autonomous actions are allowed, who is accountable for agent decisions, how behavior is audited, and how the policy itself gets updated as new risks are discovered.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/evaluation.html">
       <span>Chapter 13</span>
       <strong>Evaluation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Evaluation for agentic systems tests whole task completions end to end, not just individual tool calls: does the agent reach the correct final state, does it recover from injected failures, and does it stay within its allowed scope.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/operations.html">
       <span>Chapter 14</span>
       <strong>Operations</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Operations for agentic systems means monitoring live behavior in production: task completion rate, how often human checkpoints actually block or reject an action, cost per task, and alerting when behavior drifts from its established baseline.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/agentic-lab.html">
       <span>Chapter 15</span>
       <strong>Agentic lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The agentic lab is a hands-on exercise to build a small but complete agentic workflow: task decomposition, at least one human checkpoint, and a retry path, then verify it against a deliberately injected failure.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/mini-project.html">
       <span>Chapter 16</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete agentic workflow for one real task, including explicit scope, at least one human checkpoint, and documented failure handling, usable by another engineer without further explanation.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/capstone.html">
       <span>Chapter 17</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete agentic system for a real use case: how the task is decomposed, whether it uses single or multiple agents, how they coordinate, where checkpoints and retries live, and the staged deployment plan used to roll it out safely.</small>
     </a><a class="chapter-card" href="/sections/agentic-systems/interview-pack.html">
       <span>Chapter 18</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The agentic AI interview pack prepares you to discuss multi-step and multi-agent system design credibly: how you decompose tasks, coordinate agents, place checkpoints, and roll out autonomy safely, backed by a real story about a failure and its recovery.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/ai-agents/index.html">← AI Agents</a>

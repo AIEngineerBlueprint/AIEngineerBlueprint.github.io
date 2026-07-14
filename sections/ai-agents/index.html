@@ -54,6 +54,10 @@
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> An agent is like a junior engineer with a checklist, tools, and a supervisor. It can plan and act, but production systems still need budgets, permissions, review points, and logs. Agents are useful when the task requires multiple steps, tool use, or adapting to intermediate results.</p>
   </section>
+  <section class="panel hook-card">
+    <h2>The running example</h2>
+    <p>Throughout this track, imagine you&#39;re shipping Opsy: an agent that handles routine engineering operations — triaging tickets, running maintenance scripts, opening PRs. Every chapter is a capability Opsy needs, or a way Opsy hurts you if you skip it.</p>
+  </section>
   <section class="panel deep-dive">
         <h2>Production build path</h2>
         <p>Use this track to contribute to one of the platform projects below. These projects are intentionally track-level because they combine multiple chapters into a complete product slice.</p>
@@ -63,71 +67,71 @@
   <section class="chapter-grid"><a class="chapter-card" href="/sections/ai-agents/agent-mental-model.html">
       <span>Chapter 1</span>
       <strong>Agent mental model</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>An agent is a model running in a loop: it plans a step, acts through tools, observes the result, and decides what to do next — with permissions, budgets, and stop conditions that you, not the model, define.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/planner.html">
       <span>Chapter 2</span>
       <strong>Planner</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The planner is the component of an AI agent that takes a goal and breaks it down into a sequence of steps, deciding which tools to call and in what order, before execution begins.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/executor.html">
       <span>Chapter 3</span>
       <strong>Executor</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The executor is the component that turns an agent&#39;s chosen step into a real tool call — with validation, timeouts, error capture, and state updates — and reports back what actually happened.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/tool-calling.html">
       <span>Chapter 4</span>
       <strong>Tool calling</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Tool calling (function calling) allows a language model to request execution of a defined function — search, database query, API call, code runner — by outputting structured JSON that a host application executes, then feeds the result back into the context.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/reflection.html">
       <span>Chapter 5</span>
       <strong>Reflection</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Reflection is an agent pattern where the model evaluates its own previous output, identifies errors or improvements, and revises the answer — often repeating this loop until it meets a quality threshold.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/memory.html">
       <span>Chapter 6</span>
       <strong>Memory</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Agent memory is the machinery that carries information across turns, tasks, and sessions — deciding what to store, how to retrieve it at the right moment, and when to forget it.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/approval-flows.html">
       <span>Chapter 7</span>
       <strong>Approval flows</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Approval flows define which agent actions require human confirmation before executing — routing risky steps to a person with enough context to make the call quickly.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/long-running-work.html">
       <span>Chapter 8</span>
       <strong>Long running work</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Long-running work is agent execution that outlives a single request — minutes to days — and therefore needs checkpoints, resumability, idempotency, and progress visibility to survive restarts and interruptions.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/agent-observability.html">
       <span>Chapter 9</span>
       <strong>Agent observability</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Agent observability is the traces, metrics, and logs that let you reconstruct what an agent did and why — every loop iteration, tool call, decision, and dollar — so &#39;it did something weird&#39; becomes a debuggable event.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/failure-handling.html">
       <span>Chapter 10</span>
       <strong>Failure handling</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Failure handling for agents is the machinery that keeps tool errors, bad model decisions, and stuck loops from becoming runaway cost, wrong side effects, or silent non-completion.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/cost-control.html">
       <span>Chapter 11</span>
       <strong>Cost control</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Cost control for agents means budgeting, metering, and capping what a loop can spend — tokens, tool calls, and time — so cost is a designed constraint instead of a monthly surprise.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/security.html">
       <span>Chapter 12</span>
       <strong>Security</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Agent security treats the agent as an untrusted-input processor with real permissions: everything it reads may be an attack, everything it can do is blast radius, and the controls live in the harness, not the prompt.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/production-architecture.html">
       <span>Chapter 13</span>
       <strong>Production architecture</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Production architecture for agents is the platform around the loop: job orchestration, state stores, tool gateways, permission and approval services, tracing, budgets, and a kill switch — the difference between a while-loop and a system.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/agent-lab.html">
       <span>Chapter 14</span>
       <strong>Agent lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The agent lab is a hands-on exercise to build a small agent that completes a multi-step task using at least two tools, with a step budget and a failure-handling path, then test it against both a normal case and a deliberately injected tool failure.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete agent for one real task, with scoped tool access, a cost budget, failure handling, and basic logging, that another engineer could run and extend.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete production agent system for a real use case: task decomposition, tool scoping and security, cost budgets, failure handling, and a full production architecture with monitoring, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/ai-agents/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The AI agents interview pack prepares you to discuss agent system design credibly: tool scoping for security, cost budgeting, and failure handling, backed by a concrete story about a real agent rather than a general description of what agents can do.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/mcp/index.html">← MCP</a>

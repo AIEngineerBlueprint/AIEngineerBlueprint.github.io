@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const conceptLibrary = require("./concepts.js");
+const chapterHooks = require("./hooks.js");
 
 const root = path.resolve(__dirname, "..");
 const out = (...parts) => path.join(root, ...parts);
@@ -97,7 +98,8 @@ const sectionProfiles = {
     why: "This matters because every AI product eventually pays for tokens, latency, context quality, and model behavior. If you understand the inference path, you can debug bad answers instead of guessing.",
     example: "If you ask 'write a refund email for a delayed order', the LLM reads the instruction, turns it into tokens, uses learned patterns from many examples of business writing, and generates the email one token at a time.",
     flow: ["User intent", "Prompt + context", "Tokens", "Transformer layers", "Sampling", "Validated answer"],
-    diagramTitle: "LLM request flow"
+    diagramTitle: "LLM request flow",
+    runningExample: "Throughout this track, imagine you own the model gateway for a product team: every complaint about cost, latency, weird answers, or flaky behavior lands on your desk. Each chapter is one of the dials you'll be asked to explain or turn."
   },
   "generative-ai": {
     analogy: "Generative AI is like a creative apprentice that can draft text, images, audio, or code after learning patterns from many examples.",
@@ -132,7 +134,8 @@ const sectionProfiles = {
     why: "RAG helps when the model needs private, fresh, or domain-specific knowledge that was not reliable in pretraining.",
     example: "A policy assistant retrieves the latest HR policy paragraphs, gives them to the LLM, and asks for an answer with citations. If the policy is not found, it should say it does not know.",
     flow: ["Question", "Rewrite/search query", "Retrieve chunks", "Re-rank evidence", "Generate answer", "Cite + evaluate"],
-    diagramTitle: "RAG evidence pipeline"
+    diagramTitle: "RAG evidence pipeline",
+    runningExample: "Throughout this track, imagine you own HelpDesk: an internal assistant that answers employee questions from the company wiki, HR policies, and engineering runbooks. Every chapter is a decision you will make — and a way HelpDesk can fail — on the road to shipping it."
   },
   mcp: {
     analogy: "MCP is like a USB-C port for AI applications: one standard way for a model client to discover tools, resources, and prompts from many servers.",
@@ -146,7 +149,8 @@ const sectionProfiles = {
     why: "Agents are useful when the task requires multiple steps, tool use, or adapting to intermediate results.",
     example: "A release-note agent can inspect merged PRs, group changes by product area, draft notes, ask for approval, and publish only after a human confirms.",
     flow: ["Goal", "Plan", "Tool call", "Observe", "Reflect", "Finish or ask"],
-    diagramTitle: "Agent control loop"
+    diagramTitle: "Agent control loop",
+    runningExample: "Throughout this track, imagine you're shipping Opsy: an agent that handles routine engineering operations — triaging tickets, running maintenance scripts, opening PRs. Every chapter is a capability Opsy needs, or a way Opsy hurts you if you skip it."
   },
   "agentic-systems": {
     analogy: "Agentic systems are like an operations room: different specialists coordinate, hand off tasks, escalate blockers, and keep a shared view of state.",
@@ -188,7 +192,8 @@ const sectionProfiles = {
     why: "They reduce predictable harm by validating input, model output, tool access, data exposure, and policy compliance.",
     example: "A healthcare demo can block medical diagnosis requests, remove PII from logs, require citations, and route risky questions to a human.",
     flow: ["Input", "Policy check", "Model/tool", "Output check", "Escalate", "Audit"],
-    diagramTitle: "Guardrail checkpoints"
+    diagramTitle: "Guardrail checkpoints",
+    runningExample: "Throughout this track, imagine you're responsible for Coverly: a customer-facing insurance assistant that quotes policies and files claims — a product where one bad answer is a regulatory event. Each chapter is a checkpoint between Coverly and the news."
   },
   grounding: {
     analogy: "Grounding is like requiring receipts for every claim. The answer is stronger when it points back to evidence.",
@@ -230,7 +235,8 @@ const sectionProfiles = {
     why: "Customers experience the system, not the model. Reliability comes from platform engineering around the model.",
     example: "A customer-support AI needs rate limits, retrieval, model routing, moderation, logs, eval dashboards, fallback messages, and incident response.",
     flow: ["API", "Orchestrator", "Model/retrieval", "Policy", "Telemetry", "Release loop"],
-    diagramTitle: "Production AI platform loop"
+    diagramTitle: "Production AI platform loop",
+    runningExample: "Throughout this track, imagine you run Draftline: an AI writing feature inside a busy SaaS product, with real traffic spikes, enterprise customers, and a monthly token budget someone actually reviews. Every chapter is a piece of the platform that keeps Draftline alive."
   },
   "aws-ai-stack": {
     analogy: "The AWS AI stack is like a warehouse of managed building blocks: model access, storage, search, compute, identity, logs, and deployment lanes.",
@@ -471,12 +477,17 @@ function getProfile(sectionSlug) {
   return sectionProfiles[sectionSlug] || defaultProfile;
 }
 
-function shouldShowSystemMap(chapter) {
-  return !/command reference|interview|question bank|behavioral|best practices|troubleshooting/i.test(chapter);
-}
-
 function isInterviewSection(sectionSlug) {
   return sectionSlug === "interview-preparation";
+}
+
+function isProjectChapter(sectionSlug, chapter) {
+  if (isInterviewSection(sectionSlug)) return false;
+  return /\blab$|^mini project$|^capstone$/i.test(chapter.trim());
+}
+
+function isInterviewChapter(sectionSlug, chapter) {
+  return isInterviewSection(sectionSlug) || /interview|behavioral|leadership|question bank|mock/i.test(chapter);
 }
 
 function conceptKey(chapter) {
@@ -570,6 +581,26 @@ function compactSentence(value) {
 function firstSentence(value) {
   const sentence = compactSentence(value).match(/^.*?[.!?](?:\s|$)/);
   return sentence ? sentence[0].trim() : compactSentence(value);
+}
+
+/**
+ * A phrase-safe name for the chapter that can sit mid-sentence.
+ * Question-style chapter titles ("What is AI?") fall back to the track name.
+ */
+function chapterTopic(sectionSlug, chapter) {
+  if (/[?]/.test(chapter)) return sectionNameBySlug.get(sectionSlug) || chapter.replace(/\?+$/, "");
+  return chapter;
+}
+
+/** Deterministic shuffle so quiz option order is stable across regenerations. */
+function seededShuffle(items, seed) {
+  const arr = items.slice();
+  const bytes = crypto.createHash("md5").update(String(seed)).digest();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = bytes[i % bytes.length] % (i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
 function codeForConcept(sectionSlug, chapter) {
@@ -2982,15 +3013,7 @@ console.log({ lowTempVariety: uniqueness(lowTemp), highTempVariety: uniqueness(h
 };`;
   }
 
-  return `function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}`;
+  return null;
 }
 
 function tradeoffsForConcept(sectionSlug, chapter, concept) {
@@ -3039,9 +3062,13 @@ function tradeoffsForConcept(sectionSlug, chapter, concept) {
     ];
   }
 
-  const objectiveTradeoff = compactSentence(concept.objectiveTeaching?.[2]);
+  const objectiveTradeoff = compactSentence(concept.objectiveTeaching?.[2])
+    .replace(/^(the )?(key |main |core )?(trade-?offs?|tension)\b[:,]?\s*(is |are |come from )?/i, "");
+  if (objectiveTradeoff) {
+    const detail = objectiveTradeoff[0].toUpperCase() + objectiveTradeoff.slice(1);
+    return [["The core tension", detail]];
+  }
   return [
-    ["Quality vs latency", objectiveTradeoff || "Richer processing often improves quality but increases response time and cost."],
     ["Flexibility vs reliability", "Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate."],
     ["Automation vs oversight", "More automation reduces manual work but needs stronger logging, review points, and rollback paths."]
   ];
@@ -3542,42 +3569,153 @@ function referencesForConcept(sectionSlug, chapter) {
   return [...new Set(refs)].slice(0, 5);
 }
 
-function conceptFlowSteps(sectionSlug, chapter) {
-  const concept = getConcept(sectionSlug, chapter);
-  const profile = getProfile(sectionSlug);
-  if (concept.flowSteps) return concept.flowSteps;
-
-  const teaching = concept.objectiveTeaching || [];
-  const fundamentals = concept.fundamentals || [];
-  const descriptions = [
-    firstSentence(concept.definition),
-    compactSentence(teaching[1] || fundamentals[0]),
-    compactSentence(concept.example),
-    compactSentence(teaching[2] || fundamentals[1]),
-    compactSentence(teaching[3] || fundamentals[2]),
-    compactSentence(concept.exercise)
-  ].filter(Boolean);
-
-  return profile.flow.map((step, index) => ({
-    label: step,
-    text: descriptions[index % descriptions.length]
-  }));
-}
-
-function conceptFlowMap(sectionSlug, profile, chapter) {
-  const flow = conceptFlowSteps(sectionSlug, chapter);
-  return `<div class="concept-flow" role="img" aria-label="${esc(profile.diagramTitle)} for ${esc(chapter)}">
-    ${flow.map((step, index) => `<article>
-      <span>Step ${index + 1}</span>
-      <strong>${esc(step.label)}</strong>
-      <p>${esc(step.text)}</p>
-    </article>`).join("")}
-  </div>`;
-}
-
 function topicDiagramSpec(sectionSlug, chapter) {
   const slug = slugify(chapter);
   const specs = {
+    tokenization: {
+      title: "From text to tokens",
+      subtitle: "The model never sees words — it sees integer IDs from a fixed vocabulary.",
+      boxes: [
+        ["Text", "raw characters"],
+        ["Normalize", "consistent form"],
+        ["Split", "subword pieces"],
+        ["Token IDs", "vocabulary index"],
+        ["Embeddings", "vectors per ID"],
+        ["Model", "processes vectors"]
+      ]
+    },
+    attention: {
+      title: "Attention in one pass",
+      subtitle: "Each token asks every other token: how relevant are you to me right now?",
+      boxes: [
+        ["Token", "e.g. \"it\""],
+        ["Query", "what it seeks"],
+        ["Keys", "what others offer"],
+        ["Scores", "relevance weights"],
+        ["Weighted sum", "blend of values"],
+        ["Output", "context-aware token"]
+      ]
+    },
+    "kv-cache": {
+      title: "KV cache reuse",
+      subtitle: "Decoding is fast because past keys and values are stored, not recomputed.",
+      boxes: [
+        ["Prefill", "process prompt"],
+        ["Store K/V", "per layer + token"],
+        ["New token", "decode step"],
+        ["Reuse cache", "no recompute"],
+        ["Append K/V", "cache grows"],
+        ["Memory cost", "tokens × batch"]
+      ]
+    },
+    chunking: {
+      title: "Chunking pipeline",
+      subtitle: "Retrieval quality is decided here, before any query is ever asked.",
+      boxes: [
+        ["Document", "pages, tables"],
+        ["Parse", "clean structure"],
+        ["Split", "size + overlap"],
+        ["Embed", "vector per chunk"],
+        ["Store", "chunk + metadata"],
+        ["Retrieve", "citeable units"]
+      ]
+    },
+    retrieval: {
+      title: "Retrieval funnel",
+      subtitle: "Millions of chunks become five prompt passages — each stage can lose the answer.",
+      boxes: [
+        ["Query", "user question"],
+        ["Embed", "query vector"],
+        ["Search", "candidates"],
+        ["Filter", "ACL + metadata"],
+        ["Top-K", "ranked passages"],
+        ["Prompt", "context window"]
+      ]
+    },
+    hnsw: {
+      title: "HNSW graph search",
+      subtitle: "Approximate search hops through graph layers instead of scanning every vector.",
+      boxes: [
+        ["Entry point", "top layer"],
+        ["Coarse hops", "long edges"],
+        ["Descend", "layer by layer"],
+        ["Local search", "dense bottom"],
+        ["Neighbors", "candidates"],
+        ["Top-K", "best matches"]
+      ]
+    },
+    "embedding-intuition": {
+      title: "Text to vectors",
+      subtitle: "Meaning becomes geometry: similar meaning ends up close in space.",
+      boxes: [
+        ["Text", "words, code, docs"],
+        ["Model", "encode meaning"],
+        ["Vector", "list of numbers"],
+        ["Distance", "close = similar"],
+        ["Search", "nearest neighbors"],
+        ["Products", "RAG, dedupe, recs"]
+      ]
+    },
+    sampling: {
+      title: "Sampling pipeline",
+      subtitle: "Every token is a controlled random draw — these knobs shape the draw.",
+      boxes: [
+        ["Logits", "raw scores"],
+        ["Temperature", "flatten/sharpen"],
+        ["Top-K / Top-P", "trim the tail"],
+        ["Distribution", "probabilities"],
+        ["Sample", "pick one token"],
+        ["Repeat", "token by token"]
+      ]
+    },
+    "context-windows": {
+      title: "Context budget",
+      subtitle: "The window is a fixed budget; every component competes for it.",
+      boxes: [
+        ["Window", "hard token cap"],
+        ["System", "instructions"],
+        ["History", "conversation"],
+        ["Evidence", "retrieved docs"],
+        ["Output", "answer space"],
+        ["Overflow", "trim strategy"]
+      ]
+    },
+    "agent-mental-model": {
+      title: "The agent loop",
+      subtitle: "An agent is a loop with permissions — every box is an engineering surface.",
+      boxes: [
+        ["Goal", "success criteria"],
+        ["Plan", "next step"],
+        ["Tool call", "act with limits"],
+        ["Observe", "result + errors"],
+        ["Reflect", "adjust or retry"],
+        ["Finish", "done or ask human"]
+      ]
+    },
+    "prompt-injection": {
+      title: "Prompt injection path",
+      subtitle: "Untrusted content becomes instructions unless something in this path stops it.",
+      boxes: [
+        ["Attacker text", "web, docs, email"],
+        ["Ingested", "RAG or tool result"],
+        ["Enters prompt", "mixed with rules"],
+        ["Model obeys", "data as commands"],
+        ["Blast radius", "tools + data"],
+        ["Defenses", "isolate, validate, gate"]
+      ]
+    },
+    quantization: {
+      title: "The quantization trade",
+      subtitle: "Fewer bits per weight buys memory and speed at a small quality cost.",
+      boxes: [
+        ["FP16 weights", "full model"],
+        ["Quantize", "8/4-bit"],
+        ["Smaller file", "fits device"],
+        ["Less memory", "bigger batch"],
+        ["Faster tokens", "more throughput"],
+        ["Quality cost", "measure it"]
+      ]
+    },
     "rag-overview": {
       title: "RAG evidence path",
       subtitle: "The answer is only as trustworthy as the evidence path that produced it.",
@@ -3804,22 +3942,31 @@ function topicDiagramSection(sectionSlug, chapter) {
   </section>`;
 }
 
-function plainEnglishSection(sectionSlug, chapter) {
-  const concept = getConcept(sectionSlug, chapter);
-  return `<section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> ${esc(concept.objectiveTeaching?.[0] || getProfile(sectionSlug).why)}</p>
-    <p><strong>When it breaks:</strong> ${esc(concept.misconceptions?.[0] || "It breaks when teams use the term without defining inputs, outputs, metrics, and failure handling.")}</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+function hookSection(sectionSlug, chapter) {
+  const hook = chapterHooks[`${sectionSlug}/${slugify(chapter)}`];
+  if (!hook) return "";
+  return `<section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>${esc(hook)}</p>
   </section>`;
 }
 
-function beginnerConceptSection(sectionSlug, chapter) {
+function whyItMattersSection(sectionSlug, chapter) {
   const concept = getConcept(sectionSlug, chapter);
-  return `<section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: ${esc(concept.definition)}</p>
-    <p><strong>Analogy:</strong> ${esc(concept.analogy)}</p>
+  const why = compactSentence(concept.objectiveTeaching?.[0] || "");
+  if (!why) return "";
+  return `<section class="panel">
+    <h2>Why this matters</h2>
+    <p>${esc(why)}</p>
+  </section>`;
+}
+
+function plainTermsSection(sectionSlug, chapter) {
+  const concept = getConcept(sectionSlug, chapter);
+  if (!concept.analogy) return "";
+  return `<section class="panel explain-card">
+    <h2>In plain terms</h2>
+    <p>${esc(concept.analogy)}</p>
   </section>`;
 }
 
@@ -3832,42 +3979,15 @@ function businessContextSection(sectionSlug, chapter) {
   </section>`;
 }
 
-function objectiveTeachingSection(sectionSlug, chapter) {
+function howItWorksSection(sectionSlug, chapter) {
   const concept = getConcept(sectionSlug, chapter);
-  return `<section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      ${concept.objectiveTeaching.map((item, index) => `<article><span>Objective ${index + 1}</span><p>${esc(item)}</p></article>`).join("")}
-    </div>
-  </section>`;
-}
-
-function coreConceptSection(sectionSlug, chapter) {
-  const concept = getConcept(sectionSlug, chapter);
+  const flow = compactSentence(concept.objectiveTeaching?.[1] || "");
+  const fundamentals = concept.fundamentals || [];
+  if (!flow && !fundamentals.length) return "";
   return `<section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>${esc(concept.definition)}</p>
-    <h3>What to learn</h3>
-    <ul>${concept.fundamentals.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
-    <h3>Common misunderstandings</h3>
-    <ul>${concept.misconceptions.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
-  </section>`;
-}
-
-function systemMapSection(sectionSlug, sectionName, chapter) {
-  if (!shouldShowSystemMap(chapter)) {
-    return `<section class="panel">
-      <h2>Practical operating checklist</h2>
-      <p>This topic is more useful as a workflow than as an architecture diagram. Treat it as a repeatable checklist: define the goal, choose the tool or command, set boundaries, run the smallest useful check, then review the output before trusting it.</p>
-    </section>`;
-  }
-
-  const profile = getProfile(sectionSlug);
-  return `<section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    ${conceptFlowMap(sectionSlug, profile, chapter)}
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>How it works</h2>
+    ${flow ? `<p>${esc(flow)}</p>` : ""}
+    ${fundamentals.length ? `<ul>${fundamentals.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>` : ""}
   </section>`;
 }
 
@@ -3886,33 +4006,22 @@ function commandReferenceSection(sectionSlug, chapter) {
   </section>`;
 }
 
-function workedExampleSection(sectionSlug, chapter) {
+function workedExampleSection(sectionSlug, chapter, heading = "A concrete example") {
   const concept = getConcept(sectionSlug, chapter);
-  const steps = conceptFlowSteps(sectionSlug, chapter).map((step) => `<li><strong>${esc(step.label)}:</strong> ${esc(step.text)}</li>`).join("");
+  if (!concept.example) return "";
   return `<section class="panel">
-    <h2>Worked example</h2>
+    <h2>${esc(heading)}</h2>
     <p>${esc(concept.example)}</p>
-    <ol>${steps}</ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
   </section>`;
 }
 
-function practiceSection(sectionSlug, chapter) {
-  const concept = getConcept(sectionSlug, chapter);
-  return `<section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>${esc(concept.exercise)}</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>`;
-}
-
-function implementationSection(sectionSlug, chapter) {
-  const concept = getConcept(sectionSlug, chapter);
+function implementationSection(sectionSlug, chapter, heading = "Try it in code") {
+  const code = codeForConcept(sectionSlug, chapter);
+  if (!code) return "";
   return `<section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>${esc(codeForConcept(sectionSlug, chapter))}</code></pre>
-    <p><strong>Why this matters:</strong> ${esc(concept.objectiveTeaching?.[3] || "A learning slice should expose inputs, outputs, checks, and failure paths instead of hiding the important behavior behind prose.")}</p>
+    <h2>${esc(heading)}</h2>
+    <pre><code>${esc(code)}</code></pre>
+    <p>Change the inputs and watch which assumption breaks first. The gap between what you expected and what you got is where the learning is.</p>
   </section>`;
 }
 
@@ -4061,9 +4170,8 @@ az group list --query "[0].name"
 
 function labSection(sectionSlug, chapter) {
   const concept = getConcept(sectionSlug, chapter);
-  const isInterview = /interview|behavioral|leadership|question-bank|mock/i.test(chapter);
-  if (isInterview) {
-    return `<section class="panel">
+  if (isInterviewChapter(sectionSlug, chapter)) {
+    return `<section class="panel practice-card">
       <h2>Hands-on lab</h2>
       <p><strong>Task:</strong> ${esc(concept.exercise)}</p>
       <ol>
@@ -4075,17 +4183,18 @@ function labSection(sectionSlug, chapter) {
     </section>`;
   }
 
-  const mistake = concept.misconceptions?.[0] || "treating a plausible-looking result as correct without checking it";
-  return `<section class="panel">
+  const productionShape = compactSentence(concept.objectiveTeaching?.[3] || "");
+  const hasCode = Boolean(codeForConcept(sectionSlug, chapter));
+  return `<section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> ${esc(concept.exercise)}</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>${hasCode ? "Build or configure it, using the code example above as your starting point." : "Build or sketch the smallest version that actually runs or can be reviewed."}</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: ${esc(mistake)}</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    ${productionShape ? `<p><strong>To make it production-shaped:</strong> ${esc(productionShape)}</p>` : ""}
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>`;
 }
 
@@ -4097,157 +4206,145 @@ function commonMistakesSection(sectionSlug, chapter) {
   </section>`;
 }
 
-function tradeoffsSection(sectionSlug, chapter) {
+function tradeoffsSection(sectionSlug, chapter, heading = "Trade-offs") {
   const concept = getConcept(sectionSlug, chapter);
   const tradeoffs = tradeoffsForConcept(sectionSlug, chapter, concept);
   return `<section class="panel">
-    <h2>Trade-offs</h2>
+    <h2>${esc(heading)}</h2>
     <ul>${tradeoffs.map(([name, detail]) => `<li><strong>${esc(name)}:</strong> ${esc(detail)}</li>`).join("")}</ul>
   </section>`;
 }
 
-function interactiveResponses(sectionSlug, chapter) {
+/**
+ * Quiz questions for a chapter.
+ * Hand-authored questions come from concept.quiz: [{ question, options: [{ text, right }] }].
+ * The generated fallback uses a true concept-specific statement as the right answer and
+ * distractors that are genuinely false claims, never misconception corrections.
+ */
+function quizQuestionsFor(sectionSlug, chapter) {
   const concept = getConcept(sectionSlug, chapter);
-  const tradeoffs = tradeoffsForConcept(sectionSlug, chapter, concept);
-  const flow = conceptFlowSteps(sectionSlug, chapter);
-  const primaryFlow = flow[0]?.label || "input";
-  const finalFlow = flow[flow.length - 1]?.label || "output";
-  const firstTradeoff = tradeoffs[0]?.[0] || "quality vs latency";
-  const secondTradeoff = tradeoffs[1]?.[0] || "reliability vs flexibility";
-  const mistake = concept.misconceptions?.[0] || "treating confident output as verified truth";
-  return {
-    latency: `For ${chapter}, shorten the ${primaryFlow} to ${finalFlow} path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether ${firstTradeoff.toLowerCase()} hurts user-visible quality.`,
-    quality: `For ${chapter}, improve evidence before tuning prompts: use better inputs, add targeted checks around ${secondTradeoff.toLowerCase()}, and compare outputs against the chapter exercise or eval set.`,
-    safety: `For ${chapter}, guard against ${mistake.toLowerCase()}. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.`
-  };
+  if (Array.isArray(concept.quiz) && concept.quiz.length) return concept.quiz;
+
+  const topic = chapterTopic(sectionSlug, chapter);
+  const interview = isInterviewChapter(sectionSlug, chapter);
+  const questions = [];
+  const accurate = compactSentence(concept.misconceptions?.[0] || "");
+  if (accurate) {
+    questions.push({
+      question: interview ? "Which of these is true about strong interview answers?" : `Which of these is sound guidance about ${topic}?`,
+      options: interview ? [
+        { text: accurate, right: true },
+        { text: "The best answers cover every detail of the project so the interviewer has full context before you get to your decisions.", right: false },
+        { text: "If you know the material deeply, structure doesn't matter — depth will come across on its own.", right: false }
+      ] : [
+        { text: accurate, right: true },
+        { text: "If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.", right: false },
+        { text: `Once ${topic} is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.`, right: false }
+      ]
+    });
+  }
+  const practice = compactSentence(concept.objectiveTeaching?.[3] || "");
+  if (practice) {
+    questions.push({
+      question: interview ? "Which preparation approach actually improves interview performance?" : `A team is bringing ${topic} into their product. Which approach shows production judgment?`,
+      options: interview ? [
+        { text: practice, right: true },
+        { text: "Memorize polished answers word-for-word so nothing unexpected can happen in the room.", right: false },
+        { text: "Skip mock practice — real interviews are the most efficient form of practice.", right: false }
+      ] : [
+        { text: practice, right: true },
+        { text: "Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.", right: false },
+        { text: "Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.", right: false }
+      ]
+    });
+  }
+  return questions;
 }
 
-function interactiveExampleSection(sectionSlug, chapter) {
-  const responses = interactiveResponses(sectionSlug, chapter);
-  return `<section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="${esc(responses.latency)}" data-quality="${esc(responses.quality)}" data-safety="${esc(responses.safety)}">${esc(responses.quality)}</output>
-      </div>
-    </section>`;
-}
-
-function quizSection(sectionSlug, chapter, quizId) {
-  const concept = getConcept(sectionSlug, chapter);
-  const right = concept.objectiveTeaching?.[3] || `Build a small ${chapter} slice, evaluate it on representative examples, and add logging plus failure handling.`;
-  const wrongOne = concept.misconceptions?.[0] || `Memorize the definition of ${chapter} without testing it in a working flow.`;
-  const wrongTwo = concept.misconceptions?.[1] || `Assume ${chapter} is correct because the first output looks plausible.`;
-  return `<section class="panel quiz" data-quiz="${quizId}">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of ${esc(chapter)}?</p>
-    <button data-answer="wrong">${esc(wrongOne)}</button>
-    <button data-answer="right">${esc(right)}</button>
-    <button data-answer="wrong">${esc(wrongTwo)}</button>
+function quizSections(sectionSlug, chapter, id) {
+  const questions = quizQuestionsFor(sectionSlug, chapter);
+  return questions.map((entry, index) => {
+    const options = seededShuffle(entry.options, `${id}-q${index}`);
+    return `<section class="panel quiz" data-quiz="quiz-${id}-${index}">
+    <h2>${questions.length > 1 ? `Check yourself ${index + 1} of ${questions.length}` : "Check yourself"}</h2>
+    <p><strong>${esc(entry.question)}</strong></p>
+    ${options.map((option) => `<button data-answer="${option.right ? "right" : "wrong"}">${esc(option.text)}</button>`).join("\n    ")}
     <p class="quiz-result" aria-live="polite"></p>
   </section>`;
+  }).join("\n\n    ");
 }
 
-function referencesSection(sectionSlug, chapter) {
+function goingDeeperSection(sectionSlug, chapter, { includeInterview = true } = {}) {
   const refs = referencesForConcept(sectionSlug, chapter);
-  return `<section class="panel">
-    <h2>References</h2>
-    <ul>${refs.map((ref) => {
-      const [label, url] = ref.split(" — ");
-      return `<li><a href="${esc(url)}" rel="noopener noreferrer">${esc(label)}</a></li>`;
-    }).join("")}</ul>
-  </section>`;
-}
-
-function learningObjectivesSection(sectionSlug, chapter) {
-  const items = isInterviewSection(sectionSlug)
-    ? [
-      `Explain what ${chapter} interviewers are trying to evaluate and what strong signal looks like.`,
-      "Structure a clear answer with context, decisions, trade-offs, outcome, and reflection.",
-      "Handle follow-up questions by naming assumptions, alternatives, and lessons without rambling.",
-      "Practice a timed answer, score it with a rubric, and rewrite it into a sharper version."
-    ]
-    : [
-      `Explain why ${chapter} is important when building AI systems for users, not demos.`,
-      "Describe the internal flow from input signals to model behavior, tool execution, or product outcome.",
-      "Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.",
-      "Implement a small production-shaped slice with evaluation, observability, and failure handling."
-    ];
-  return `<section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist">${items.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
-    </section>`;
-}
-
-function theorySection(sectionSlug, chapter) {
+  const topic = chapterTopic(sectionSlug, chapter);
   const concept = getConcept(sectionSlug, chapter);
-  if (isInterviewSection(sectionSlug)) {
-    return `<section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>${esc(concept.definition)}</p>
-      <p>Interview performance is a communication system: the question asks for evidence, your structure makes the evidence legible, follow-ups test depth, and the rubric rewards judgment over memorisation.</p>
-    </section>`;
-  }
-
-  return `<section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>${esc(concept.definition)}</p>
-      <p>${esc(concept.objectiveTeaching?.[1] || "Start from the input, trace how it is represented, identify the decision point, and make verification explicit through tests, evals, guardrails, and runtime telemetry.")}</p>
-    </section>`;
-}
-
-function miniProjectSection(sectionSlug, sectionName, chapter) {
-  if (isInterviewSection(sectionSlug)) {
-    return `<section class="panel">
-      <h2>Mini project</h2>
-      <p>Create a ${esc(chapter)} interview pack: one polished answer, two follow-up answers, a scoring rubric, and a rewritten version after review. The pack is complete when another engineer can use it to run a mock interview.</p>
-    </section>`;
-  }
-
-  return `<section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a ${esc(sectionName)} workbench that demonstrates ${esc(chapter)} with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>`;
-}
-
-function productionConsiderationsSection(sectionSlug) {
-  if (isInterviewSection(sectionSlug)) {
-    return `<section class="panel">
-      <h2>Interview readiness checklist</h2>
-      <p>Before a mock or real interview, prepare three stories, trim each to two minutes, attach measurable outcomes, rehearse one uncomfortable follow-up, and write one sentence about what you learned.</p>
-    </section>`;
-  }
-
-  return `<section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>`;
-}
-
-function interviewQuestionsSection(sectionSlug, chapter) {
-  const questions = isInterviewSection(sectionSlug)
+  const firstTradeoffName = tradeoffsForConcept(sectionSlug, chapter, concept)[0]?.[0];
+  const firstTradeoff = firstTradeoffName && / vs /i.test(firstTradeoffName) ? firstTradeoffName : null;
+  const interviewQuestions = isInterviewSection(sectionSlug)
     ? [
       `Give a two-minute answer for ${chapter} using a clear structure.`,
       "What follow-up question would expose whether your answer is shallow?",
-      "Where did you show ownership rather than team-level background?",
       "What would you cut if the interviewer asked for a shorter answer?"
     ]
     : [
-      `Explain ${chapter} to a senior backend engineer who has not shipped AI systems.`,
-      "What can go wrong in production, and how would you detect it?",
-      "How would your design change for AWS, Azure, and local/offline development?",
-      "Which metric would you optimize first, and which metric would you refuse to hide?"
+      `Explain ${topic} in two minutes to a senior engineer who has not shipped AI systems.`,
+      firstTradeoff ? `You must pick a side of "${firstTradeoff}" for a real product. Defend your choice, and name the signal that would make you reverse it.` : "Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?",
+      "What breaks first in production, and how would you detect it before users do?"
     ];
+  const refList = refs.map((ref) => {
+    const [label, url] = ref.split(" — ");
+    return `<li><a href="${esc(url)}" rel="noopener noreferrer">${esc(label)}</a></li>`;
+  }).join("");
   return `<section class="panel">
-      <h2>Interview questions</h2>
-      <ol>${questions.map((question) => `<li>${esc(question)}</li>`).join("")}</ol>
-    </section>`;
+    <h2>Going deeper</h2>
+    ${includeInterview ? `<h3>Questions interviewers ask</h3>
+    <ol>${interviewQuestions.map((question) => `<li>${esc(question)}</li>`).join("")}</ol>` : ""}
+    <h3>References</h3>
+    <ul>${refList}</ul>
+  </section>`;
+}
+
+function projectGoalSection(sectionSlug, chapter) {
+  const concept = getConcept(sectionSlug, chapter);
+  const why = compactSentence(concept.objectiveTeaching?.[0] || "");
+  const flow = compactSentence(concept.objectiveTeaching?.[1] || "");
+  return `<section class="panel">
+    <h2>What you're building, and why</h2>
+    ${why ? `<p>${esc(why)}</p>` : ""}
+    ${flow ? `<p>${esc(flow)}</p>` : ""}
+    ${concept.analogy ? `<p>${esc(concept.analogy)}</p>` : ""}
+  </section>`;
+}
+
+function projectBriefSection(sectionSlug, chapter) {
+  const concept = getConcept(sectionSlug, chapter);
+  return `<section class="panel explain-card">
+    <h2>The brief</h2>
+    <p>${esc(concept.exercise)}</p>
+  </section>`;
+}
+
+function projectRequirementsSection(sectionSlug, chapter) {
+  const concept = getConcept(sectionSlug, chapter);
+  const fundamentals = concept.fundamentals || [];
+  if (!fundamentals.length) return "";
+  return `<section class="panel">
+    <h2>What your build must include</h2>
+    <ul class="checklist">${fundamentals.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
+  </section>`;
+}
+
+function definitionOfDoneSection(sectionSlug, chapter) {
+  const concept = getConcept(sectionSlug, chapter);
+  const done = compactSentence(concept.objectiveTeaching?.[3] || "");
+  const notDone = (concept.misconceptions || []).filter(Boolean);
+  if (!done && !notDone.length) return "";
+  return `<section class="panel">
+    <h2>Definition of done</h2>
+    ${done ? `<p>${esc(done)}</p>` : ""}
+    ${notDone.length ? `<h3>Watch out for</h3>
+    <ul>${notDone.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>` : ""}
+  </section>`;
 }
 
 function priorityDeepDive(sectionSlug, chapter) {
@@ -4296,78 +4393,87 @@ function productDeploymentVariantsSection(sectionSlug, chapter = "") {
 
 function chapterBody(sectionSlug, sectionName, chapter, index) {
   const id = `${sectionSlug}-${slugify(chapter)}`;
-  const quizId = `quiz-${id}`;
   const concept = getConcept(sectionSlug, chapter);
-  const heroLede = firstSentence(concept.definition);
-  return `<article class="lesson" data-lesson-id="${id}">
-    <div class="lesson-hero">
+  const project = isProjectChapter(sectionSlug, chapter);
+  const quizzes = quizSections(sectionSlug, chapter, id);
+  const chips = [`<span data-reading-time>Calculating reading time</span>`];
+  if (project) chips.push("<span>Build project</span>");
+  else {
+    chips.push("<span>Hands-on lab</span>");
+    if (quizzes) chips.push("<span>Quiz</span>");
+  }
+  const hero = `<div class="lesson-hero">
       <div>
         <p class="eyebrow">${esc(sectionName)} · Chapter ${index + 1}</p>
         <h1>${esc(chapter)}</h1>
-        <p class="lede">${esc(heroLede)} This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">${esc(compactSentence(concept.definition))}</p>
+        <div class="meta">${chips.join("")}</div>
       </div>
       <button class="bookmark" type="button" data-bookmark="${id}">Bookmark</button>
-    </div>
-
-    ${learningObjectivesSection(sectionSlug, chapter)}
-
-    ${businessContextSection(sectionSlug, chapter)}
-
-    ${objectiveTeachingSection(sectionSlug, chapter)}
-    ${theorySection(sectionSlug, chapter)}
-
-    ${beginnerConceptSection(sectionSlug, chapter)}
-    ${coreConceptSection(sectionSlug, chapter)}
-    ${plainEnglishSection(sectionSlug, chapter)}
-    ${workedExampleSection(sectionSlug, chapter)}
-    ${systemMapSection(sectionSlug, sectionName, chapter)}
-    ${topicDiagramSection(sectionSlug, chapter)}
-    ${commandReferenceSection(sectionSlug, chapter)}
-    ${priorityDeepDive(sectionSlug, chapter)}
-    ${productDeploymentVariantsSection(sectionSlug, chapter)}
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>${esc(concept.objectiveTeaching?.[1] || concept.fundamentals?.[0] || "Trace the concept from input to representation, decision, output, and verification. The important learning move is naming each intermediate state so you can debug it later.")}</p>
-    </section>
-
-    ${tradeoffsSection(sectionSlug, chapter)}
-
-    ${interactiveExampleSection(sectionSlug, chapter)}
-
-    ${implementationSection(sectionSlug, chapter)}
-    ${setupSmokeTestSection(sectionSlug, chapter)}
-    ${labSection(sectionSlug, chapter)}
-
-    ${practiceSection(sectionSlug, chapter)}
-
-    ${miniProjectSection(sectionSlug, sectionName, chapter)}
-
-    ${commonMistakesSection(sectionSlug, chapter)}
-
-    ${productionConsiderationsSection(sectionSlug)}
-
-    ${quizSection(sectionSlug, chapter, quizId)}
-
-    ${interviewQuestionsSection(sectionSlug, chapter)}
-
-    ${referencesSection(sectionSlug, chapter)}
-
-    <div class="complete-box">
+    </div>`;
+  const completeBox = `<div class="complete-box">
       <button type="button" data-complete="${id}">Mark chapter complete</button>
       <span data-complete-status="${id}">Not completed</span>
-    </div>
+    </div>`;
+
+  if (project) {
+    return `<article class="lesson" data-lesson-id="${id}">
+    ${hero}
+
+    ${projectGoalSection(sectionSlug, chapter)}
+    ${businessContextSection(sectionSlug, chapter)}
+    ${projectBriefSection(sectionSlug, chapter)}
+    ${projectRequirementsSection(sectionSlug, chapter)}
+    ${workedExampleSection(sectionSlug, chapter, "A worked reference")}
+    ${topicDiagramSection(sectionSlug, chapter)}
+    ${setupSmokeTestSection(sectionSlug, chapter)}
+    ${implementationSection(sectionSlug, chapter, "Starting point in code")}
+    ${priorityDeepDive(sectionSlug, chapter)}
+    ${productDeploymentVariantsSection(sectionSlug, chapter)}
+    ${tradeoffsSection(sectionSlug, chapter, "Trade-offs to document")}
+    ${definitionOfDoneSection(sectionSlug, chapter)}
+    ${goingDeeperSection(sectionSlug, chapter, { includeInterview: false })}
+
+    ${completeBox}
+  </article>`;
+  }
+
+  const interviewTrack = isInterviewSection(sectionSlug);
+  return `<article class="lesson" data-lesson-id="${id}">
+    ${hero}
+
+    ${hookSection(sectionSlug, chapter)}
+    ${whyItMattersSection(sectionSlug, chapter)}
+    ${plainTermsSection(sectionSlug, chapter)}
+    ${businessContextSection(sectionSlug, chapter)}
+    ${howItWorksSection(sectionSlug, chapter)}
+    ${topicDiagramSection(sectionSlug, chapter)}
+    ${workedExampleSection(sectionSlug, chapter)}
+    ${commandReferenceSection(sectionSlug, chapter)}
+    ${tradeoffsSection(sectionSlug, chapter)}
+    ${interviewTrack ? "" : implementationSection(sectionSlug, chapter)}
+    ${setupSmokeTestSection(sectionSlug, chapter)}
+    ${labSection(sectionSlug, chapter)}
+    ${priorityDeepDive(sectionSlug, chapter)}
+    ${productDeploymentVariantsSection(sectionSlug, chapter)}
+    ${commonMistakesSection(sectionSlug, chapter)}
+
+    ${quizzes}
+
+    ${goingDeeperSection(sectionSlug, chapter)}
+
+    ${completeBox}
   </article>`;
 }
 
 function sectionIndexBody(slug, name, chapters) {
   const cards = chapters.map((chapter, i) => {
     const chapterSlug = slugify(chapter);
+    const blurb = firstSentence(getConcept(slug, chapter).definition);
     return `<a class="chapter-card" href="/sections/${slug}/${chapterSlug}.html">
       <span>Chapter ${i + 1}</span>
       <strong>${esc(chapter)}</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>${esc(blurb)}</small>
     </a>`;
   }).join("");
   const profile = getProfile(slug);
@@ -4391,6 +4497,10 @@ function sectionIndexBody(slug, name, chapters) {
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> ${esc(profile.analogy)} ${esc(profile.why)}</p>
   </section>
+  ${profile.runningExample ? `<section class="panel hook-card">
+    <h2>The running example</h2>
+    <p>${esc(profile.runningExample)}</p>
+  </section>` : ""}
   ${labs}
   ${productDeploymentVariantsSection(slug)}
   <section class="chapter-grid">${cards}</section>`;
@@ -4419,9 +4529,10 @@ sections.forEach(([sectionSlug, sectionName, chapters], sIndex) => {
       ? (sIndex < sections.length - 1 ? { href: `/sections/${sections[sIndex + 1][0]}/index.html`, label: sections[sIndex + 1][1] } : null)
       : { href: `/sections/${sectionSlug}/${slugify(chapters[cIndex + 1])}.html`, label: chapters[cIndex + 1] };
     const bodyChapter = chapterBody(sectionSlug, sectionName, chapter, cIndex);
+    const metaDescription = compactSentence(getConcept(sectionSlug, chapter).definition).slice(0, 158) || `${chapter} lesson in the ${sectionName} track.`;
     write(out("sections", sectionSlug, `${chapterSlug}.html`), pageShell({
       title: chapter,
-      description: `${chapter} lesson in the ${sectionName} track.`,
+      description: metaDescription,
       current: sectionSlug,
       breadcrumbs: [{ label: "Home", href: "/index.html" }, { label: sectionName, href: sectionHref }, { label: chapter }],
       body: bodyChapter,
@@ -4435,7 +4546,7 @@ sections.forEach(([sectionSlug, sectionName, chapters], sIndex) => {
 const dashboardCards = sections.map(([slug, name, chapters], i) => `<a class="track-card" href="/sections/${slug}/index.html">
   <span class="track-number">${String(i + 1).padStart(2, "0")}</span>
   <h3>${esc(name)}</h3>
-  <p>${chapters.length} chapters covering first principles, architecture, labs, production readiness, and interview practice.</p>
+  <p>${esc(getProfile(slug).why)} ${chapters.length} chapters.</p>
   <div class="card-progress" data-section-progress="${slug}"><span></span></div>
 </a>`).join("");
 
@@ -4459,11 +4570,11 @@ const homeBody = `<section class="hero">
 </section>
 <section class="panel">
   <h2>How this platform is different</h2>
-  <p>Every chapter is organized around the same production loop: objectives, theory, architecture, internals, interactive examples, code, labs, mistakes, production considerations, quizzes, interview questions, and references. The goal is not passive tutorial consumption; it is building judgment and shipping skill.</p>
+  <p>Chapters open with a real production failure, not a definition. Each one then builds the idea from plain terms to working code, a hands-on lab, the trade-offs you'll defend in design reviews, and the questions interviewers actually ask. The goal is not passive tutorial consumption; it is building judgment and shipping skill.</p>
 </section>
 <section class="panel">
-  <h2>Next build plan</h2>
-  <p>The platform is generated end-to-end. The next content push is to deepen the highest-value tracks first: LLM Fundamentals, RAG, MCP, AI Agents, Guardrails, AI Security, Production AI Systems, and Building Products. Each pass should replace generic explanations with concrete analogies, domain diagrams, complete labs, realistic evals, and source-backed references.</p>
+  <h2>Where to start</h2>
+  <p>New to AI engineering? Start with <a href="/sections/ai-foundations/index.html">AI Foundations</a> and work forward. Already shipping software? Jump straight to <a href="/sections/llm-fundamentals/index.html">LLM Fundamentals</a>, <a href="/sections/rag/index.html">RAG</a>, and <a href="/sections/ai-agents/index.html">AI Agents</a> — each track has a running example product you'll design against, chapter by chapter.</p>
 </section>
 <section class="track-grid">${dashboardCards}</section>`;
 

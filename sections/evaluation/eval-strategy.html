@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Eval strategy lesson in the Evaluation track.">
+  <meta name="description" content="An evaluation strategy defines how you measure whether your AI system is producing good outputs — what data to test on, what metrics to compute, how often to ">
   <meta name="theme-color" content="#0f172a">
   <title>Eval strategy | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,181 +47,80 @@
       <div>
         <p class="eyebrow">Evaluation · Chapter 1</p>
         <h1>Eval strategy</h1>
-        <p class="lede">An evaluation strategy defines how you measure whether your AI system is producing good outputs — what data to test on, what metrics to compute, how often to run evals, and what threshold gates a release. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">An evaluation strategy defines how you measure whether your AI system is producing good outputs — what data to test on, what metrics to compute, how often to run evals, and what threshold gates a release.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="evaluation-eval-strategy">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Eval strategy is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
     
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Eval strategy matters because without it, you cannot tell whether a change improved or degraded the system. You are flying blind.</p></article><article><span>Objective 2</span><p>Internal flow: change (prompt, model, retrieval) → run eval suite → compare metrics → gate release decision → log results for trend analysis.</p></article><article><span>Objective 3</span><p>Trade-offs: more evals = more confidence but more cost and time. Start with a small golden set (50–100 examples), add over time as you discover failure modes.</p></article><article><span>Objective 4</span><p>Production: run evals in CI on every prompt or model change. Alert when production metrics deviate from the eval baseline by more than a threshold.</p></article>
-    </div>
-  </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>An evaluation strategy defines how you measure whether your AI system is producing good outputs — what data to test on, what metrics to compute, how often to run evals, and what threshold gates a release.</p>
-      <p>Internal flow: change (prompt, model, retrieval) → run eval suite → compare metrics → gate release decision → log results for trend analysis.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: An evaluation strategy defines how you measure whether your AI system is producing good outputs — what data to test on, what metrics to compute, how often to run evals, and what threshold gates a release.</p>
-    <p><strong>Analogy:</strong> An eval strategy is a testing plan for AI behaviour. Just as you would not ship software without tests, you should not ship an AI product without a defined eval suite that runs before every significant change.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>An evaluation strategy defines how you measure whether your AI system is producing good outputs — what data to test on, what metrics to compute, how often to run evals, and what threshold gates a release.</p>
-    <h3>What to learn</h3>
-    <ul><li>Golden datasets: a fixed set of inputs with known correct or preferred outputs, used consistently across model/prompt/retrieval changes to compare performance.</li><li>Unit evals: test specific capabilities in isolation — does the model correctly extract dates? Does it refuse harmful requests? Does it follow the output format?</li><li>End-to-end evals: test the full pipeline — does the RAG system answer the 100 canonical support questions correctly?</li><li>LLM-as-judge: use a stronger model (often with a rubric) to score outputs at scale. Cheaper than human review, useful for quality dimensions like helpfulness or coherence.</li><li>Human review: essential for high-stakes outputs, edge cases, and calibrating automated eval metrics. Cannot be replaced entirely but should be focused on high-value cases.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Evals are not optional for &#39;small&#39; AI features. Even a simple classification prompt needs a test set.</li><li>LLM-as-judge is not a substitute for human review for high-stakes outputs. It is a complement.</li><li>Eval metrics should match business value, not just technical correctness. A system that answers precisely but rudely may score well on accuracy but badly on user satisfaction.</li></ul>
+    <h2>Why this matters</h2>
+    <p>Eval strategy matters because without it, you cannot tell whether a change improved or degraded the system. You are flying blind.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Eval strategy matters because without it, you cannot tell whether a change improved or degraded the system. You are flying blind.</p>
-    <p><strong>When it breaks:</strong> Evals are not optional for &#39;small&#39; AI features. Even a simple classification prompt needs a test set.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+    <h2>In plain terms</h2>
+    <p>An eval strategy is a testing plan for AI behaviour. Just as you would not ship software without tests, you should not ship an AI product without a defined eval suite that runs before every significant change.</p>
   </section>
+    
     <section class="panel">
-    <h2>Worked example</h2>
+    <h2>How it works</h2>
+    <p>Internal flow: change (prompt, model, retrieval) → run eval suite → compare metrics → gate release decision → log results for trend analysis.</p>
+    <ul><li>Golden datasets: a fixed set of inputs with known correct or preferred outputs, used consistently across model/prompt/retrieval changes to compare performance.</li><li>Unit evals: test specific capabilities in isolation — does the model correctly extract dates? Does it refuse harmful requests? Does it follow the output format?</li><li>End-to-end evals: test the full pipeline — does the RAG system answer the 100 canonical support questions correctly?</li><li>LLM-as-judge: use a stronger model (often with a rubric) to score outputs at scale. Cheaper than human review, useful for quality dimensions like helpfulness or coherence.</li><li>Human review: essential for high-stakes outputs, edge cases, and calibrating automated eval metrics. Cannot be replaced entirely but should be focused on high-value cases.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
     <p>Before shipping a new prompt for a support bot: run 100 golden questions through old and new prompts; compute answer quality (LLM-as-judge), citation accuracy (exact match), refusal rate, latency, and cost. Require that new prompt scores ≥ old on quality and ≤ old on cost before merging.</p>
-    <ol><li><strong>Dataset:</strong> An evaluation strategy defines how you measure whether your AI system is producing good outputs — what data to test on, what metrics to compute, how often to run evals, and what threshold gates a release.</li><li><strong>Run system:</strong> Internal flow: change (prompt, model, retrieval) → run eval suite → compare metrics → gate release decision → log results for trend analysis.</li><li><strong>Score:</strong> Before shipping a new prompt for a support bot: run 100 golden questions through old and new prompts; compute answer quality (LLM-as-judge), citation accuracy (exact match), refusal rate, latency, and cost. Require that new prompt scores ≥ old on quality and ≤ old on cost before merging.</li><li><strong>Compare:</strong> Trade-offs: more evals = more confidence but more cost and time. Start with a small golden set (50–100 examples), add over time as you discover failure modes.</li><li><strong>Review:</strong> Production: run evals in CI on every prompt or model change. Alert when production metrics deviate from the eval baseline by more than a threshold.</li><li><strong>Gate release:</strong> For an AI feature you are building, write: (1) 10 golden test cases with expected outputs, (2) the 3 most important metrics, (3) the minimum score threshold for each metric that must be met before shipping a change.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="AI evaluation loop for Eval strategy">
-    <article>
-      <span>Step 1</span>
-      <strong>Dataset</strong>
-      <p>An evaluation strategy defines how you measure whether your AI system is producing good outputs — what data to test on, what metrics to compute, how often to run evals, and what threshold gates a release.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Run system</strong>
-      <p>Internal flow: change (prompt, model, retrieval) → run eval suite → compare metrics → gate release decision → log results for trend analysis.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Score</strong>
-      <p>Before shipping a new prompt for a support bot: run 100 golden questions through old and new prompts; compute answer quality (LLM-as-judge), citation accuracy (exact match), refusal rate, latency, and cost. Require that new prompt scores ≥ old on quality and ≤ old on cost before merging.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Compare</strong>
-      <p>Trade-offs: more evals = more confidence but more cost and time. Start with a small golden set (50–100 examples), add over time as you discover failure modes.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Review</strong>
-      <p>Production: run evals in CI on every prompt or model change. Alert when production metrics deviate from the eval baseline by more than a threshold.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Gate release</strong>
-      <p>For an AI feature you are building, write: (1) 10 golden test cases with expected outputs, (2) the 3 most important metrics, (3) the minimum score threshold for each metric that must be met before shipping a change.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
   </section>
     
-    
-    
-    
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>Internal flow: change (prompt, model, retrieval) → run eval suite → compare metrics → gate release decision → log results for trend analysis.</p>
-    </section>
-
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> Trade-offs: more evals = more confidence but more cost and time. Start with a small golden set (50–100 examples), add over time as you discover failure modes.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Eval strategy, shorten the Dataset to Gate release path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Eval strategy, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Eval strategy, guard against evals are not optional for &#39;small&#39; ai features. even a simple classification prompt needs a test set.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Eval strategy, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> Production: run evals in CI on every prompt or model change. Alert when production metrics deviate from the eval baseline by more than a threshold.</p>
+    <ul><li><strong>The core tension:</strong> More evals = more confidence but more cost and time. Start with a small golden set (50–100 examples), add over time as you discover failure modes.</li></ul>
   </section>
     
-    <section class="panel">
+    
+    <section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> For an AI feature you are building, write: (1) 10 golden test cases with expected outputs, (2) the 3 most important metrics, (3) the minimum score threshold for each metric that must be met before shipping a change.</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Evals are not optional for &#39;small&#39; AI features. Even a simple classification prompt needs a test set.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    <p><strong>To make it production-shaped:</strong> Production: run evals in CI on every prompt or model change. Alert when production metrics deviate from the eval baseline by more than a threshold.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>For an AI feature you are building, write: (1) 10 golden test cases with expected outputs, (2) the 3 most important metrics, (3) the minimum score threshold for each metric that must be met before shipping a change.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a Evaluation workbench that demonstrates Eval strategy with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
     <ul><li>Evals are not optional for &#39;small&#39; AI features. Even a simple classification prompt needs a test set.</li><li>LLM-as-judge is not a substitute for human review for high-stakes outputs. It is a complement.</li><li>Eval metrics should match business value, not just technical correctness. A system that answers precisely but rudely may score well on accuracy but badly on user satisfaction.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-evaluation-eval-strategy-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Eval strategy?</strong></p>
+    <button data-answer="wrong">Once Eval strategy is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="right">Evals are not optional for &#39;small&#39; AI features. Even a simple classification prompt needs a test set.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-evaluation-eval-strategy">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Eval strategy?</p>
-    <button data-answer="wrong">Evals are not optional for &#39;small&#39; AI features. Even a simple classification prompt needs a test set.</button>
+    <section class="panel quiz" data-quiz="quiz-evaluation-eval-strategy-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Eval strategy into their product. Which approach shows production judgment?</strong></p>
     <button data-answer="right">Production: run evals in CI on every prompt or model change. Alert when production metrics deviate from the eval baseline by more than a threshold.</button>
-    <button data-answer="wrong">LLM-as-judge is not a substitute for human review for high-stakes outputs. It is a complement.</button>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Eval strategy to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Eval strategy in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

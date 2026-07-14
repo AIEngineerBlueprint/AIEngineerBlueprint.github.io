@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Sampling lesson in the LLM Fundamentals track.">
+  <meta name="description" content="Sampling is the process of choosing the next token during generation. Instead of always picking the most likely token (greedy), sampling introduces randomness">
   <meta name="theme-color" content="#0f172a">
   <title>Sampling | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,181 +47,124 @@
       <div>
         <p class="eyebrow">LLM Fundamentals · Chapter 16</p>
         <h1>Sampling</h1>
-        <p class="lede">Sampling is the process of choosing the next token during generation. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Sampling is the process of choosing the next token during generation. Instead of always picking the most likely token (greedy), sampling introduces randomness to produce more varied and often more useful outputs.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="llm-fundamentals-sampling">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Sampling is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Sampling matters because it controls the creativity-reliability trade-off. Code generation needs near-zero temperature (deterministic). Creative writing needs higher temperature.</p></article><article><span>Objective 2</span><p>Internal flow: model computes logits (raw scores) for every vocabulary token → apply temperature scaling → apply top-K/top-P filtering → sample from remaining distribution → selected token is appended.</p></article><article><span>Objective 3</span><p>Trade-offs: lower temperature = more predictable, less diverse, sometimes generic. Higher temperature = more diverse, potentially more creative, also more likely to produce errors.</p></article><article><span>Objective 4</span><p>Production defaults: for factual Q&amp;A: temperature 0.1–0.3, top-P 0.9. For code generation: temperature 0.0–0.2. For creative writing: temperature 0.7–1.0. Always document and version sampling parameters.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>The same question returns a perfect answer and a nonsense answer within a minute of each other. Nothing is broken: generation samples from a distribution, and the knobs are yours to set.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Sampling is the process of choosing the next token during generation. Instead of always picking the most likely token (greedy), sampling introduces randomness to produce more varied and often more useful outputs.</p>
-      <p>Internal flow: model computes logits (raw scores) for every vocabulary token → apply temperature scaling → apply top-K/top-P filtering → sample from remaining distribution → selected token is appended.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Sampling is the process of choosing the next token during generation. Instead of always picking the most likely token (greedy), sampling introduces randomness to produce more varied and often more useful outputs.</p>
-    <p><strong>Analogy:</strong> Greedy sampling is always ordering your usual coffee. Sampling with temperature is occasionally trying something new from the menu — sometimes you get something delicious, sometimes you are surprised, but the menu is still probabilistic.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Sampling is the process of choosing the next token during generation. Instead of always picking the most likely token (greedy), sampling introduces randomness to produce more varied and often more useful outputs.</p>
-    <h3>What to learn</h3>
-    <ul><li>Greedy decoding: always pick the highest-probability token. Produces consistent but often repetitive and boring output.</li><li>Temperature sampling: divide all logits by a temperature T before computing probabilities. T&lt;1 makes the distribution sharper (more deterministic). T&gt;1 flattens it (more random).</li><li>Top-K sampling: only sample from the K most likely tokens, ignoring the long tail. Prevents very unlikely tokens from being selected.</li><li>Top-P (nucleus) sampling: sample from the smallest set of tokens whose cumulative probability exceeds P. Adapts to the distribution shape — more tokens when the distribution is flat, fewer when it peaks sharply.</li><li>Beam search: maintain K candidate sequences in parallel, expanding the most promising ones. Used in translation, less common in conversational LLMs.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Temperature 0 (greedy) is not always the best for code — sometimes a slightly non-zero temperature helps escape repetitive patterns.</li><li>Top-K and top-P are usually used together, not as alternatives. They apply in sequence.</li><li>Sampling parameters are part of your product specification. Changing temperature changes model behaviour as much as changing the prompt.</li></ul>
+    <h2>Why this matters</h2>
+    <p>Sampling matters because it controls the creativity-reliability trade-off. Code generation needs near-zero temperature (deterministic). Creative writing needs higher temperature.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Sampling matters because it controls the creativity-reliability trade-off. Code generation needs near-zero temperature (deterministic). Creative writing needs higher temperature.</p>
-    <p><strong>When it breaks:</strong> Temperature 0 (greedy) is not always the best for code — sometimes a slightly non-zero temperature helps escape repetitive patterns.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
+    <h2>In plain terms</h2>
+    <p>Greedy sampling is always ordering your usual coffee. Sampling with temperature is occasionally trying something new from the menu — sometimes you get something delicious, sometimes you are surprised, but the menu is still probabilistic.</p>
+  </section>
+    
+    <section class="panel">
+    <h2>How it works</h2>
+    <p>Internal flow: model computes logits (raw scores) for every vocabulary token → apply temperature scaling → apply top-K/top-P filtering → sample from remaining distribution → selected token is appended.</p>
+    <ul><li>Greedy decoding: always pick the highest-probability token. Produces consistent but often repetitive and boring output.</li><li>Temperature sampling: divide all logits by a temperature T before computing probabilities. T&lt;1 makes the distribution sharper (more deterministic). T&gt;1 flattens it (more random).</li><li>Top-K sampling: only sample from the K most likely tokens, ignoring the long tail. Prevents very unlikely tokens from being selected.</li><li>Top-P (nucleus) sampling: sample from the smallest set of tokens whose cumulative probability exceeds P. Adapts to the distribution shape — more tokens when the distribution is flat, fewer when it peaks sharply.</li><li>Beam search: maintain K candidate sequences in parallel, expanding the most promising ones. Used in translation, less common in conversational LLMs.</li></ul>
   </section>
     <section class="panel">
-    <h2>Worked example</h2>
+    <h2>Topic diagram</h2>
+    <button class="expand-diagram" type="button">Expand diagram</button>
+    <svg class="diagram topic-diagram" viewBox="0 0 880 340" role="img" aria-label="Sampling pipeline for Sampling">
+    <defs>
+      <linearGradient id="topic-sampling" x1="0" x2="1"><stop stop-color="#38bdf8"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+      <marker id="topic-arrow-sampling" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0l8 4-8 4z" fill="currentColor"/></marker>
+    </defs>
+    <rect width="880" height="340" rx="28" fill="url(#topic-sampling)" opacity=".10"/>
+    <text x="36" y="48" font-family="Inter, system-ui" font-size="24" font-weight="800" fill="currentColor">Sampling pipeline</text>
+    <text x="36" y="76" font-family="Inter, system-ui" font-size="14" fill="currentColor" opacity=".72">Every token is a controlled random draw — these knobs shape the draw.</text>
+    <g fill="none" stroke="currentColor" stroke-width="2" opacity=".75" marker-end="url(#topic-arrow-sampling)"><path d="M150 182h24" /><path d="M290 182h24" /><path d="M430 182h24" /><path d="M570 182h24" /><path d="M710 182h24" /></g>
+    <g font-family="Inter, system-ui" fill="currentColor">
+      <g>
+          <rect x="40" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="96" y="176" font-size="14" font-weight="800" text-anchor="middle">Logits</text>
+          <text x="96" y="200" font-size="11" opacity=".70" text-anchor="middle">raw scores</text>
+        </g><g>
+          <rect x="180" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="236" y="176" font-size="14" font-weight="800" text-anchor="middle">Temperature</text>
+          <text x="236" y="200" font-size="11" opacity=".70" text-anchor="middle">flatten/sharpen</text>
+        </g><g>
+          <rect x="320" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="376" y="176" font-size="14" font-weight="800" text-anchor="middle">Top-K / Top-P</text>
+          <text x="376" y="200" font-size="11" opacity=".70" text-anchor="middle">trim the tail</text>
+        </g><g>
+          <rect x="460" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="516" y="176" font-size="14" font-weight="800" text-anchor="middle">Distribution</text>
+          <text x="516" y="200" font-size="11" opacity=".70" text-anchor="middle">probabilities</text>
+        </g><g>
+          <rect x="600" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="656" y="176" font-size="14" font-weight="800" text-anchor="middle">Sample</text>
+          <text x="656" y="200" font-size="11" opacity=".70" text-anchor="middle">pick one token</text>
+        </g><g>
+          <rect x="740" y="140" width="112" height="86" rx="18" fill="var(--card)" stroke="currentColor" opacity=".96"/>
+          <text x="796" y="176" font-size="14" font-weight="800" text-anchor="middle">Repeat</text>
+          <text x="796" y="200" font-size="11" opacity=".70" text-anchor="middle">token by token</text>
+        </g>
+    </g>
+  </svg>
+    <p>Use this diagram as the mental model for the chapter. The arrows show the order of responsibility; the labels show what must be validated or measured at each handoff.</p>
+  </section>
+    <section class="panel">
+    <h2>A concrete example</h2>
     <p>For the prompt &#39;The weather today is&#39;, greedy decoding might always produce &#39;sunny&#39; (most probable). With temperature 0.9 and top-P 0.95, the model might produce &#39;sunny&#39;, &#39;cloudy&#39;, &#39;mild&#39;, or &#39;expected to change&#39; — reflecting real uncertainty in how this sentence could complete.</p>
-    <ol><li><strong>User intent:</strong> Sampling is the process of choosing the next token during generation.</li><li><strong>Prompt + context:</strong> Internal flow: model computes logits (raw scores) for every vocabulary token → apply temperature scaling → apply top-K/top-P filtering → sample from remaining distribution → selected token is appended.</li><li><strong>Tokens:</strong> For the prompt &#39;The weather today is&#39;, greedy decoding might always produce &#39;sunny&#39; (most probable). With temperature 0.9 and top-P 0.95, the model might produce &#39;sunny&#39;, &#39;cloudy&#39;, &#39;mild&#39;, or &#39;expected to change&#39; — reflecting real uncertainty in how this sentence could complete.</li><li><strong>Transformer layers:</strong> Trade-offs: lower temperature = more predictable, less diverse, sometimes generic. Higher temperature = more diverse, potentially more creative, also more likely to produce errors.</li><li><strong>Sampling:</strong> Production defaults: for factual Q&amp;A: temperature 0.1–0.3, top-P 0.9. For code generation: temperature 0.0–0.2. For creative writing: temperature 0.7–1.0. Always document and version sampling parameters.</li><li><strong>Validated answer:</strong> Generate the same prompt five times at temperature 0.0, then five times at temperature 1.0. Document the differences. For your use case, which temperature produces more useful outputs? Why?</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="LLM request flow for Sampling">
-    <article>
-      <span>Step 1</span>
-      <strong>User intent</strong>
-      <p>Sampling is the process of choosing the next token during generation.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Prompt + context</strong>
-      <p>Internal flow: model computes logits (raw scores) for every vocabulary token → apply temperature scaling → apply top-K/top-P filtering → sample from remaining distribution → selected token is appended.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Tokens</strong>
-      <p>For the prompt &#39;The weather today is&#39;, greedy decoding might always produce &#39;sunny&#39; (most probable). With temperature 0.9 and top-P 0.95, the model might produce &#39;sunny&#39;, &#39;cloudy&#39;, &#39;mild&#39;, or &#39;expected to change&#39; — reflecting real uncertainty in how this sentence could complete.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Transformer layers</strong>
-      <p>Trade-offs: lower temperature = more predictable, less diverse, sometimes generic. Higher temperature = more diverse, potentially more creative, also more likely to produce errors.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Sampling</strong>
-      <p>Production defaults: for factual Q&amp;A: temperature 0.1–0.3, top-P 0.9. For code generation: temperature 0.0–0.2. For creative writing: temperature 0.7–1.0. Always document and version sampling parameters.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Validated answer</strong>
-      <p>Generate the same prompt five times at temperature 0.0, then five times at temperature 1.0. Document the differences. For your use case, which temperature produces more useful outputs? Why?</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
   </section>
     
-    
-    
-    
-
-    <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>Internal flow: model computes logits (raw scores) for every vocabulary token → apply temperature scaling → apply top-K/top-P filtering → sample from remaining distribution → selected token is appended.</p>
-    </section>
-
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> Trade-offs: lower temperature = more predictable, less diverse, sometimes generic. Higher temperature = more diverse, potentially more creative, also more likely to produce errors.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
-  </section>
-
-    <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Sampling, shorten the User intent to Validated answer path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Sampling, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Sampling, guard against temperature 0 (greedy) is not always the best for code — sometimes a slightly non-zero temperature helps escape repetitive patterns.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Sampling, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
-    <pre><code>function runLearningSlice(input) {
-  const result = processInput(input);
-  const checks = {
-    hasExpectedShape: Boolean(result),
-    isObservable: Boolean(result.traceId),
-    hasFailurePath: Boolean(result.error || result.value)
-  };
-  return { result, checks };
-}</code></pre>
-    <p><strong>Why this matters:</strong> Production defaults: for factual Q&amp;A: temperature 0.1–0.3, top-P 0.9. For code generation: temperature 0.0–0.2. For creative writing: temperature 0.7–1.0. Always document and version sampling parameters.</p>
+    <ul><li><strong>The core tension:</strong> Lower temperature = more predictable, less diverse, sometimes generic. Higher temperature = more diverse, potentially more creative, also more likely to produce errors.</li></ul>
   </section>
     
-    <section class="panel">
+    
+    <section class="panel practice-card">
     <h2>Hands-on lab</h2>
     <p><strong>Task:</strong> Generate the same prompt five times at temperature 0.0, then five times at temperature 1.0. Document the differences. For your use case, which temperature produces more useful outputs? Why?</p>
     <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
+      <li>Build or sketch the smallest version that actually runs or can be reviewed.</li>
       <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Temperature 0 (greedy) is not always the best for code — sometimes a slightly non-zero temperature helps escape repetitive patterns.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
     </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
+    <p><strong>To make it production-shaped:</strong> Production defaults: for factual Q&amp;A: temperature 0.1–0.3, top-P 0.9. For code generation: temperature 0.0–0.2. For creative writing: temperature 0.7–1.0. Always document and version sampling parameters.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>Generate the same prompt five times at temperature 0.0, then five times at temperature 1.0. Document the differences. For your use case, which temperature produces more useful outputs? Why?</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
-  </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a LLM Fundamentals workbench that demonstrates Sampling with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
     <ul><li>Temperature 0 (greedy) is not always the best for code — sometimes a slightly non-zero temperature helps escape repetitive patterns.</li><li>Top-K and top-P are usually used together, not as alternatives. They apply in sequence.</li><li>Sampling parameters are part of your product specification. Changing temperature changes model behaviour as much as changing the prompt.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-sampling-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Sampling?</strong></p>
+    <button data-answer="right">Temperature 0 (greedy) is not always the best for code — sometimes a slightly non-zero temperature helps escape repetitive patterns.</button>
+    <button data-answer="wrong">Once Sampling is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-sampling">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Sampling?</p>
-    <button data-answer="wrong">Temperature 0 (greedy) is not always the best for code — sometimes a slightly non-zero temperature helps escape repetitive patterns.</button>
+    <section class="panel quiz" data-quiz="quiz-llm-fundamentals-sampling-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Sampling into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
     <button data-answer="right">Production defaults: for factual Q&amp;A: temperature 0.1–0.3, top-P 0.9. For code generation: temperature 0.0–0.2. For creative writing: temperature 0.7–1.0. Always document and version sampling parameters.</button>
-    <button data-answer="wrong">Top-K and top-P are usually used together, not as alternatives. They apply in sequence.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Sampling to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Sampling in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://platform.openai.com/docs" rel="noopener noreferrer">OpenAI API documentation</a></li><li><a href="https://docs.anthropic.com/" rel="noopener noreferrer">Anthropic Claude documentation</a></li></ul>
   </section>
 

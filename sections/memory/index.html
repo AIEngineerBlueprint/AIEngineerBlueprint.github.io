@@ -56,74 +56,75 @@
   </section>
   
   
+  
   <section class="chapter-grid"><a class="chapter-card" href="/sections/memory/memory-types.html">
       <span>Chapter 1</span>
       <strong>Memory types</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Memory types is the taxonomy engineers use to decide what an AI system should remember and for how long: transient task state, recent conversation, specific past episodes, and long-lived facts about a user or domain.</small>
     </a><a class="chapter-card" href="/sections/memory/conversation-memory.html">
       <span>Chapter 2</span>
       <strong>Conversation memory</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Conversation memory is the short-term record of the current session&#39;s back-and-forth, used so an assistant doesn&#39;t ask a user to repeat information they already gave a few turns earlier.</small>
     </a><a class="chapter-card" href="/sections/memory/semantic-memory.html">
       <span>Chapter 3</span>
       <strong>Semantic memory</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Semantic memory stores durable, reusable facts about a user, project, or domain, independent of any single conversation, so the system can recall a stable preference months later without replaying every past chat.</small>
     </a><a class="chapter-card" href="/sections/memory/episodic-memory.html">
       <span>Chapter 4</span>
       <strong>Episodic memory</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Episodic memory stores specific past events or sessions as distinct, retrievable records, so an agent can answer what was decided in a particular past interaction rather than only holding generalized facts.</small>
     </a><a class="chapter-card" href="/sections/memory/working-memory.html">
       <span>Chapter 5</span>
       <strong>Working memory</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Working memory is the temporary scratchpad an agent uses while actively performing one task, such as intermediate reasoning steps or a partially built plan, which is not meant to persist once the task ends.</small>
     </a><a class="chapter-card" href="/sections/memory/summarization.html">
       <span>Chapter 6</span>
       <strong>Summarization</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Summarization compresses older memory content into a denser form so a system retains the gist of what happened without paying the full context cost of the original transcript.</small>
     </a><a class="chapter-card" href="/sections/memory/retrieval-memory.html">
       <span>Chapter 7</span>
       <strong>Retrieval memory</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Retrieval memory treats stored memories like a search index: instead of loading everything a system has ever remembered, it retrieves only the entries relevant to the current request, similar to RAG but over an agent&#39;s own memory store.</small>
     </a><a class="chapter-card" href="/sections/memory/privacy.html">
       <span>Chapter 8</span>
       <strong>Privacy</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Privacy in memory systems governs what personal or sensitive information gets stored, who or what can access it, how long it persists, and whether the user can see or delete it.</small>
     </a><a class="chapter-card" href="/sections/memory/retention.html">
       <span>Chapter 9</span>
       <strong>Retention</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Retention defines how long each category of memory is kept before it is automatically deleted or must be re-confirmed, preventing indefinite accumulation of stale or unnecessary data.</small>
     </a><a class="chapter-card" href="/sections/memory/forgetting.html">
       <span>Chapter 10</span>
       <strong>Forgetting</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Forgetting is the deliberate removal or decay of stored memory so it no longer influences future behavior, whether triggered by a retention policy, a user request, or detection that a fact is outdated.</small>
     </a><a class="chapter-card" href="/sections/memory/evaluation.html">
       <span>Chapter 11</span>
       <strong>Evaluation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Evaluation of memory systems tests whether stored information is retrieved when relevant, ignored when irrelevant or expired, and updated correctly when it changes, not just whether the system sounds coherent.</small>
     </a><a class="chapter-card" href="/sections/memory/storage-patterns.html">
       <span>Chapter 12</span>
       <strong>Storage patterns</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Storage patterns are the concrete data structures used to persist memory: key-value pairs for simple facts, vector embeddings for semantic search, or relational and graph structures for facts with explicit relationships.</small>
     </a><a class="chapter-card" href="/sections/memory/operations.html">
       <span>Chapter 13</span>
       <strong>Operations</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Operations for memory systems means monitoring how memory behaves in production: growth rate, retrieval relevance, staleness, and whether deletion and correction requests actually take effect.</small>
     </a><a class="chapter-card" href="/sections/memory/memory-lab.html">
       <span>Chapter 14</span>
       <strong>Memory lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The memory lab is a hands-on exercise to build and verify a minimal memory system: store, retrieve, update, and forget, each demonstrated with visible input and output rather than left as theory.</small>
     </a><a class="chapter-card" href="/sections/memory/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete memory layer for one real use case, with explicit storage, retrieval, retention, and forgetting rules documented well enough that another engineer could reuse it.</small>
     </a><a class="chapter-card" href="/sections/memory/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete memory architecture for a real product: which memory types are needed, how each is stored and retrieved, the retention and privacy rules, and how the system is evaluated and monitored in production.</small>
     </a><a class="chapter-card" href="/sections/memory/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The memory interview pack prepares you to discuss memory system design credibly: the difference between memory types, how retrieval actually works, and how you would handle privacy, retention, and forgetting requirements under follow-up questions.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/agentic-systems/index.html">← Agentic AI</a>

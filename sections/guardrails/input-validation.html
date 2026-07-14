@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Input validation lesson in the Guardrails track.">
+  <meta name="description" content="Input validation is the checkpoint before the model: it bounds size, format, language, topic, and intent of what comes in — the cheapest place in the whole st">
   <meta name="theme-color" content="#0f172a">
   <title>Input validation | AIEngineerBlueprint</title>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -47,120 +47,42 @@
       <div>
         <p class="eyebrow">Guardrails · Chapter 2</p>
         <h1>Input validation</h1>
-        <p class="lede">Input validation checks user requests, uploaded files, retrieved context, and tool results before they influence the model or downstream actions. This chapter turns that idea into a traceable learning slice with examples, checks, and failure modes.</p>
-        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Interactive quiz</span></div>
+        <p class="lede">Input validation is the checkpoint before the model: it bounds size, format, language, topic, and intent of what comes in — the cheapest place in the whole stack to stop a problem.</p>
+        <div class="meta"><span data-reading-time>Calculating reading time</span><span>Hands-on lab</span><span>Quiz</span></div>
       </div>
       <button class="bookmark" type="button" data-bookmark="guardrails-input-validation">Bookmark</button>
     </div>
 
-    <section class="panel">
-      <h2>Learning objectives</h2>
-      <ul class="checklist"><li>Explain why Input validation is important when building AI systems for users, not demos.</li><li>Describe the internal flow from input signals to model behavior, tool execution, or product outcome.</li><li>Choose architecture patterns and trade-offs for latency, accuracy, safety, cost, and maintainability.</li><li>Implement a small production-shaped slice with evaluation, observability, and failure handling.</li></ul>
-    </section>
-
-    
-
-    <section class="panel objective-map">
-    <h2>Learning the objectives</h2>
-    <p>The objectives above are not just labels. This section teaches the minimum content you need to satisfy them.</p>
-    <div class="objective-grid">
-      <article><span>Objective 1</span><p>Input validation matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p></article><article><span>Objective 2</span><p>The internal flow centers on type checks, length limits, content policy, prompt-injection detection, file scanning, and source trust labels, then hands a validated result to the next step in the product workflow.</p></article><article><span>Objective 3</span><p>The main trade-off is Strict input validation improves safety but can block legitimate edge cases.</p></article><article><span>Objective 4</span><p>A production-shaped slice should implement Input validation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p></article>
-    </div>
+    <section class="panel hook-card">
+    <h2>When it goes wrong</h2>
+    <p>A user pasted a 400,000-character &#39;question&#39; and your latency and bill spiked together. The cheapest guardrail in the stack is deciding what&#39;s allowed in before the model ever sees it.</p>
   </section>
     <section class="panel">
-      <h2>Theory from first principles</h2>
-      <p>Input validation checks user requests, uploaded files, retrieved context, and tool results before they influence the model or downstream actions.</p>
-      <p>The internal flow centers on type checks, length limits, content policy, prompt-injection detection, file scanning, and source trust labels, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
-    <section class="panel beginner-card">
-    <h2>Beginner explanation</h2>
-    <p>If you have no AI background, start here: Input validation checks user requests, uploaded files, retrieved context, and tool results before they influence the model or downstream actions.</p>
-    <p><strong>Analogy:</strong> It is like checking IDs and bags before letting anyone into a secure building.</p>
-  </section>
-    <section class="panel">
-    <h2>Core concept you must understand</h2>
-    <p>Input validation checks user requests, uploaded files, retrieved context, and tool results before they influence the model or downstream actions.</p>
-    <h3>What to learn</h3>
-    <ul><li>Core mechanism: type checks, length limits, content policy, prompt-injection detection, file scanning, and source trust labels.</li><li>Inputs and outputs: identify what enters Input validation, what state changes, and what the next system component receives.</li><li>Evaluation signal: test Input validation with representative success cases, edge cases, and at least one failure case.</li><li>Operational concern: assign ownership for freshness, permissions, cost, latency, and rollback where this concept touches production.</li><li>Debugging move: capture traces or artifacts that show whether Input validation worked for the right reason.</li></ul>
-    <h3>Common misunderstandings</h3>
-    <ul><li>Do not validate only the user message; retrieved and tool-provided text is also input.</li><li>Input validation is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Input validation inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <h2>Why this matters</h2>
+    <p>Every downstream defense is more expensive than input validation: catching a bad request at the door costs milliseconds; catching its consequences after generation costs a model call, and after the user sees it costs trust.</p>
   </section>
     <section class="panel explain-card">
-    <h2>How to think about it</h2>
-    <p><strong>When to use it:</strong> Input validation matters because it changes product quality, reliability, safety, cost, or developer velocity in real AI systems.</p>
-    <p><strong>When it breaks:</strong> Do not validate only the user message; retrieved and tool-provided text is also input.</p>
-    <p><strong>What to ask:</strong> What are the inputs, what evidence or data makes the result trustworthy, how will failure be detected, and what should the product do when confidence is low?</p>
-  </section>
-    <section class="panel">
-    <h2>Worked example</h2>
-    <p>A document assistant rejects an oversized HTML file with hidden instructions before adding it to context.</p>
-    <ol><li><strong>Input:</strong> Input validation checks user requests, uploaded files, retrieved context, and tool results before they influence the model or downstream actions.</li><li><strong>Policy check:</strong> The internal flow centers on type checks, length limits, content policy, prompt-injection detection, file scanning, and source trust labels, then hands a validated result to the next step in the product workflow.</li><li><strong>Model/tool:</strong> A document assistant rejects an oversized HTML file with hidden instructions before adding it to context.</li><li><strong>Output check:</strong> The main trade-off is Strict input validation improves safety but can block legitimate edge cases.</li><li><strong>Escalate:</strong> A production-shaped slice should implement Input validation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</li><li><strong>Audit:</strong> List validation checks for user text, file uploads, and retrieved web pages.</li></ol>
-    <p><strong>What to notice:</strong> each step has a job. If a step is vague, the system becomes hard to debug. If a step is visible and measured, engineers can improve it without guessing.</p>
-  </section>
-    <section class="panel">
-    <h2>Concept flow, not architecture</h2>
-    <div class="concept-flow" role="img" aria-label="Guardrail checkpoints for Input validation">
-    <article>
-      <span>Step 1</span>
-      <strong>Input</strong>
-      <p>Input validation checks user requests, uploaded files, retrieved context, and tool results before they influence the model or downstream actions.</p>
-    </article><article>
-      <span>Step 2</span>
-      <strong>Policy check</strong>
-      <p>The internal flow centers on type checks, length limits, content policy, prompt-injection detection, file scanning, and source trust labels, then hands a validated result to the next step in the product workflow.</p>
-    </article><article>
-      <span>Step 3</span>
-      <strong>Model/tool</strong>
-      <p>A document assistant rejects an oversized HTML file with hidden instructions before adding it to context.</p>
-    </article><article>
-      <span>Step 4</span>
-      <strong>Output check</strong>
-      <p>The main trade-off is Strict input validation improves safety but can block legitimate edge cases.</p>
-    </article><article>
-      <span>Step 5</span>
-      <strong>Escalate</strong>
-      <p>A production-shaped slice should implement Input validation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
-    </article><article>
-      <span>Step 6</span>
-      <strong>Audit</strong>
-      <p>List validation checks for user text, file uploads, and retrieved web pages.</p>
-    </article>
-  </div>
-    <p>This is intentionally not an architecture diagram. For this topic, the learning value is understanding the sequence of ideas and handoffs. Architecture comes later when you turn the concept into a system.</p>
+    <h2>In plain terms</h2>
+    <p>It is like the door policy at a venue: checking tickets at the entrance is cheap; removing someone from the middle of the crowd is expensive and public.</p>
   </section>
     
-    
-    
-    
-
     <section class="panel">
-      <h2>What happens under the hood</h2>
-      <p>The internal flow centers on type checks, length limits, content policy, prompt-injection detection, file scanning, and source trust labels, then hands a validated result to the next step in the product workflow.</p>
-    </section>
-
+    <h2>How it works</h2>
+    <p>The flow: size and format bounds → normalization (encoding, invisible characters) → intent/topic classification and routing → hostile-pattern screening → annotated hand-off to the pipeline with trust labels attached.</p>
+    <ul><li>Bound the basics first: length caps (a 400,000-character &#39;question&#39; is a cost and latency attack whether or not it is malicious), rate limits per user, format checks on structured fields, and file-type validation on uploads.</li><li>Classify before you process: a lightweight intent/topic classifier in front of an expensive pipeline routes out-of-scope requests (&#39;write my homework&#39; to a support bot) to a cheap refusal instead of a costly generation.</li><li>Screen for known-hostile patterns — injection phrasings, encoded payloads, smuggled instructions in pasted content — knowing this is a fast-moving filter that reduces volume, not a wall that stops a determined attacker.</li><li>Validation must not become rejection theater: over-tight filters block legitimate users (real messages contain &#39;ignore the previous email I sent&#39;), so measure false positives with the same care as attack catch-rate.</li><li>Everything the check decides gets logged: what was blocked, why, and a sample of what was allowed — this is the data that tunes thresholds and proves the control works.</li></ul>
+  </section>
+    
+    <section class="panel">
+    <h2>A concrete example</h2>
+    <p>A support assistant&#39;s input stage: cap 8,000 characters (99.9th percentile of real questions is 1,900), strip invisible Unicode, run a 10ms topic classifier that routes billing questions to the billing flow and &#39;summarize this novel&#39; to a polite refusal, and flag injection-pattern hits for the output stage to double-check. Cost: ~15ms. It rejects 3% of traffic — audited monthly to make sure that 3% isn&#39;t customers.</p>
+  </section>
+    
     <section class="panel">
     <h2>Trade-offs</h2>
-    <ul><li><strong>Quality vs latency:</strong> The main trade-off is Strict input validation improves safety but can block legitimate edge cases.</li><li><strong>Flexibility vs reliability:</strong> Open-ended designs adapt to more inputs; constrained contracts are easier to test and operate.</li><li><strong>Automation vs oversight:</strong> More automation reduces manual work but needs stronger logging, review points, and rollback paths.</li></ul>
+    <ul><li><strong>The core tension:</strong> Stricter validation blocks more attacks and more legitimate users — the tuning loop is watching false-positive samples, not just attack catch-rates.</li></ul>
   </section>
-
     <section class="panel">
-      <h2>Interactive example</h2>
-      <div class="simulator">
-        <label>Change the production constraint
-          <select data-sim-select>
-            <option value="quality" selected>High answer quality</option>
-            <option value="latency">Low latency</option>
-            <option value="safety">Strict safety and compliance</option>
-          </select>
-        </label>
-        <output data-sim-output data-latency="For Input validation, shorten the Input to Audit path first: cache stable work, reduce unnecessary context, set timeouts, and monitor whether quality vs latency hurts user-visible quality." data-quality="For Input validation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set." data-safety="For Input validation, guard against do not validate only the user message; retrieved and tool-provided text is also input.. Validate inputs and outputs, log the decision trace, define an escalation path, and fail closed when evidence is missing.">For Input validation, improve evidence before tuning prompts: use better inputs, add targeted checks around flexibility vs reliability, and compare outputs against the chapter exercise or eval set.</output>
-      </div>
-    </section>
-
-    <section class="panel">
-    <h2>Small runnable example</h2>
-    <p>Use this snippet as the smallest concrete anchor for the concept. Change the inputs, then observe which assumptions fail.</p>
+    <h2>Try it in code</h2>
     <pre><code>function enforcePolicy({ input, output, toolCall }) {
   return {
     inputAllowed: !containsPromptInjection(input),
@@ -168,58 +90,50 @@
     toolAllowed: toolCall ? isLeastPrivilege(toolCall) : true
   };
 }</code></pre>
-    <p><strong>Why this matters:</strong> A production-shaped slice should implement Input validation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</p>
+    <p>Change the inputs and watch which assumption breaks first. The gap between what you expected and what you got is where the learning is.</p>
   </section>
     
-    <section class="panel">
-    <h2>Hands-on lab</h2>
-    <p><strong>Task:</strong> List validation checks for user text, file uploads, and retrieved web pages.</p>
-    <ol>
-      <li>Build or configure it, using the runnable example above as your starting point.</li>
-      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
-      <li>Add one check that would specifically catch this mistake: Do not validate only the user message; retrieved and tool-provided text is also input.</li>
-      <li>Note what you would log and which single metric would reveal this breaking in production.</li>
-    </ol>
-    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case, and your check would actually fail if the mistake above happened.</p>
-  </section>
-
     <section class="panel practice-card">
-    <h2>Practice to make it stick</h2>
-    <p>List validation checks for user text, file uploads, and retrieved web pages.</p>
-    <p>Then explain your answer to a non-AI engineer. If they cannot repeat the idea back to you, simplify the analogy and tighten the example.</p>
+    <h2>Hands-on lab</h2>
+    <p><strong>Task:</strong> Design the input stage for a public-facing assistant: the length cap (justify it from a real percentile), three format/normalization checks, the topic router&#39;s allowed intents, and the metric that would reveal over-blocking within a week.</p>
+    <ol>
+      <li>Build or configure it, using the code example above as your starting point.</li>
+      <li>Test it against one normal case and one edge case, and write down both actual outputs.</li>
+      <li>Note what you would log, and which single metric would reveal this breaking in production.</li>
+    </ol>
+    <p><strong>To make it production-shaped:</strong> A production input stage has hard bounds on every field, a topic router with measured latency, logged block reasons, and a monthly audit of a blocked-request sample to catch silent over-blocking.</p>
+    <p><strong>Done when:</strong> the edge case is handled correctly or fails safely, not just the normal case.</p>
   </section>
-
-    <section class="panel">
-      <h2>Mini project</h2>
-      <p>Build a Guardrails workbench that demonstrates Input validation with realistic inputs, visible traces, and a small evaluation set. The project is complete only when another engineer can run it, understand the architecture, and reproduce the evaluation results.</p>
-    </section>
-
+    
+    
     <section class="panel">
     <h2>Common mistakes</h2>
-    <ul><li>Do not validate only the user message; retrieved and tool-provided text is also input.</li><li>Input validation is not complete when the happy path works once; it needs representative evals and visible failure handling.</li><li>Do not hide Input validation inside prompt text when it requires code, policy, data, or operational ownership.</li></ul>
+    <ul><li>Input validation is not an injection cure; determined attackers phrase around filters, which is why output checks and permission gates exist behind it.</li><li>Blocking more is not safer overall; false positives are users you turned away, and they don&#39;t file security reports — they leave.</li><li>Skipping cheap checks because &#39;the model handles it&#39; means paying model prices for problems a length cap solves for free.</li></ul>
   </section>
 
-    <section class="panel">
-      <h2>Production considerations</h2>
-      <p>Before release, define ownership, SLOs, model fallback rules, data retention, security review criteria, and rollback strategy. For regulated or enterprise environments, add approval gates for prompt changes, model changes, tool permissions, and retrieval corpus updates.</p>
-    </section>
+    <section class="panel quiz" data-quiz="quiz-guardrails-input-validation-0">
+    <h2>Check yourself 1 of 2</h2>
+    <p><strong>Which of these is sound guidance about Input validation?</strong></p>
+    <button data-answer="right">Input validation is not an injection cure; determined attackers phrase around filters, which is why output checks and permission gates exist behind it.</button>
+    <button data-answer="wrong">If early outputs look plausible, the approach is working and deeper evaluation can safely be skipped.</button>
+    <button data-answer="wrong">Once Input validation is configured correctly at launch, it will keep behaving the same way as the product and its data evolve.</button>
+    <p class="quiz-result" aria-live="polite"></p>
+  </section>
 
-    <section class="panel quiz" data-quiz="quiz-guardrails-input-validation">
-    <h2>Quiz</h2>
-    <p><strong>Question:</strong> Which answer best shows production understanding of Input validation?</p>
-    <button data-answer="wrong">Do not validate only the user message; retrieved and tool-provided text is also input.</button>
-    <button data-answer="right">A production-shaped slice should implement Input validation on a small realistic input, log the decision path, test expected and failing cases, and define what the system does when confidence is low.</button>
-    <button data-answer="wrong">Input validation is not complete when the happy path works once; it needs representative evals and visible failure handling.</button>
+    <section class="panel quiz" data-quiz="quiz-guardrails-input-validation-1">
+    <h2>Check yourself 2 of 2</h2>
+    <p><strong>A team is bringing Input validation into their product. Which approach shows production judgment?</strong></p>
+    <button data-answer="wrong">Ship the first version that produces plausible output; real users will surface problems faster than internal evaluation.</button>
+    <button data-answer="wrong">Add every safeguard imaginable before measuring anything, so that no monitoring is needed after launch.</button>
+    <button data-answer="right">A production input stage has hard bounds on every field, a topic router with measured latency, logged block reasons, and a monthly audit of a blocked-request sample to catch silent over-blocking.</button>
     <p class="quiz-result" aria-live="polite"></p>
   </section>
 
     <section class="panel">
-      <h2>Interview questions</h2>
-      <ol><li>Explain Input validation to a senior backend engineer who has not shipped AI systems.</li><li>What can go wrong in production, and how would you detect it?</li><li>How would your design change for AWS, Azure, and local/offline development?</li><li>Which metric would you optimize first, and which metric would you refuse to hide?</li></ol>
-    </section>
-
-    <section class="panel">
-    <h2>References</h2>
+    <h2>Going deeper</h2>
+    <h3>Questions interviewers ask</h3>
+    <ol><li>Explain Input validation in two minutes to a senior engineer who has not shipped AI systems.</li><li>Which trade-off in this chapter would you defend in a design review, and what evidence would change your mind?</li><li>What breaks first in production, and how would you detect it before users do?</li></ol>
+    <h3>References</h3>
     <ul><li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" rel="noopener noreferrer">OWASP Top 10 for Large Language Model Applications</a></li></ul>
   </section>
 

@@ -54,6 +54,10 @@
     <p>By the end of this track, you should be able to reason from first principles, design the architecture, identify failure modes, build a working slice, and explain how the system behaves in production.</p>
     <p><strong>In plain words:</strong> Guardrails are the airport security of an AI product. They do not fly the plane, but they decide what is allowed through each checkpoint. They reduce predictable harm by validating input, model output, tool access, data exposure, and policy compliance.</p>
   </section>
+  <section class="panel hook-card">
+    <h2>The running example</h2>
+    <p>Throughout this track, imagine you&#39;re responsible for Coverly: a customer-facing insurance assistant that quotes policies and files claims — a product where one bad answer is a regulatory event. Each chapter is a checkpoint between Coverly and the news.</p>
+  </section>
   <section class="panel deep-dive">
         <h2>Production build path</h2>
         <p>Use this track to contribute to one of the platform projects below. These projects are intentionally track-level because they combine multiple chapters into a complete product slice.</p>
@@ -63,71 +67,71 @@
   <section class="chapter-grid"><a class="chapter-card" href="/sections/guardrails/guardrail-strategy.html">
       <span>Chapter 1</span>
       <strong>Guardrail strategy</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A guardrail strategy is the overall plan for what inputs, outputs, tool uses, and data accesses your AI system validates, how it validates them, what happens when validation fails, and who is responsible for each check.</small>
     </a><a class="chapter-card" href="/sections/guardrails/input-validation.html">
       <span>Chapter 2</span>
       <strong>Input validation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Input validation is the checkpoint before the model: it bounds size, format, language, topic, and intent of what comes in — the cheapest place in the whole stack to stop a problem.</small>
     </a><a class="chapter-card" href="/sections/guardrails/output-validation.html">
       <span>Chapter 3</span>
       <strong>Output validation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Output validation checks what the model produced before anyone or anything consumes it — schema, policy, safety, and grounding — because generation is statistical and one day the output will be garbage.</small>
     </a><a class="chapter-card" href="/sections/guardrails/pii-controls.html">
       <span>Chapter 4</span>
       <strong>PII controls</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>PII controls govern personal data through the whole AI pipeline — what enters prompts, what reaches third-party APIs, what lands in logs and traces, and what gets stored, retained, or must be deletable.</small>
     </a><a class="chapter-card" href="/sections/guardrails/prompt-injection.html">
       <span>Chapter 5</span>
       <strong>Prompt injection</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Prompt injection is an attack where an adversary embeds instructions into data the model processes (user input, retrieved documents, tool results) that override or manipulate the original system instructions.</small>
     </a><a class="chapter-card" href="/sections/guardrails/jailbreak-defense.html">
       <span>Chapter 6</span>
       <strong>Jailbreak defense</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Jailbreak defense is layered protection against users deliberately steering the model outside its policies — roleplay framing, encoding tricks, many-turn manipulation — built on the assumption that some attempts will get through any single layer.</small>
     </a><a class="chapter-card" href="/sections/guardrails/policy-engine.html">
       <span>Chapter 7</span>
       <strong>Policy engine</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>A policy engine centralizes the rules governing an AI system — what topics, actions, data, and tools are allowed for whom — as versioned, testable code with one enforcement point, instead of logic smeared across prompts and scattered if-statements.</small>
     </a><a class="chapter-card" href="/sections/guardrails/moderation.html">
       <span>Chapter 8</span>
       <strong>Moderation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Moderation screens content flowing through an AI product — user inputs, retrieved material, and model outputs — for harmful categories like harassment, hate, self-harm, sexual content, and violence, with actions calibrated to category and severity.</small>
     </a><a class="chapter-card" href="/sections/guardrails/grounding-checks.html">
       <span>Chapter 9</span>
       <strong>Grounding checks</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Grounding checks automatically verify that generated claims are actually supported by their cited evidence — an independent reviewer between the model&#39;s confident prose and the user.</small>
     </a><a class="chapter-card" href="/sections/guardrails/runtime-enforcement.html">
       <span>Chapter 10</span>
       <strong>Runtime enforcement</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Runtime enforcement is the layer with actual power to stop, modify, or reroute an AI response or action at request time — the difference between policies the system prompt suggests and policies the product guarantees.</small>
     </a><a class="chapter-card" href="/sections/guardrails/escalation.html">
       <span>Chapter 11</span>
       <strong>Escalation</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Escalation is the designed path from AI to human: detecting when the system is out of its depth — low confidence, high stakes, distress, or guardrail hits — and handing off with context, ownership, and a response-time promise.</small>
     </a><a class="chapter-card" href="/sections/guardrails/auditing.html">
       <span>Chapter 12</span>
       <strong>Auditing</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Auditing makes guardrail behavior provable after the fact: tamper-evident records of what was asked, what was answered, what was blocked or modified, and which policy version decided — queryable when a regulator, customer, or incident demands answers.</small>
     </a><a class="chapter-card" href="/sections/guardrails/operations.html">
       <span>Chapter 13</span>
       <strong>Operations</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>Guardrail operations is the ongoing run-and-adapt loop: monitoring control performance, shipping rule and threshold updates fast, responding to new attack patterns, and re-validating everything when models change — because a guardrail stack is a living system, not a launch checklist.</small>
     </a><a class="chapter-card" href="/sections/guardrails/guardrail-lab.html">
       <span>Chapter 14</span>
       <strong>Guardrail lab</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The guardrail lab is a hands-on exercise to build a small input and output validation check, test it against both a clearly malicious case and a clearly benign case, and confirm it correctly distinguishes between them.</small>
     </a><a class="chapter-card" href="/sections/guardrails/mini-project.html">
       <span>Chapter 15</span>
       <strong>Mini project</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The mini project ships a small, complete guardrail layer for one real AI feature, with input validation, output validation, an escalation path, and basic audit logging, that another engineer could extend.</small>
     </a><a class="chapter-card" href="/sections/guardrails/capstone.html">
       <span>Chapter 16</span>
       <strong>Capstone</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The capstone designs a complete guardrail architecture for a real product: input and output validation strategy, grounding checks, escalation triggers, audit logging, and an operational monitoring plan, as one coherent system.</small>
     </a><a class="chapter-card" href="/sections/guardrails/interview-pack.html">
       <span>Chapter 17</span>
       <strong>Interview pack</strong>
-      <small>Theory, architecture, lab, quiz, production checklist.</small>
+      <small>The guardrails interview pack prepares you to discuss layered AI safety design credibly: input and output validation, grounding checks, escalation design, and auditing, backed by a concrete story rather than a general statement that guardrails matter.</small>
     </a></section>
       <nav class="page-nav" aria-label="Previous and next chapters">
         <a href="/sections/evaluation/index.html">← Evaluation</a>
