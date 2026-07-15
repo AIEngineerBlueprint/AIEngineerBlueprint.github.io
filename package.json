@@ -6,6 +6,7 @@
   "scripts": {
     "generate": "node scripts/generate-site.js",
     "serve": "node scripts/serve.js",
-    "start": "node scripts/serve.js"
+    "start": "node scripts/serve.js",
+    "book": "node scripts/build-book.js"
   }
 }
